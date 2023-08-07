@@ -1,5 +1,11 @@
+import BucketList from '../components/Home/BucketList';
+
 const Home = () => {
-  return <>Home</>;
+  return (
+    <>
+      <BucketList />
+    </>
+  );
 };
 
 export default Home;
