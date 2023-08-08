@@ -11,7 +11,7 @@ const WriteAPostButton = () => {
           작성하기
         </S.button>
       </S.container>
-      {modalToggler && <WriteAPostModal />}
+      {modalToggler && <WriteAPostModal setModalToggler={setModalToggler} />}
     </>
   );
 };

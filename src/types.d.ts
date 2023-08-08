@@ -6,7 +6,8 @@ type categories =
   | '가족/친구'
   | '자선활동'
   | '취미'
-  | '기타';
+  | '기타'
+  | '음식';
 
 interface BucketList {
   categories: Array<categories>;
