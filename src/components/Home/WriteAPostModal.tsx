@@ -41,6 +41,20 @@ const WriteAPostModal = ({ setModalToggler }: Props) => {
       : selectedTags.filter((t) => t !== tag);
     setSelectedTags(nextSelectedTags);
   };
+  const handleSubmit = async () => {
+    const uuid = shortUUID.generate();
+    const url = photo ? await uploadImage(photo, uuid) : '';
+
+    postBucket(
+      titleValue.current,
+      contentValue.current,
+      selectedTags,
+      uuid,
+      url,
+    );
+    alert('성공적으로 업로드했습니다.');
+    setModalToggler(false);
+  };
 
   return (
     <modal.container style={photo ? { height: '680px' } : { height: '630px' }}>
@@ -116,22 +130,7 @@ const WriteAPostModal = ({ setModalToggler }: Props) => {
           direction="vertical"
           style={{ width: '100%', marginTop: '1rem' }}
         >
-          <Button
-            type="primary"
-            block
-            onClick={() => {
-              const uuid = shortUUID.generate();
-              postBucket(
-                titleValue.current,
-                contentValue.current,
-                selectedTags,
-                uuid,
-              );
-              uploadImage(photo, uuid);
-              setModalToggler(false);
-              alert('성공적으로 업로드했습니다.');
-            }}
-          >
+          <Button type="primary" block onClick={handleSubmit}>
             작성하기
           </Button>
         </Space>

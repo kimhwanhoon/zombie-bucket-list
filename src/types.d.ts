@@ -17,6 +17,8 @@ interface BucketList {
   writer: string;
   photoURL: string;
   status: string;
+  photoURL: string;
+  title: string;
 }
 
 interface postType {
