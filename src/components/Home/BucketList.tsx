@@ -3,9 +3,8 @@ import useGetBucketList from '../../hooks/getBucketList';
 
 const BucketList = () => {
   const bucketListData = useGetBucketList();
-  const data: Array<BucketListH> | null | undefined =
+  const data: Array<BucketList> | null | undefined =
     bucketListData.data?.bucket_list;
-  console.log(data);
   const content = (
     <S.ContentContainer>
       {data?.map((el) => (

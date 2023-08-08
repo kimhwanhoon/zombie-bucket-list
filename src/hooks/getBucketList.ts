@@ -14,8 +14,7 @@ const getBucketList = async () => {
 };
 
 const useGetBucketList = () => {
-  const query = useQuery({ queryKey: ['bucketList'], queryFn: getBucketList });
-  return query;
+  return useQuery({ queryKey: ['bucketList'], queryFn: getBucketList });
 };
 
 export default useGetBucketList;
