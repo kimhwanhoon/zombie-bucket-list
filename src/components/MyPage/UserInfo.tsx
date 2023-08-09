@@ -4,10 +4,10 @@ import { S } from './UserInfo.styles';
 import supabase from '../../api/supabase';
 import { useNavigate } from 'react-router-dom';
 import supabaseService from '../../api/supabaseService';
+import UserEdit from './UserEdit';
 
 const UserInfo = ({ user }: { user: User | null }) => {
   const navigate = useNavigate();
-
   const UserUID = user?.id;
 
   // 유저 정보 관리
@@ -15,6 +15,9 @@ const UserInfo = ({ user }: { user: User | null }) => {
   const [userNickname, setUserNickname] = useState<string>();
   const [userEmail, setUserEmail] = useState<string>();
   const [userAbout, setUserAbout] = useState<string>();
+  const [isEdit, setIsEdit] = useState(false);
+
+  console.log('isEdit:', isEdit);
 
   // TODO: 새로고침할 때도 잠깐 User 정보가 안 들어왔다가 들어오는 이슈 있음
   // 유저 정보 가져오기
@@ -73,6 +76,11 @@ const UserInfo = ({ user }: { user: User | null }) => {
     navigate('/auth');
   };
 
+  //유저 정보 수정 버튼
+  const handleEditToggleButton = () => {
+    setIsEdit(!isEdit);
+  };
+
   return (
     <div>
       {/* 내가 쓴 글 상태 보기 */}
@@ -83,23 +91,29 @@ const UserInfo = ({ user }: { user: User | null }) => {
       </S.BucketContainer>
 
       {/* 내 정보 관리 */}
-      <S.UserProfileContainer>
-        <div>
-          <S.UserImage>
-            <img src={userProfile} />
-          </S.UserImage>
-          <div>{userNickname}</div>
-        </div>
-        <div>
-          <div>email:{userEmail}</div>
-          <div>자기소개:{userAbout}</div>
-        </div>
-      </S.UserProfileContainer>
-      <div>
-        <button>회원정보 수정</button>
-        <button onClick={handleLogoutButtonClick}>로그아웃</button>
-        <button onClick={handleDeleteUser}>회원 탈퇴</button>
-      </div>
+      {isEdit ? (
+        <UserEdit user={user} setIsEdit={setIsEdit} />
+      ) : (
+        <>
+          <S.UserProfileContainer>
+            <div>
+              <S.UserImage>
+                <img src={userProfile} />
+              </S.UserImage>
+              <div>{userNickname}</div>
+            </div>
+            <div>
+              <div>email:{userEmail}</div>
+              <div>자기소개:{userAbout}</div>
+            </div>
+          </S.UserProfileContainer>
+          <div>
+            <button onClick={handleEditToggleButton}>회원정보 수정</button>
+            <button onClick={handleLogoutButtonClick}>로그아웃</button>
+            <button onClick={handleDeleteUser}>회원 탈퇴</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };
