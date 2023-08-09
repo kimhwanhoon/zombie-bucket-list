@@ -3,6 +3,8 @@ import { User } from '@supabase/supabase-js';
 import { S } from './UserInfo.styles';
 import supabase from '../../api/supabase';
 import { useNavigate } from 'react-router-dom';
+import supabaseService from '../../api/supabaseService';
+import { error } from 'console';
 
 const UserInfo = ({ user }: { user: User | null }) => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
   const [userEmail, setUserEmail] = useState<string>();
   const [userAbout, setUserAbout] = useState<string>();
 
+  // TODO: 새로고침할 때도 잠깐 User 정보가 안 들어왔다가 들어오는 이슈 있음
   // 유저 정보 가져오기
   useEffect(() => {
     const fetchUserDB = async () => {
@@ -37,8 +40,29 @@ const UserInfo = ({ user }: { user: User | null }) => {
     fetchUserDB();
   }, [user]);
 
-  // console.log("현재 user 닉네임?",userNickname);
-  // console.log("현재 user profileURL?",userProfile);
+  //회원 탈퇴 버튼
+  const handleDeleteUser = async () => {
+    const isConfirmed = window.confirm('정말로 회원 탈퇴하시겠습니까?');
+
+    if (isConfirmed) {
+      try {
+        // await supabase.from('users').delete().eq('id', user?.id);
+        const { data, error } = await supabaseService.auth.admin.deleteUser(
+          'b726e0fa-524c-445d-8a17-778219ffce38',
+        );
+        console.log('뭔데이터야?', data);
+
+        if (error) {
+          alert('회원 탈퇴 중 오류가 발생했습니다.');
+        } else {
+          await supabase.auth.signOut();
+          navigate('/auth');
+        }
+      } catch (error) {
+        alert('알 수 없는 오류가 발생했습니다. 고객센터에 문의해주세요.');
+      }
+    }
+  };
 
   //로그아웃 버튼
   const handleLogoutButtonClick = async (
@@ -75,7 +99,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
       <div>
         <button>회원정보 수정</button>
         <button onClick={handleLogoutButtonClick}>로그아웃</button>
-        <button>회원 탈퇴</button>
+        <button onClick={handleDeleteUser}>회원 탈퇴</button>
       </div>
     </div>
   );

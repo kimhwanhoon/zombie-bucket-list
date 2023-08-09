@@ -24,7 +24,6 @@ export const S = {
     border-radius: 50%;
     overflow: hidden;
     background-color: black;
-    cursor: pointer;
 
     img {
       width: 130px;
