@@ -19,6 +19,8 @@ interface BucketList {
   status: string;
   photoURL: string;
   title: string;
+  userId: string;
+  uuid: string;
 }
 
 interface postType {

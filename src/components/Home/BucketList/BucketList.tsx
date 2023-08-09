@@ -2,34 +2,46 @@ import { styled } from 'styled-components';
 import useGetBucketList from '../../../hooks/getBucketList';
 import { Tag } from 'antd';
 import { tagColors } from '../../../styles/customStyles';
+import { useDispatch } from 'react-redux';
+import { saveBucket } from '../../../redux/modules/detailBucketStore';
+import { useNavigate } from 'react-router-dom';
 
 const BucketList = () => {
   const bucketListData = useGetBucketList();
   const data: Array<BucketList> | null | undefined =
     bucketListData.data?.bucket_list;
-
+  // 상세 선택
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleChooseBucket = (id: number) => {
+    const targetBucket = data?.filter((el) => el.id === id);
+    if (targetBucket) dispatch(saveBucket(targetBucket as any));
+    navigate(`/bucket-list/${id}`);
+  };
   const content = (
-    <S.bucketListContainer>
-      {data?.map((el) => (
-        <div key={el.id}>
-          <S.bucketContainer>
-            <S.bucketFirstLineContainer>
-              <h1>{el.title}</h1>
-              <p>
-                {el.categories.map((tag) => (
-                  <Tag key={tag} bordered={false} color={tagColors[`${tag}`]}>
-                    {tag}
-                  </Tag>
-                ))}
-              </p>
-            </S.bucketFirstLineContainer>
-            <S.bucketSecondLineContainer>
-              <p>{el.created_at}</p>
-            </S.bucketSecondLineContainer>
-          </S.bucketContainer>
-        </div>
-      ))}
-    </S.bucketListContainer>
+    <>
+      <S.bucketListContainer>
+        {data?.map((el) => (
+          <div key={el.id}>
+            <S.bucketContainer onClick={() => handleChooseBucket(el.id)}>
+              <S.bucketFirstLineContainer>
+                <h1>{el.title}</h1>
+                <p>
+                  {el.categories.map((tag) => (
+                    <Tag key={tag} bordered={false} color={tagColors[`${tag}`]}>
+                      {tag}
+                    </Tag>
+                  ))}
+                </p>
+              </S.bucketFirstLineContainer>
+              <S.bucketSecondLineContainer>
+                <p>{el.created_at}</p>
+              </S.bucketSecondLineContainer>
+            </S.bucketContainer>
+          </div>
+        ))}
+      </S.bucketListContainer>
+    </>
   );
   return <>{content}</>;
 };
@@ -55,6 +67,7 @@ const S = {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
+    cursor: pointer;
   `,
   bucketFirstLineContainer: styled.div`
     width: 100%;

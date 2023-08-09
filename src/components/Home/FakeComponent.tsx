@@ -4,7 +4,6 @@ const FakeComponent = () => {
   return (
     <StyledDiv>
       <div>Header</div>
-      <div>First content</div>
     </StyledDiv>
   );
 };

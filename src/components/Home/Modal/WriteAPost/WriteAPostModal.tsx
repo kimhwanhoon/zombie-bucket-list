@@ -103,7 +103,7 @@ const WriteAPostModal = () => {
           <Input
             size="large"
             onChange={(e) => (titleValue.current = e.target.value)}
-            maxLength={18}
+            maxLength={30}
           />
         </Form.Item>
         <span>태그</span>
@@ -125,7 +125,7 @@ const WriteAPostModal = () => {
         >
           <TextArea
             showCount
-            maxLength={100}
+            maxLength={500}
             style={{
               resize: 'none',
               height: 200,
