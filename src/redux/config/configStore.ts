@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import exampleSlice from '../modules/example';
+import postModalTogglerSlice from '../modules/writeAPostModalToggler';
+import saveDetailBucketSlice from '../modules/detailBucketStore';
 
 const content = {
   reducer: {
-    example: exampleSlice.reducer,
+    postModalToggle: postModalTogglerSlice.reducer,
+    savedBucket: saveDetailBucketSlice.reducer,
   },
 };
 

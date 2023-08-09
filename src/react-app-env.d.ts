@@ -2,10 +2,9 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-  NODE_ENV: "development" | "production" | "test";
-  REACT_APP_SUPABASE_URL: string;
-  REACT_APP_SUPABASE_KEY: string;
-  REACT_APP_SUPABASE_SERVICE_KEY: string;
+    NODE_ENV: 'development' | 'production' | 'test';
+    REACT_APP_SUPABASE_URL: string;
+    REACT_APP_SUPABASE_KEY: string;
+    REACT_APP_SUPABASE_SERVICE_KEY: string;
   }
-  }
-  
+}
