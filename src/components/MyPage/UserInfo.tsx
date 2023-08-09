@@ -47,10 +47,8 @@ const UserInfo = ({ user }: { user: User | null }) => {
     if (isConfirmed) {
       try {
         // await supabase.from('users').delete().eq('id', user?.id);
-        const { data, error } = await supabaseService.auth.admin.deleteUser(
-          'b726e0fa-524c-445d-8a17-778219ffce38',
-        );
-        console.log('뭔데이터야?', data);
+        const { data, error } = await supabaseService.auth.admin.deleteUser('');
+        // console.log('뭔데이터야?', data);
 
         if (error) {
           alert('회원 탈퇴 중 오류가 발생했습니다.');
