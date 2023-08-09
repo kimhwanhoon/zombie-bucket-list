@@ -33,8 +33,6 @@ const Header = ({user}:{user: User | null}) => {
    
   // console.log("현재 user 닉네임?",userNickname);
   // console.log("현재 user profileURL?",userProfile);
-  
-  
 
   //로그아웃 버튼
   const handleLogoutButtonClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -48,8 +46,6 @@ const Header = ({user}:{user: User | null}) => {
   const handleSignUpMovement = ()=>{
     navigate("/auth")
   }
-
-
 
   return (
     <S.Header>

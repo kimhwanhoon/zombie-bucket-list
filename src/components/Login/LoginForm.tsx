@@ -2,7 +2,6 @@ import React, {useState, ChangeEvent}from 'react';
 import { useNavigate } from 'react-router-dom';
 import  supabase  from '../../api/supabase';
 
-
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
