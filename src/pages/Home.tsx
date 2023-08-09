@@ -1,5 +1,11 @@
+import Intro from '../components/Intro/Intro';
+
 const Home = () => {
-  return <>Home</>;
+  return (
+    <>
+      <Intro />
+    </>
+  );
 };
 
 export default Home;
