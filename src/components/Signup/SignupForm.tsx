@@ -11,18 +11,40 @@ const SignupForm = () => {
   const [nickname, setNickname] = useState("")
   const navigate = useNavigate();
 
-  const [defaultProfileImg, setDefaultProfileImg] = useState('');
-  const [newProfileImg, setNewProfileImg] = useState<String | ArrayBuffer | null>('');
-  const [image, setImage] = useState<File | null>(null)
+  const [defaultProfileImageURL, setDefaultProfileImageURL] = useState('');
+  const [defaultProfileImageFile, setDefaultProfileImageFile] = useState<File | null>(null); 
+  const [newProfileImageURL, setNewProfileImageURL] = useState<String | ArrayBuffer | null>('');
+  const [newProfileImageFile, setNewProfileImageFile] = useState<File | null>(null)
+
+  // default image url을 storage에서 가져오기
+  const { data } = supabaseService.storage.from('user-profile').getPublicUrl('pms.jpg')
+  const defaultImageUrl = data.publicUrl;
+  console.log("defaultImageUrl : ", defaultImageUrl)
+  
+  useEffect( ()=> {
+    setDefaultProfileImageURL(defaultImageUrl)
+  }, [])
 
 
-  // default image url 가져오기
-    const { data } = supabaseService.storage.from('user-profile').getPublicUrl('pms.jpg')
+  useEffect(()=>{
+    // 기본 이미지의 storage url을 이용해서 file로 만들어준다.
+    // storage에는 file 형식으로 올라가야 하는데 url로 가져오면 file이 아니라 그냥 string이다.
+    const fetchDefaultImage = async () => {
+      try{
+        const response = await fetch(defaultImageUrl); // 웹에서의 리소스를 가져온다
+        console.log("response", response)
+        const blob = await response.blob(); // blob객체로 반환, blob객체는 바이너리 데이터 표현에 사용(잘 모르겠음..)
+        console.log("blob", blob)
+        const file = new File([blob], defaultImageUrl, { type: 'image/jpg' }); // blob객체를 기반으로 새로운 file 생성
+        console.log("file", file)
+        setDefaultProfileImageFile(file); // 이걸로 storage에 넣을거임
 
-    useEffect( ()=> {
-      setDefaultProfileImg(data.publicUrl)
-      setNewProfileImg(defaultProfileImg)
-    }, [])
+      } catch (error) {
+        console.log("error in fetching default image", error )
+      }
+    } 
+    fetchDefaultImage();
+  },[])
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -42,21 +64,22 @@ const SignupForm = () => {
     }
   };
 
+  // 미리보기 - input으로 선택한 파일을 url로 만들어서 미리 보기로 보여주는 로직
   const imageRef = useRef<HTMLInputElement | null>(null);
   const changhProfileImageFile = () => {
-    const file =  imageRef.current?.files?.[0];
-    setImage(file as File)
-    console.log(image)
+    const file =  imageRef.current?.files?.[0]; //내가 새롭게 지정한 이미지 파일
+    setNewProfileImageFile(file as File) // 이 때 아래서 사용할 image 변수를 지정해주었다. 새롭게 지정한 파일도 storage에는 File 형식으로 올라가야함
+    console.log(newProfileImageFile)
     if(file){
       const reader = new FileReader();
       reader.onloadend = () => {
-        setNewProfileImg(reader.result)
+        setNewProfileImageURL(reader.result) 
       }
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // 새롭게 지정한 프로필 이미지를 임의의 URL로 변환하여 화면에 보여줌 (image src에 적용)
     }
   }
-  
 
+  // 회원가입 버튼을 누르면
   const handleSignUpButtonClick = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();   
     
@@ -68,6 +91,8 @@ const SignupForm = () => {
     }
     
     try{
+
+      // Authentication에 적용되는 부분
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password
@@ -89,17 +114,33 @@ const SignupForm = () => {
         setErrorMessage("")
       }
 
-      const uploadFile = async (image: any) => {
-        console.log(image)
-        const { data, error } = await supabaseService.storage.from('user-profile').upload(image.name, image)
-        if (error) {
-          // Handle error
-          console.log(error)
-        } else {
-          console.log(data)
+      // 유효성 검사가 다 통과되면 ↓
+      // 회원가입 버튼 클릭 시 storage에 이미지 파일 저장 - 이때 defaultImageFile과 image이 모두 File 형식이라는 것이 중요!
+      const uploadFile = async () => {
+        if(!newProfileImageFile && defaultProfileImageFile) {
+          // image가 없으면 = 새롭게 지정된 이미지가 없으면 fetchDefaultImage에서 지정해놓은 defaultImageFile을 올릴 것임
+          const { data, error } = await supabaseService.storage.from('user-profile').upload(email, defaultProfileImageFile)
+          if (error) {
+            console.log(error)
+          } else {
+            console.log(data)
+          }
+        } else if(newProfileImageFile) {
+          // image가 있으면 = changhProfileImageFile에서 setImage로 지정해놓은 image File이 storage에 올라간다.
+          const { data, error } = await supabaseService.storage.from('user-profile').upload(email, newProfileImageFile)
+          if (error) {
+            console.log(error)
+          } else {
+            console.log(data)
+          }
         }
       }
-      uploadFile(image);
+      uploadFile(); // 함수 호출시 이미지 미리보기에서 지정해줬던 File 형식의 image가 인자로 들어감
+
+      // 회원가입 시 storage에 등록된 이미지 url 바로 가져오기 - db에 넣기 위해 사용
+      const { data:userImage } = supabaseService.storage.from('user-profile').getPublicUrl(email)
+      console.log(userImage) // 이때 userImage는 이미 storage를 거쳐서 오기 때문에 기본 이미지이든, 새로 지정한 이미지이든 잘 적용된 채로 url을 가지고 올 수 있다.
+      
 
       const { data: { user } } = await supabase.auth.getUser();
       const signupDate= user?.created_at.slice(0, 10);
@@ -107,12 +148,13 @@ const SignupForm = () => {
       console.log("유저생성시간>>>>",signupDate)
 
       // users에 user 정보 insert
-      await supabase.from('users').insert({nickname, email, password, signupDate, profileImage: newProfileImg?newProfileImg:defaultProfileImg});
+      await supabase.from('users').insert({nickname, email, password, signupDate, profileImage: userImage.publicUrl});  //userImage 객체의 publicUrl 값이 db에 들어가게 연결
 
       // 로그인 시 메인으로 이동
       if(user){
         navigate("/")
       } }
+
       catch (error){
         alert("알 수 없는 오류가 발생했습니다. 고객센터에 문의해주세요.")
       }
@@ -124,7 +166,7 @@ const SignupForm = () => {
 
     <form>
       <div>
-        {newProfileImg ? (<img src={newProfileImg as string} alt='new-priview-img'/>) : defaultProfileImg ? (<img src={defaultProfileImg} alt='default=priview-img'/>)  : <span>이미지 미리보기</span>}
+        {newProfileImageURL ? (<img src={newProfileImageURL as string} alt='new-priview-img'/>) : defaultProfileImageURL ? (<img src={defaultProfileImageURL} alt='default=priview-img'/>)  : <span>이미지 미리보기</span>}
         <label htmlFor='profileImg'>프로필 이미지 등록</label>
         <input type='file' accept='image/*' id='profileImg' style={{ display: 'none' }} onChange={changhProfileImageFile} ref={imageRef}/>
       </div>
