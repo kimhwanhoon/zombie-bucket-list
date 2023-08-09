@@ -31,3 +31,19 @@ interface postType {
   status: string;
   userId: string;
 }
+
+interface bucketType {
+  title: string;
+  content: string;
+  selectedTags: string[];
+  uuid: string;
+  url: string;
+}
+
+interface postModalTogglerType {
+  postModalToggle: boolean;
+}
+
+interface uploadPostImageType {
+  uploadedPostImage: Blob;
+}

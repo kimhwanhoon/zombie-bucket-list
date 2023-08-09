@@ -1,13 +1,13 @@
-import supabase from './supabase';
 import moment from 'moment';
+import supabase from '../api/supabase';
 
-const postBucket = async (
-  title: string,
-  content: string,
-  selectedTags: string[],
-  uuid: string,
-  url: string,
-) => {
+const postBucket = async ({
+  title,
+  content,
+  selectedTags,
+  uuid,
+  url,
+}: bucketType): Promise<void> => {
   const { error } = await supabase.from('bucketList').insert({
     uuid,
     title,

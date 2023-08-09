@@ -1,19 +1,16 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import { Button, Space, Tag, Form, Input, Upload } from 'antd';
-import postBucket from '../../api/postBucket';
+import { Button, Space, Tag, Form, Input } from 'antd';
+import postBucket from '../../../../api/postBucket';
 import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
-import { RcFile } from 'antd/es/upload';
-import uploadImage from '../../api/uploadImage';
+import Upload, { RcFile } from 'antd/es/upload';
+import uploadImage from '../../../../api/uploadImage';
 import shortUUID from 'short-uuid';
+import { useDispatch } from 'react-redux';
+import { postModalToggler } from '../../../../redux/modules/writeAPostModalToggler';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { debounce } from 'lodash';
 
-type FieldType = {
-  title?: string;
-  content?: string;
-};
-interface Props {
-  setModalToggler: (modalToggler: boolean) => void;
-}
 const tagsData: categories[] = [
   '자기계발',
   '여행',
@@ -26,40 +23,68 @@ const tagsData: categories[] = [
   '기타',
 ];
 
-const WriteAPostModal = ({ setModalToggler }: Props) => {
+type FieldType = {
+  title?: string;
+  content?: string;
+};
+
+const WriteAPostModal = () => {
+  const dispatch = useDispatch();
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
-
   const titleValue = useRef('');
   const contentValue = useRef('');
   const [selectedTags, setSelectedTags] = useState<string[]>(['기타']);
   const [photo, setPhoto] = useState<RcFile | null>(null);
-
+  const queryClient = useQueryClient();
+  // 작성 모달에 태그 선택관련.. 최대 2개까지만 선택 가능하게 설정
   const handleChange = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked
       ? [...selectedTags, tag]
       : selectedTags.filter((t) => t !== tag);
-    setSelectedTags(nextSelectedTags);
+    setSelectedTags((prev) => {
+      if (nextSelectedTags.length > 2) {
+        alert('최대 2가지 태그만 선택할 수 있습니다.');
+        return prev;
+      } else {
+        return nextSelectedTags;
+      }
+    });
   };
-  const handleSubmit = async () => {
-    const uuid = shortUUID.generate();
-    const url = photo ? await uploadImage(photo, uuid) : '';
 
-    postBucket(
-      titleValue.current,
-      contentValue.current,
-      selectedTags,
-      uuid,
-      url,
-    );
-    alert('성공적으로 업로드했습니다.');
-    setModalToggler(false);
-  };
+  // 작성하기 tanstack query함수 + invalidate
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const uuid = shortUUID.generate();
+      const url = photo ? await uploadImage(photo, uuid) : '';
+      await postBucket({
+        title: titleValue.current,
+        content: contentValue.current,
+        selectedTags,
+        uuid,
+        url,
+      });
+      alert('성공적으로 업로드했습니다.');
+      dispatch(postModalToggler(false));
+      setPhoto(null);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bucketList'] });
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
+  // 작성하기 함수를 디바운싱하는 함수를 useCallaback에 넣기
+  const handleSubmit = useCallback(
+    debounce(() => mutation.mutate(), 300),
+    [],
+  );
 
   return (
     <modal.container style={photo ? { height: '680px' } : { height: '630px' }}>
       <modal.closeButtonContainer>
-        <CloseOutlined onClick={() => setModalToggler(false)} />
+        <CloseOutlined onClick={() => dispatch(postModalToggler(false))} />
       </modal.closeButtonContainer>
       <Form
         name="basic"
@@ -78,6 +103,7 @@ const WriteAPostModal = ({ setModalToggler }: Props) => {
           <Input
             size="large"
             onChange={(e) => (titleValue.current = e.target.value)}
+            maxLength={18}
           />
         </Form.Item>
         <span>태그</span>
@@ -115,9 +141,7 @@ const WriteAPostModal = ({ setModalToggler }: Props) => {
           maxCount={1}
           onRemove={() => setPhoto(null)}
           beforeUpload={(file) => {
-            if (file) {
-              setPhoto(file);
-            }
+            if (file) setPhoto(file);
             return false;
           }}
         >
@@ -130,7 +154,7 @@ const WriteAPostModal = ({ setModalToggler }: Props) => {
           direction="vertical"
           style={{ width: '100%', marginTop: '1rem' }}
         >
-          <Button type="primary" block onClick={handleSubmit}>
+          <Button type="primary" block onClick={() => handleSubmit()}>
             작성하기
           </Button>
         </Space>

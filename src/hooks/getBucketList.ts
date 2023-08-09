@@ -8,7 +8,8 @@ const getBucketList = async () => {
 
   let { data: bucket_list, error } = await supabase
     .from('bucketList')
-    .select('*');
+    .select('*')
+    .order('id', { ascending: false });
 
   return { bucket_list, error };
 };
