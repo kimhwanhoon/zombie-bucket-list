@@ -1,16 +1,29 @@
-import React from 'react';
-import supabase  from '../api/supabase';
+import { useState, useEffect } from 'react';
+import supabase from '../api/supabase';
+import UserInfo from '../components/MyPage/UserInfo';
+import { User } from '@supabase/supabase-js';
+import Header from '../components/Layout/Header';
 
 type Props = {};
 const MyPage = (props: Props) => {
-  // 현재 유저 확인
-  const currentUser = async () =>  {
-    const { data: { user } } = await supabase.auth.getUser();
-    console.log("현재 로그인한 유저는? ", user)
-  }
-  currentUser();
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
-  return <div>MyPage</div>;
+  // 현재 유저 정보
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setCurrentUser(user);
+    };
+    fetchUser();
+  }, []);
+  return (
+    <>
+      <Header user={currentUser} />
+      <UserInfo user={currentUser} />
+    </>
+  );
 };
 
 export default MyPage;
