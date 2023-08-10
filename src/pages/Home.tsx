@@ -5,7 +5,6 @@ import Intro from '../components/Intro/Intro';
 import { User } from '@supabase/supabase-js';
 import { styled } from 'styled-components';
 import BucketList from '../components/Home/BucketList/BucketList';
-import FakeComponent from '../components/Home/FakeComponent';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 
 const Home = () => {
@@ -25,7 +24,6 @@ const Home = () => {
     <Main>
       <Header user={currentUser} />
       <Intro />
-      <FakeComponent />
       <WriteAPostButton />
       <BucketList />
     </Main>

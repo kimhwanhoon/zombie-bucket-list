@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-import FakeComponent from '../components/Home/FakeComponent';
 import { useParams } from 'react-router-dom';
 import useGetBucketList from '../hooks/getBucketList';
 
@@ -26,7 +25,6 @@ const BucketDetail = () => {
   } = (data as any).filter((post: any) => post.id === postId);
   return (
     <S.main>
-      <FakeComponent />
       <S.detailContainer>
         <S.leftContainer>
           <h1>{title}</h1>

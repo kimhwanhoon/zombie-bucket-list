@@ -16,9 +16,9 @@ const postBucket = async ({
     created_at: moment().format('YYYY-MM-DD HH:mm'),
     categories: selectedTags,
     photoURL: url,
-    status: '',
+    status: '진행전',
     userId: '',
-  });
+  } as postType);
   error !== null ? console.log(error) : console.log('success!');
 };
 
