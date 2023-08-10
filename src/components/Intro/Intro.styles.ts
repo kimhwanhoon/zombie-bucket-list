@@ -1,4 +1,4 @@
-import { styled, keyframes } from 'styled-components';
+import { styled } from 'styled-components';
 import { Button } from 'antd';
 import introBackground from '../../assets/introBackground.jpg';
 

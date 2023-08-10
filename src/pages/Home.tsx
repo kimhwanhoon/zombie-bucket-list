@@ -7,6 +7,7 @@ import { styled } from 'styled-components';
 import BucketList from '../components/Home/BucketList/BucketList';
 import FakeComponent from '../components/Home/FakeComponent';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
+import Categories from '../components/Home/Categories/Categories';
 
 const Home = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -26,6 +27,7 @@ const Home = () => {
       <Header user={currentUser} />
       <Intro />
       <FakeComponent />
+      <Categories />
       <WriteAPostButton />
       <BucketList />
     </Main>

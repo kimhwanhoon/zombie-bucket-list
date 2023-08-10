@@ -10,6 +10,7 @@ const Intro = () => {
   const [enterButton, setEnterButton] = useState<boolean>(false);
   const [skipToggler, setSkipToggler] = useState<boolean>(false);
   const [lastSkipToggler, setLastSkipToggler] = useState<boolean>(true);
+
   const handleSkipButtonClick = () => {
     setCurrentStep(currentStep + 1);
   };
