@@ -34,7 +34,7 @@ const Header = ({ user }: { user: User | null }) => {
       }
     };
     fetchUserDB();
-  }, [user, userProfile]);
+  }, [user]);
 
   // console.log("현재 user 닉네임?",userNickname);
   // console.log("현재 user profileURL?",userProfile);

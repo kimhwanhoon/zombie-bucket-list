@@ -29,6 +29,8 @@ const UserInfo = ({ user }: { user: User | null }) => {
         .select('nickname, profileImage, email, about')
         .eq('email', user?.email);
 
+      console.log('나나나나나나<<<<<<<<<<<', data);
+
       if (error) {
         alert(
           '사용자 정보를 가져오지 못하는 오류가 발생했습니다. 고객센터에 문의해주세요. error: info.',

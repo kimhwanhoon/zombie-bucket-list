@@ -54,25 +54,28 @@ const UserEdit = ({
   const imageRef = useRef<HTMLInputElement | null>(null);
   const changhProfileImageFile = () => {
     const file = imageRef.current?.files?.[0]; //내가 새롭게 지정한 이미지 파일
-    setNewProfileImageFile(file as File); // 이 때 아래서 사용할 image 변수를 지정해주었다. 새롭게 지정한 파일도 storage에는 File 형식으로 올라가야함
-    console.log('새로운이미지', newProfileImageFile);
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewProfileImageURL(reader.result);
-      };
-      reader.readAsDataURL(file); // 새롭게 지정한 프로필 이미지를 임의의 URL로 변환하여 화면에 보여줌 (image src에 적용)
-    }
+    setNewProfileImageFile((prev) => {
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setNewProfileImageURL(reader.result);
+        };
+        reader.readAsDataURL(file); // 새롭게 지정한 프로필 이미지를 임의의 URL로 변환하여 화면에 보여줌 (image src에 적용)
+      }
+      return file as File;
+    }); // 이 때 아래서 사용할 image 변수를 지정해주었다. 새롭게 지정한 파일도 storage에는 File 형식으로 올라가야함
   };
 
   // // storage image update
-  // const updateStorageAndProfile = async () => {
-  //   const { data, error } = await supabaseService.storage
-  //     .from('user-profile')
-  //     .update(user?.id!, newProfileImageFile!, {
-  //       cacheControl: '3600',
-  //       upsert: true,
-  //     });
+  const updateStorageAndProfile = async () => {
+    const { data, error } = await supabaseService.storage
+      .from('user-profile')
+      .update(user?.id!, newProfileImageFile!, {
+        cacheControl: '3600',
+        upsert: true,
+      });
+    console.log(data);
+  };
 
   //   // storage image update에 error가 없다면
   //   if (!error) {
@@ -88,43 +91,6 @@ const UserEdit = ({
   // 수정 완료 버튼
   const handleProfileEditSave = async () => {
     try {
-      //----------------------------------------------------
-      if (newProfileImageFile) {
-        const deleteProfileImage = async () => {
-          const { data, error } = await supabaseService.storage
-            .from('user-profile')
-            .remove([user?.id!]);
-        };
-        deleteProfileImage();
-
-        const uploadFile = async () => {
-          // if (!newProfileImageFile && defaultProfileImageFile) {
-          //   // image가 없으면 = 새롭게 지정된 이미지가 없으면 fetchDefaultImage에서 지정해놓은 defaultImageFile을 올릴 것임
-          //   const { data, error } = await supabaseService.storage
-          //     .from('user-profile')
-          //     .upload(user?.id!, defaultProfileImageFile);
-          //   if (error) {
-          //     console.log(error);
-          //   } else {
-          //     console.log(data);
-          //   }
-          // } else if (newProfileImageFile) {
-          //   // image가 있으면 = changhProfileImageFile에서 setImage로 지정해놓은 image File이 storage에 올라간다.
-          //   const { data, error } = await supabaseService.storage
-          //     .from('user-profile')
-          //     .upload(user?.id!, newProfileImageFile);
-          //   if (error) {
-          //     console.log(error);
-          //   } else {
-          //     console.log(data);
-          //   }
-          // }
-        };
-        uploadFile(); // 함수 호출시 이미지 미리보기에서 지정해줬던 File 형식의 image가 인자로 들어감
-      }
-
-      //-----------------------------------------------------
-
       const { error } = await supabase
         .from('users')
         .update({ nickname: userEditNickname, about: userEditAbout })
@@ -136,7 +102,7 @@ const UserEdit = ({
           return false;
         }
 
-        // await updateStorageAndProfile();
+        await updateStorageAndProfile();
         alert('프로필 수정이 완료됐습니다!');
         setUserEditNickname('');
         setUserEditAbout('');
