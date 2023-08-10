@@ -4,11 +4,20 @@ import Header from '../components/Layout/Header';
 import Intro from '../components/Intro/Intro';
 import { User } from '@supabase/supabase-js';
 import { styled } from 'styled-components';
-import BucketList from '../components/Home/BucketList/BucketList';
-import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
+import { useDispatch } from 'react-redux';
+import { saveLoggedInUserId } from '../redux/modules/saveLoggedInUserId';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // console.log('currentUser:', currentUser);
+  useEffect(() => {
+    if (!currentUser) return;
+    dispatch(saveLoggedInUserId(currentUser.id));
+    navigate(`/redirecting`);
+  }, [currentUser, dispatch, navigate]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -24,8 +33,6 @@ const Home = () => {
     <Main>
       <Header user={currentUser} />
       <Intro />
-      <WriteAPostButton />
-      <BucketList />
     </Main>
   );
 };

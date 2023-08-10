@@ -1,10 +1,11 @@
 import { styled } from 'styled-components';
-import useGetBucketList from '../../../hooks/getBucketList';
 import { Tag } from 'antd';
-import { tagColors } from '../../../styles/customStyles';
 import { useDispatch } from 'react-redux';
-import { saveBucket } from '../../../redux/modules/detailBucketStore';
 import { useNavigate } from 'react-router-dom';
+import useGetBucketList from '../hooks/getBucketList';
+import { saveBucket } from '../redux/modules/detailBucketStore';
+import { tagColors } from '../styles/customStyles';
+import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 
 const BucketList = () => {
   const bucketListData = useGetBucketList();
@@ -43,10 +44,22 @@ const BucketList = () => {
       </S.bucketListContainer>
     </>
   );
-  return <>{content}</>;
+  return (
+    <>
+      <Main>
+        <WriteAPostButton />
+        {content}
+      </Main>
+    </>
+  );
 };
 
 export default BucketList;
+
+const Main = styled.main`
+  background-color: #f8f8f8;
+  min-height: 100vh;
+`;
 
 const S = {
   bucketListContainer: styled.div`
