@@ -31,4 +31,10 @@ export const S = {
       object-fit: cover;
     }
   `,
+
+  UserImageButton: styled.label`
+    cursor: pointer;
+    border: 2px solid gray;
+    border-radius: 8px;
+  `,
 };
