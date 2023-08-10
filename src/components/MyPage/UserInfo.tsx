@@ -4,10 +4,10 @@ import { S } from './UserInfo.styles';
 import supabase from '../../api/supabase';
 import { useNavigate } from 'react-router-dom';
 import supabaseService from '../../api/supabaseService';
+import UserEdit from './UserEdit';
 
 const UserInfo = ({ user }: { user: User | null }) => {
   const navigate = useNavigate();
-
   const UserUID = user?.id;
 
   // 유저 정보 관리
@@ -15,6 +15,9 @@ const UserInfo = ({ user }: { user: User | null }) => {
   const [userNickname, setUserNickname] = useState<string>();
   const [userEmail, setUserEmail] = useState<string>();
   const [userAbout, setUserAbout] = useState<string>();
+  const [isEdit, setIsEdit] = useState(false);
+
+  // console.log('isEdit:', isEdit);
 
   // TODO: 새로고침할 때도 잠깐 User 정보가 안 들어왔다가 들어오는 이슈 있음
   // 유저 정보 가져오기
@@ -26,8 +29,12 @@ const UserInfo = ({ user }: { user: User | null }) => {
         .select('nickname, profileImage, email, about')
         .eq('email', user?.email);
 
+      console.log('나나나나나나<<<<<<<<<<<', data);
+
       if (error) {
-        alert('알 수 없는 오류가 발생했습니다. 고객센터에 문의해주세요.');
+        alert(
+          '사용자 정보를 가져오지 못하는 오류가 발생했습니다. 고객센터에 문의해주세요. error: info.',
+        );
       } else {
         if (data && data.length > 0) {
           setUserNickname(data[0].nickname);
@@ -38,7 +45,13 @@ const UserInfo = ({ user }: { user: User | null }) => {
       }
     };
     fetchUserDB();
-  }, [user]);
+  }, [user, isEdit]);
+
+  const deleteProfileImage = async () => {
+    const { data, error } = await supabaseService.storage
+      .from('user-profile')
+      .remove([user?.id!]);
+  };
 
   //유저 정보 수정
 
@@ -51,6 +64,8 @@ const UserInfo = ({ user }: { user: User | null }) => {
         const { error } = await supabaseService.auth.admin.deleteUser(UserUID);
         await supabase.from('users').delete().eq('email', user?.email);
 
+        deleteProfileImage();
+
         if (error) {
           alert('회원 탈퇴 중 오류가 발생했습니다.');
         } else {
@@ -58,7 +73,9 @@ const UserInfo = ({ user }: { user: User | null }) => {
           navigate('/auth');
         }
       } catch (error) {
-        alert('알 수 없는 오류가 발생했습니다. 고객센터에 문의해주세요.');
+        alert(
+          '회원 탈퇴 중 오류가 발생했습니다. 고객센터에 문의해주세요. error: info.',
+        );
       }
     }
   };
@@ -73,6 +90,11 @@ const UserInfo = ({ user }: { user: User | null }) => {
     navigate('/auth');
   };
 
+  //유저 정보 수정 버튼
+  const handleEditToggleButton = () => {
+    setIsEdit(!isEdit);
+  };
+
   return (
     <div>
       {/* 내가 쓴 글 상태 보기 */}
@@ -83,23 +105,29 @@ const UserInfo = ({ user }: { user: User | null }) => {
       </S.BucketContainer>
 
       {/* 내 정보 관리 */}
-      <S.UserProfileContainer>
-        <div>
-          <S.UserImage>
-            <img src={userProfile} />
-          </S.UserImage>
-          <div>{userNickname}</div>
-        </div>
-        <div>
-          <div>email:{userEmail}</div>
-          <div>자기소개:{userAbout}</div>
-        </div>
-      </S.UserProfileContainer>
-      <div>
-        <button>회원정보 수정</button>
-        <button onClick={handleLogoutButtonClick}>로그아웃</button>
-        <button onClick={handleDeleteUser}>회원 탈퇴</button>
-      </div>
+      {isEdit ? (
+        <UserEdit user={user} setIsEdit={setIsEdit} />
+      ) : (
+        <>
+          <S.UserProfileContainer>
+            <div>
+              <S.UserImage>
+                <img src={userProfile} />
+              </S.UserImage>
+              <div>{userNickname}</div>
+            </div>
+            <div>
+              <div>email:{userEmail}</div>
+              <div>자기소개:{userAbout}</div>
+            </div>
+          </S.UserProfileContainer>
+          <div>
+            <button onClick={handleEditToggleButton}>회원정보 수정</button>
+            <button onClick={handleLogoutButtonClick}>로그아웃</button>
+            <button onClick={handleDeleteUser}>회원 탈퇴</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

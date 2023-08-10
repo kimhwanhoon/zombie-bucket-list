@@ -125,13 +125,19 @@ const SignupForm = () => {
       }
 
       // 유효성 검사가 다 통과되면 ↓
+
+      // user정보 불러오고
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      console.log(user?.id);
       // 회원가입 버튼 클릭 시 storage에 이미지 파일 저장 - 이때 defaultImageFile과 image이 모두 File 형식이라는 것이 중요!
       const uploadFile = async () => {
         if (!newProfileImageFile && defaultProfileImageFile) {
           // image가 없으면 = 새롭게 지정된 이미지가 없으면 fetchDefaultImage에서 지정해놓은 defaultImageFile을 올릴 것임
           const { data, error } = await supabaseService.storage
             .from('user-profile')
-            .upload(email, defaultProfileImageFile);
+            .upload(user?.id!, defaultProfileImageFile);
           if (error) {
             console.log(error);
           } else {
@@ -141,7 +147,7 @@ const SignupForm = () => {
           // image가 있으면 = changhProfileImageFile에서 setImage로 지정해놓은 image File이 storage에 올라간다.
           const { data, error } = await supabaseService.storage
             .from('user-profile')
-            .upload(email, newProfileImageFile);
+            .upload(user?.id!, newProfileImageFile);
           if (error) {
             console.log(error);
           } else {
@@ -154,33 +160,30 @@ const SignupForm = () => {
       // 회원가입 시 storage에 등록된 이미지 url 바로 가져오기 - db에 넣기 위해 사용
       const { data: userImage } = supabaseService.storage
         .from('user-profile')
-        .getPublicUrl(email);
+        .getPublicUrl(user?.id!);
       console.log(userImage); // 이때 userImage는 이미 storage를 거쳐서 오기 때문에 기본 이미지이든, 새로 지정한 이미지이든 잘 적용된 채로 url을 가지고 올 수 있다.
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
       const signupDate = user?.created_at.slice(0, 10);
       console.log('현재 로그인한 유저는? ', user);
       console.log('유저생성시간>>>>', signupDate);
 
       // users에 user 정보 insert
-      await supabase
-        .from('users')
-        .insert({
-          nickname,
-          email,
-          password,
-          signupDate,
-          profileImage: userImage.publicUrl,
-        }); //userImage 객체의 publicUrl 값이 db에 들어가게 연결
+      await supabase.from('users').insert({
+        nickname,
+        email,
+        password,
+        signupDate,
+        profileImage: userImage.publicUrl,
+      }); //userImage 객체의 publicUrl 값이 db에 들어가게 연결
 
       // 로그인 시 메인으로 이동
       if (user) {
         navigate('/');
       }
     } catch (error) {
-      alert('알 수 없는 오류가 발생했습니다. 고객센터에 문의해주세요.');
+      alert(
+        '회원가입시 오류가 발생했습니다. 고객센터에 문의해주세요. error: signup.',
+      );
     }
   };
 
