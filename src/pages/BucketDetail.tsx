@@ -39,7 +39,7 @@ const BucketDetail = () => {
     },
   });
 
-  // 작성하기 함수를 디바운싱하는 함수를 useCallaback에 넣기
+  // 삭제하기 함수를 디바운싱하는 함수를 useCallaback에 넣기
   const handleDelete = useCallback(
     debounce(() => mutation.mutate(), 300),
     [],
