@@ -1,9 +1,7 @@
 import { styled } from 'styled-components';
 import { Tag } from 'antd';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import useGetBucketList from '../hooks/getBucketList';
-import { saveBucket } from '../redux/modules/detailBucketStore';
 import { tagColors } from '../styles/customStyles';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
@@ -15,12 +13,9 @@ const BucketList = () => {
   const data: Array<BucketList> | null | undefined =
     bucketListData.data?.bucket_list;
   // 상세 선택
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChooseBucket = (id: number) => {
-    const targetBucket = data?.filter((el) => el.id === id);
-    if (targetBucket) dispatch(saveBucket(targetBucket as any));
     navigate(`/userId/${params}/bucket-list/${id}`);
   };
 

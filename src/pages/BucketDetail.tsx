@@ -12,7 +12,7 @@ const BucketDetail = () => {
     userId as string,
     postId as string,
   );
-
+  console.log(data);
   if (isLoading) {
     return <>로딩중...</>;
   }
@@ -25,7 +25,11 @@ const BucketDetail = () => {
       </div>
     );
   }
-  const targetPost = data.bucket_list![0];
+
+  const targetPost: any = data.bucket_list!.filter(
+    (post) => post.id.toString() === postId,
+  );
+  console.log('targetPost', targetPost);
   const {
     categories,
     content,
@@ -37,7 +41,7 @@ const BucketDetail = () => {
     // userId,
     uuid,
     writer,
-  } = targetPost;
+  } = targetPost[0];
   return (
     <S.main>
       <S.detailContainer>

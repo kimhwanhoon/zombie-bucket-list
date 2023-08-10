@@ -3,6 +3,7 @@ import Intro from '../components/Intro/Intro';
 import { styled } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import useGetCurrentUser from '../hooks/getCurrentUser';
+import Header from '../components/Layout/Header';
 
 const Home = () => {
   const { data: currentUser = null } = useGetCurrentUser();
@@ -15,7 +16,7 @@ const Home = () => {
 
   return (
     <Main>
-      {/* <Header user={currentUser} /> */}
+      <Header user={currentUser} />
       <Intro />
     </Main>
   );
