@@ -23,7 +23,9 @@ const Header = ({ user }: { user: User | null }) => {
       // console.log("users의 데이터 있나!!!",data)
 
       if (error) {
-        alert('알 수 없는 오류가 발생했습니다. 고객센터에 문의해주세요.');
+        alert(
+          '사용자 정보를 가져오지 못하는 오류가 발생했습니다. 고객센터에 문의해주세요. error:header.',
+        );
       } else {
         if (data && data.length > 0) {
           setUserNickname(data[0].nickname);
