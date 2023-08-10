@@ -5,9 +5,9 @@ import useGetBucketList from '../hooks/getBucketList';
 import { tagColors } from '../styles/customStyles';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
-
+import Header from '../components/Layout/Header';
 const BucketList = () => {
-  useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
+  const { data: currentUser = null } = useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
   const params = useParams().userId;
   const bucketListData = useGetBucketList(params as string, null);
   const data: Array<BucketList> | null | undefined =
@@ -47,6 +47,7 @@ const BucketList = () => {
   return (
     <>
       <Main>
+        <Header user={currentUser} />
         <WriteAPostButton />
         {content}
       </Main>
