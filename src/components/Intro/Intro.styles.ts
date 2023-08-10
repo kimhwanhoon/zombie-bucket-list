@@ -1,12 +1,12 @@
-import { styled } from 'styled-components';
+import { styled, keyframes } from 'styled-components';
 import { Button } from 'antd';
 import introBackground from '../../assets/introBackground.jpg';
 
 export const S = {
-  IntroWrapper: styled.h2`
+  IntroWrapper: styled.div`
     width: 100vw;
     height: 100vh;
-    font-size: 17px;
+    position: relative;
 
     background-image: linear-gradient(
         0deg,
@@ -35,5 +35,28 @@ export const S = {
 
   Button: styled(Button)`
     margin: 1rem;
+  `,
+
+  AllSkipButton: styled(Button)`
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 1.5rem;
+
+    &:hover {
+      color: #ff5349 !important;
+      transition: color 0.3s ease-in-out;
+    }
+  `,
+
+  SkipButton: styled(Button)`
+    color: white;
+    margin: 1rem;
+
+    &:hover {
+      color: #ff5349 !important;
+      transition: color 0.3s ease-in-out;
+    }
   `,
 };
