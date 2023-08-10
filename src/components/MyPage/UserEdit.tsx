@@ -70,7 +70,7 @@ const UserEdit = ({
     const { data, error } = await supabaseService.storage
       .from('user-profile')
       .update(user?.id!, newProfileImageFile!, {
-        cacheControl: '1',
+        cacheControl: '3600',
         upsert: true,
       });
 

@@ -48,7 +48,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
   const deleteProfileImage = async () => {
     const { data, error } = await supabaseService.storage
       .from('user-profile')
-      .remove([user?.email!]);
+      .remove([user?.id!]);
   };
 
   //유저 정보 수정
