@@ -1,37 +1,21 @@
-import { useState, useEffect } from 'react';
-import supabase from '../api/supabase';
-import Header from '../components/Layout/Header';
+import { useEffect } from 'react';
 import Intro from '../components/Intro/Intro';
-import { User } from '@supabase/supabase-js';
 import { styled } from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { saveLoggedInUserId } from '../redux/modules/saveLoggedInUserId';
 import { useNavigate } from 'react-router-dom';
+import useGetCurrentUser from '../hooks/getCurrentUser';
 
 const Home = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const dispatch = useDispatch();
+  const { data: currentUser = null } = useGetCurrentUser();
   const navigate = useNavigate();
-  // console.log('currentUser:', currentUser);
-  useEffect(() => {
-    if (!currentUser) return;
-    dispatch(saveLoggedInUserId(currentUser.id));
-    navigate(`/redirecting`);
-  }, [currentUser, dispatch, navigate]);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setCurrentUser(user);
-    };
-    fetchUser();
-  }, []);
+    if (!currentUser) return;
+    navigate(`/redirecting`);
+  }, [currentUser, navigate]);
 
   return (
     <Main>
-      <Header user={currentUser} />
+      {/* <Header user={currentUser} /> */}
       <Intro />
     </Main>
   );

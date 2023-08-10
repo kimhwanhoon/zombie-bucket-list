@@ -1,29 +1,21 @@
-import { User } from '@supabase/supabase-js';
-import React, { useEffect, useState } from 'react';
-import supabase from '../api/supabase';
-import { saveLoggedInUserId } from '../redux/modules/saveLoggedInUserId';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import TypeIt from 'typeit-react';
-
-interface State {
-  loggedInUserId: string;
-}
+import useGetCurrentUser from '../hooks/getCurrentUser';
 
 const Redirecting = () => {
   const navigate = useNavigate();
-  const userId = useSelector((state: State) => state.loggedInUserId);
+  const { data: currentUser = null } = useGetCurrentUser();
 
   useEffect(() => {
-    if (!userId) {
-      alert('로그인해주세요.');
+    if (!currentUser) {
       navigate('/');
       return;
     }
     setTimeout(() => {
-      navigate(`/userId/${userId}`);
+      navigate(`/userId/${currentUser.id}/bucket-list/`);
     }, 3000);
-  }, [userId, navigate]);
+  }, [navigate, currentUser]);
 
   const photo = (
     <img

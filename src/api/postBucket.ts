@@ -7,6 +7,7 @@ const postBucket = async ({
   selectedTags,
   uuid,
   url,
+  userId,
 }: bucketType): Promise<void> => {
   const { error } = await supabase.from('bucketList').insert({
     uuid,
@@ -17,7 +18,7 @@ const postBucket = async ({
     categories: selectedTags,
     photoURL: url,
     status: '진행전',
-    userId: '',
+    userId,
   } as postType);
   error !== null ? console.log(error) : console.log('success!');
 };

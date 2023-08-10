@@ -41,6 +41,7 @@ interface bucketType {
   selectedTags: string[];
   uuid: string;
   url: string;
+  userId: string;
 }
 
 interface postModalTogglerType {

@@ -1,16 +1,31 @@
-import { useSelector } from 'react-redux';
 import { styled } from 'styled-components';
-import { useParams } from 'react-router-dom';
 import useGetBucketList from '../hooks/getBucketList';
+import useGetCurrentUser from '../hooks/getCurrentUser';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const BucketDetail = () => {
-  useSelector((state) => console.log(state));
-  // null이 나오기 때문에 맨 처음에 로드할 때 애초에 모든 데이터를 다 받아서
-  // 해당하는 아이디만 param으로 불러와서 그걸로 filter를 걸어서 만들자
-  const postId = useParams().id;
+  useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
+  const { userId, postId } = useParams();
+  const naviate = useNavigate();
 
-  const data = useGetBucketList().data?.bucket_list;
-  console.log(data);
+  const { data, isLoading, isError, error } = useGetBucketList!(
+    userId as string,
+    postId as string,
+  );
+
+  if (isLoading) {
+    return <>로딩중...</>;
+  }
+
+  if (isError) {
+    return (
+      <div>
+        에러가 발생했습니다.{' '}
+        <button onClick={() => naviate('')}>홈으로 돌아가기</button>
+      </div>
+    );
+  }
+  const targetPost = data.bucket_list![0];
   const {
     categories,
     content,
@@ -19,10 +34,10 @@ const BucketDetail = () => {
     photoURL,
     status,
     title,
-    userId,
+    // userId,
     uuid,
     writer,
-  } = (data as any).filter((post: any) => post.id === postId);
+  } = targetPost;
   return (
     <S.main>
       <S.detailContainer>

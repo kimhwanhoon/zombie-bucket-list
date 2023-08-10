@@ -6,7 +6,7 @@ import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
 import Upload, { RcFile } from 'antd/es/upload';
 import uploadImage from '../../../../api/uploadImage';
 import shortUUID from 'short-uuid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postModalToggler } from '../../../../redux/modules/writeAPostModalToggler';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
@@ -30,6 +30,7 @@ type FieldType = {
 
 const WriteAPostModal = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.loggedInUser);
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
   const titleValue = useRef('');
@@ -63,6 +64,7 @@ const WriteAPostModal = () => {
         selectedTags,
         uuid,
         url,
+        userId: user.id,
       });
       alert('성공적으로 업로드했습니다.');
       dispatch(postModalToggler(false));

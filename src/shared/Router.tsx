@@ -14,8 +14,11 @@ const Router: React.FC = (): JSX.Element => {
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/my-page" element={<MyPage />} />
-        <Route path="/userId/:id" element={<BucketList />} />
-        <Route path="/bucket-list/:id" element={<BucketDetail />} />
+        <Route path="/userId/:userId/bucket-list" element={<BucketList />} />
+        <Route
+          path="/userId/:userId/bucket-list/:postId"
+          element={<BucketDetail />}
+        />
         <Route path="/redirecting" element={<Redirecting />} />
       </Routes>
     </BrowserRouter>
