@@ -24,13 +24,14 @@ interface BucketList {
 }
 
 interface postType {
+  uuid: string;
   title: string;
   content: string;
   writer: string;
-  created_at: number;
-  categories: Array<string>;
+  created_at: string;
+  categories: categories[];
   photoURL: string;
-  status: string;
+  status: '진행전' | '진행중' | '완료';
   userId: string;
 }
 
@@ -40,6 +41,7 @@ interface bucketType {
   selectedTags: string[];
   uuid: string;
   url: string;
+  userId: string;
 }
 
 interface postModalTogglerType {

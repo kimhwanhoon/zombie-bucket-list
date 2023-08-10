@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { postModalToggler } from '../../../../redux/modules/writeAPostModalToggler';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
+import useGetCurrentUser from '../../../../hooks/getCurrentUser';
 
 const tagsData: categories[] = [
   '자기계발',
@@ -30,6 +31,7 @@ type FieldType = {
 
 const WriteAPostModal = () => {
   const dispatch = useDispatch();
+  const currentUser = useGetCurrentUser().data;
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
   const titleValue = useRef('');
@@ -63,6 +65,7 @@ const WriteAPostModal = () => {
         selectedTags,
         uuid,
         url,
+        userId: currentUser!.id,
       });
       alert('성공적으로 업로드했습니다.');
       dispatch(postModalToggler(false));
@@ -75,6 +78,7 @@ const WriteAPostModal = () => {
       console.log(err);
     },
   });
+
   // 작성하기 함수를 디바운싱하는 함수를 useCallaback에 넣기
   const handleSubmit = useCallback(
     debounce(() => mutation.mutate(), 300),
