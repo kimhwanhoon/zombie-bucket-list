@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import useGetBucketList from '../hooks/getBucketList';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import supabase from '../api/supabase';
 import { useCallback, useState } from 'react';
@@ -87,18 +87,31 @@ const BucketDetail = () => {
   return (
     <S.main>
       {deleteToggle && deleteModal}
+      <img
+        id="back-button"
+        src="https://i.ibb.co/YTDTd2t/icons8-back-100.png"
+        alt="back"
+        onClick={() => navigate(`/userId/${userId}/bucket-list`)}
+      />
       <S.detailContainer>
         <S.leftContainer>
-          <DeleteOutlined
-            style={{
-              position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              fontSize: '1.25rem',
-              cursor: 'pointer',
-            }}
-            onClick={() => setDeleteToggle(true)}
-          />
+          <S.iconContainer>
+            <EditOutlined
+              style={{
+                fontSize: '1.25rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => setDeleteToggle(true)}
+            />
+            <DeleteOutlined
+              style={{
+                fontSize: '1.25rem',
+                cursor: 'pointer',
+              }}
+              onClick={() => setDeleteToggle(true)}
+            />
+          </S.iconContainer>
+
           <div>
             <h1>{title}</h1>
             <p>{content}</p>
@@ -158,11 +171,29 @@ export default BucketDetail;
 
 const S = {
   main: styled.main`
+    position: relative;
     background-color: #f9fafb;
     min-height: 100vh;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30%;
+    #back-button {
+      position: absolute;
+      top: 2rem;
+      left: 2rem;
+      width: 32px;
+      cursor: pointer;
+      transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
   `,
   detailContainer: styled.div`
+    width: 100%;
+    /* height: 30%; */
     display: flex;
     padding: 2rem;
     gap: 2rem;
@@ -176,7 +207,7 @@ const S = {
     padding: 1.5rem;
     width: 60%;
     background-color: #fff;
-    height: calc(600px + 1.5rem);
+    /* height: calc(600px + 1.5rem); */
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     h1 {
@@ -188,6 +219,14 @@ const S = {
       color: #555;
       line-height: 1.2;
     }
+  `,
+  iconContainer: styled.div`
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    position: 'absolute';
+    top: '1.5rem';
+    right: '1.5rem';
   `,
   photoLibrary: styled.div`
     overflow: hidden;
@@ -217,7 +256,7 @@ const S = {
   `,
   postStatsContainer: styled.div`
     background-color: #fff;
-    height: 400px;
+    /* height: 400px; */
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     padding: 2rem;
@@ -227,7 +266,7 @@ const S = {
   `,
   userDetailContainer: styled.div`
     background-color: #fff;
-    height: 200px;
+    /* height: 200px; */
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     padding: 2rem;
