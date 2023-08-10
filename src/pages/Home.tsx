@@ -10,7 +10,7 @@ const Home = () => {
 
   useEffect(() => {
     if (!currentUser) return;
-    // navigate(`/redirecting`);
+    navigate(`/redirecting`);
   }, [currentUser, navigate]);
 
   return (

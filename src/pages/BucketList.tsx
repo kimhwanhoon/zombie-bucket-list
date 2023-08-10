@@ -63,7 +63,7 @@ const Main = styled.main`
 
 const S = {
   bucketListContainer: styled.div`
-    margin: 5rem 2rem 1rem 2rem;
+    padding: 5rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
