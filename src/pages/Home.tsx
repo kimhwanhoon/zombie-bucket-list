@@ -1,33 +1,21 @@
-import { useState, useEffect } from 'react';
-import supabase from '../api/supabase';
-import Header from '../components/Layout/Header';
+import { useEffect } from 'react';
 import Intro from '../components/Intro/Intro';
-import { User } from '@supabase/supabase-js';
 import { styled } from 'styled-components';
-import BucketList from '../components/Home/BucketList/BucketList';
-import FakeComponent from '../components/Home/FakeComponent';
-import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
+import { useNavigate } from 'react-router-dom';
+import useGetCurrentUser from '../hooks/getCurrentUser';
 
 const Home = () => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { data: currentUser = null } = useGetCurrentUser();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setCurrentUser(user);
-    };
-    fetchUser();
-  }, []);
+    if (!currentUser) return;
+    navigate(`/redirecting`);
+  }, [currentUser, navigate]);
 
   return (
     <Main>
-      <Header user={currentUser} />
       <Intro />
-      <FakeComponent />
-      <WriteAPostButton />
-      <BucketList />
     </Main>
   );
 };

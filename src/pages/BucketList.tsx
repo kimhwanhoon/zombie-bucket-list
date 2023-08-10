@@ -1,23 +1,24 @@
 import { styled } from 'styled-components';
-import useGetBucketList from '../../../hooks/getBucketList';
 import { Tag } from 'antd';
-import { tagColors } from '../../../styles/customStyles';
-import { useDispatch } from 'react-redux';
-import { saveBucket } from '../../../redux/modules/detailBucketStore';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import useGetBucketList from '../hooks/getBucketList';
+import { tagColors } from '../styles/customStyles';
+import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
+import useGetCurrentUser from '../hooks/getCurrentUser';
 
 const BucketList = () => {
-  const bucketListData = useGetBucketList();
+  useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
+  const params = useParams().userId;
+  const bucketListData = useGetBucketList(params as string, null);
   const data: Array<BucketList> | null | undefined =
     bucketListData.data?.bucket_list;
   // 상세 선택
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleChooseBucket = (id: number) => {
-    const targetBucket = data?.filter((el) => el.id === id);
-    if (targetBucket) dispatch(saveBucket(targetBucket as any));
-    navigate(`/bucket-list/${id}`);
+    navigate(`/userId/${params}/bucket-list/${id}`);
   };
+
   const content = (
     <>
       <S.bucketListContainer>
@@ -43,14 +44,26 @@ const BucketList = () => {
       </S.bucketListContainer>
     </>
   );
-  return <>{content}</>;
+  return (
+    <>
+      <Main>
+        <WriteAPostButton />
+        {content}
+      </Main>
+    </>
+  );
 };
 
 export default BucketList;
 
+const Main = styled.main`
+  background-color: #f8f8f8;
+  min-height: 100vh;
+`;
+
 const S = {
   bucketListContainer: styled.div`
-    margin: 5rem 2rem 1rem 2rem;
+    padding: 5rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
