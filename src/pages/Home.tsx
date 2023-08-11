@@ -7,7 +7,7 @@ import useGetCurrentUser from '../hooks/getCurrentUser';
 const Home = () => {
   const { data: currentUser = null } = useGetCurrentUser();
   const navigate = useNavigate();
-
+  console.log('홈에서 user:', currentUser);
   useEffect(() => {
     if (!currentUser) return;
     navigate(`/redirecting`);
