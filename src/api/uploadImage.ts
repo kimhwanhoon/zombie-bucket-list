@@ -16,10 +16,11 @@ const uploadImage = async (file: any, uuid: string) => {
       'blob',
     );
   });
-
+  const fileName = Date.now().toString();
+  // 게시글 수정의 경우 아직 기존의 이미지 파일 삭제 로직은 구현하지 않음.
   const { data, error } = await supabaseService.storage
     .from(`Users/posts/${uuid}`)
-    .upload(uuid, optimizedImage as File);
+    .upload(fileName, optimizedImage as File);
   if (error) {
     // Handle error
     console.log('error:', error);
@@ -30,7 +31,7 @@ const uploadImage = async (file: any, uuid: string) => {
 
   const { data: url } = supabaseService.storage
     .from(`Users/posts/${uuid}`)
-    .getPublicUrl(uuid);
+    .getPublicUrl(fileName);
   if (error) {
     // Handle error
     console.log('error:', error);

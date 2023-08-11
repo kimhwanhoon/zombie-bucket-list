@@ -29,7 +29,7 @@ const getBucketList = async (userId: string, postId: string | null = null) => {
 const useGetBucketList = (userId: string, postId: string | null) => {
   return useQuery({
     queryKey: ['bucketList'],
-    queryFn: () => getBucketList(userId, postId),
+    queryFn: async () => await getBucketList(userId, postId),
   });
 };
 
