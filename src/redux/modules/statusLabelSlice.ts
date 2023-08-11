@@ -13,8 +13,6 @@ export const statusLabelSlice = createSlice({
   initialState,
   reducers: {
     setStatusLabel: (state, action: PayloadAction<string | undefined>) => {
-      console.log('진행상태', state);
-
       state.label = action.payload;
     },
   },

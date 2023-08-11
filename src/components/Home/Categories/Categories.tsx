@@ -22,7 +22,6 @@ const Categories = () => {
   const statusLabel = useSelector(
     (state: RootState) => state.statusLabel.label,
   );
-  console.log(statusLabel);
 
   const [filteredBucketList, setFilteredBucketList] = useState<BucketList[]>();
   // const [statusLabel, setStatusLabel] = useState<string | undefined>();
@@ -128,10 +127,10 @@ const Categories = () => {
                         </Tag>
                       ))}
                     </p>
-                    <div>{item.status}</div>
                   </S.bucketFirstLineContainer>
                   <S.bucketSecondLineContainer>
                     <p>{item.created_at}</p>
+                    <div>{item.status}</div>
                   </S.bucketSecondLineContainer>
                 </S.bucketContainer>
               </div>

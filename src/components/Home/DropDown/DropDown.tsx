@@ -9,7 +9,7 @@ import { setStatusLabel } from '../../../redux/modules/statusLabelSlice';
 interface MenuItemType {
   key: string;
   label: string; // 'label' 프로퍼티 추가
-  state?: BucketList[];
+  disabled?: boolean;
 }
 
 // items 배열을 정의합니다.
@@ -56,6 +56,7 @@ const DropDown = () => {
           defaultSelectedKeys: ['1'],
           onClick: handleItemClick,
         }}
+
         // onOpenChange={handleDropdownOpenChange}
       >
         <Typography.Link>
