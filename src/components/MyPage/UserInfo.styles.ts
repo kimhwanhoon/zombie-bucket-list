@@ -59,4 +59,6 @@ export const S = {
     align-content: center;
     gap: 30px;
   `,
+
+  MypageButton: styled.button``,
 };
