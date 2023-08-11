@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../../api/supabase';
 import { S } from './Header.Styles';
@@ -16,15 +16,31 @@ const Header = () => {
   // const [userProfile, setUserProfile] = useState<string>();
   // const [userNickname, setUserNickname] = useState<string>();
 
-  const { data: userData } = useQuery(['userData'], async () => {
-    console.log(user);
-    if (user) {
-      const reponse = await fetchUserDB(user.email as string);
-      return reponse;
+  const {
+    data: userData,
+    isLoading,
+    isError,
+    error,
+    isStale,
+    refetch,
+  } = useQuery(['userData'], async () => {
+    console.log('user', user);
+    try {
+      if (user) return await fetchUserDB(user.email as string);
+    } catch (error) {
+      console.log(error);
     }
   });
 
+  //
+  //
   console.log('header data', userData);
+
+  useEffect(() => {
+    if (!userData && isStale) {
+      refetch();
+    }
+  }, [user, userData, isStale, refetch]);
   console.log(user);
 
   //로그아웃 버튼
