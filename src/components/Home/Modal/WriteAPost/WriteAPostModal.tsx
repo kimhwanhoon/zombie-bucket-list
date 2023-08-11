@@ -54,6 +54,8 @@ const WriteAPostModal = () => {
     });
   };
 
+  console.log(currentUser);
+
   // 작성하기 tanstack query함수 + invalidate
   const mutation = useMutation({
     mutationFn: async () => {
@@ -65,6 +67,7 @@ const WriteAPostModal = () => {
         selectedTags,
         uuid,
         url,
+        email: currentUser!.email as string,
         userId: currentUser!.id,
       });
       alert('성공적으로 업로드했습니다.');

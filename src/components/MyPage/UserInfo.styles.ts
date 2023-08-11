@@ -1,11 +1,6 @@
 import styled from 'styled-components';
 
 export const S = {
-  BucketContainer: styled.div`
-    border: 2px solid black;
-    margin-top: 20px;
-    padding: 30px;
-  `,
 
   UserProfileContainer: styled.div`
     border: 2px solid black;

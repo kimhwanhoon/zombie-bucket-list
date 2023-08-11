@@ -19,6 +19,7 @@ interface BucketList {
   status: string;
   photoURL: string;
   title: string;
+  email: string;
   userId: string;
   uuid: string;
 }
@@ -31,7 +32,8 @@ interface postType {
   created_at: string;
   categories: categories[];
   photoURL: string;
-  status: '진행전' | '진행중' | '완료';
+  status: '시작전' | '진행중' | '완료';
+  email: string;
   userId: string;
 }
 
@@ -41,6 +43,7 @@ interface bucketType {
   selectedTags: string[];
   uuid: string;
   url: string;
+  email: string;
   userId: string;
 }
 
