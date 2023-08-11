@@ -7,17 +7,23 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import supabase from '../api/supabase';
 import { useCallback, useState } from 'react';
 import { debounce } from 'lodash';
+import EditPostModal from '../components/Home/BucketList/modal/EditPostModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { editModalToggler } from '../redux/modules/editPostModalToggler';
 
 const BucketDetail = () => {
   useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
   const { userId, postId } = useParams();
   const navigate = useNavigate();
   const [deleteToggle, setDeleteToggle] = useState(false);
+  const editToggle = useSelector((state: State) => state.editModalToggle);
+  const dispatch = useDispatch();
 
   const { data, isLoading, isError, error } = useGetBucketList!(
     userId as string,
     postId as string,
   );
+  // 수정하기
 
   // 삭제하기
   const queryClient = useQueryClient();
@@ -49,7 +55,7 @@ const BucketDetail = () => {
     return <>로딩중...</>;
   }
 
-  if (isError) {
+  if (isError || data.bucket_list === null || !data.bucket_list) {
     return (
       <div>
         에러가 발생했습니다.{' '}
@@ -57,10 +63,10 @@ const BucketDetail = () => {
       </div>
     );
   }
-  const targetPost: any = data.bucket_list!.filter(
+
+  const targetPost = data.bucket_list.filter(
     (post) => post.id.toString() === postId,
   );
-
   const {
     categories,
     content,
@@ -87,6 +93,7 @@ const BucketDetail = () => {
   return (
     <S.main>
       {deleteToggle && deleteModal}
+      {editToggle && <EditPostModal />}
       <img
         id="back-button"
         src="https://i.ibb.co/YTDTd2t/icons8-back-100.png"
@@ -95,13 +102,15 @@ const BucketDetail = () => {
       />
       <S.detailContainer>
         <S.leftContainer>
-          <S.iconContainer>
+          <S.iconContainer
+            style={{ position: 'absolute', top: '1.5rem', right: '1.5rem' }}
+          >
             <EditOutlined
               style={{
                 fontSize: '1.25rem',
                 cursor: 'pointer',
               }}
-              onClick={() => setDeleteToggle(true)}
+              onClick={() => dispatch(editModalToggler(true))}
             />
             <DeleteOutlined
               style={{
@@ -112,10 +121,10 @@ const BucketDetail = () => {
             />
           </S.iconContainer>
 
-          <div>
+          <S.postDetails>
             <h1>{title}</h1>
             <p>{content}</p>
-          </div>
+          </S.postDetails>
 
           <S.photoLibrary>
             <img src={photoURL} alt="" />
@@ -193,7 +202,8 @@ const S = {
   `,
   detailContainer: styled.div`
     width: 100%;
-    /* height: 30%; */
+    height: 50%;
+    height: 550px;
     display: flex;
     padding: 2rem;
     gap: 2rem;
@@ -203,11 +213,11 @@ const S = {
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     padding: 1.5rem;
+    align-items: center;
     width: 60%;
     background-color: #fff;
-    /* height: calc(600px + 1.5rem); */
+    gap: 1rem;
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     h1 {
@@ -220,25 +230,30 @@ const S = {
       line-height: 1.2;
     }
   `,
+  postDetails: styled.div`
+    height: 30%;
+    width: 100%;
+  `,
   iconContainer: styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
-    position: 'absolute';
-    top: '1.5rem';
-    right: '1.5rem';
   `,
   photoLibrary: styled.div`
+    height: 70%;
     overflow: hidden;
     display: flex;
     justify-content: center;
-    height: 30%;
+    width: 90%;
     margin-bottom: 1rem;
+    background-size: contain;
+    border-radius: 15px;
     img {
       border-radius: 10px;
     }
   `,
   rightContainer: styled.div`
+    height: 100%;
     width: 40%;
     display: flex;
     flex-direction: column;
@@ -256,7 +271,7 @@ const S = {
   `,
   postStatsContainer: styled.div`
     background-color: #fff;
-    /* height: 400px; */
+    height: 80%;
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     padding: 2rem;
@@ -266,7 +281,7 @@ const S = {
   `,
   userDetailContainer: styled.div`
     background-color: #fff;
-    /* height: 200px; */
+    height: 20%;
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     padding: 2rem;

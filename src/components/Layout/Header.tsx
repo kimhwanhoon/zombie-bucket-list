@@ -6,7 +6,6 @@ import { User } from '@supabase/supabase-js';
 
 const Header = ({ user }: { user: User | null }) => {
   const params = useParams().userId;
-  console.log(params)
   const navigate = useNavigate();
 
   // console.log("현재 user의 이메일:" ,user?.email)

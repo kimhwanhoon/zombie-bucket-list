@@ -1,7 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { createClient } from '@supabase/supabase-js';
+import { PostgrestError, createClient } from '@supabase/supabase-js';
 
-const getBucketList = async (userId: string, postId: string | null = null) => {
+interface Type {
+  bucket_list: BucketList[] | null;
+  error: PostgrestError | null;
+}
+
+const getBucketList = async (
+  userId: string,
+  postId: string | null = null,
+): Promise<Type> => {
   const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
   const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
   const supabase = createClient(supabaseUrl as string, supabaseKey as string);
@@ -29,7 +37,7 @@ const getBucketList = async (userId: string, postId: string | null = null) => {
 const useGetBucketList = (userId: string, postId: string | null) => {
   return useQuery({
     queryKey: ['bucketList'],
-    queryFn: () => getBucketList(userId, postId),
+    queryFn: async () => await getBucketList(userId, postId),
   });
 };
 

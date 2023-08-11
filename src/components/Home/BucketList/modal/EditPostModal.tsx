@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { Button, Space, Tag, Form, Input } from 'antd';
 import postBucket from '../../../../api/postBucket';
@@ -7,10 +7,13 @@ import Upload, { RcFile } from 'antd/es/upload';
 import uploadImage from '../../../../api/uploadImage';
 import shortUUID from 'short-uuid';
 import { useDispatch } from 'react-redux';
-import { postModalToggler } from '../../../../redux/modules/writeAPostModalToggler';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import useGetCurrentUser from '../../../../hooks/getCurrentUser';
+import { editModalToggler } from '../../../../redux/modules/editPostModalToggler';
+import useGetBucketList from '../../../../hooks/getBucketList';
+import { useParams } from 'react-router-dom';
+import editBucket from '../../../../api/editBucket';
 
 const tagsData: categories[] = [
   '자기계발',
@@ -24,21 +27,48 @@ const tagsData: categories[] = [
   '기타',
 ];
 
-type FieldType = {
-  title?: string;
-  content?: string;
-};
+interface BucketListResponse {
+  data: { bucket_list: Array<BucketList>; error: any };
+  isLoading: boolean;
+  isError: boolean;
+  error: any;
+  refetch: any;
+}
+const EditPostModal = () => {
+  // Basic settings
+  const { data: currentUser = null } = useGetCurrentUser();
+  const { userId, postId } = useParams();
+  const {
+    data: postData,
+    isLoading,
+    isError,
+    error,
+  } = useGetBucketList(
+    userId as string,
+    postId as string,
+  ) as BucketListResponse;
 
-const WriteAPostModal = () => {
   const dispatch = useDispatch();
-  const currentUser = useGetCurrentUser().data;
+  const queryClient = useQueryClient();
+  // Form
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
-  const titleValue = useRef('');
-  const contentValue = useRef('');
+  const [titleValue, setTitleValue] = useState<string>(
+    postData.bucket_list[0].title,
+  );
+  const [contentValue, setContentValue] = useState<string>(
+    postData.bucket_list[0].content,
+  );
   const [selectedTags, setSelectedTags] = useState<string[]>(['기타']);
   const [photo, setPhoto] = useState<RcFile | null>(null);
-  const queryClient = useQueryClient();
+  const uuid = postData.bucket_list[0].uuid;
+  //
+  useEffect(() => {
+    if (postData && postData.bucket_list.length > 0) {
+      setSelectedTags(postData.bucket_list[0].categories);
+    }
+  }, [postData]);
+  //
   // 작성 모달에 태그 선택관련.. 최대 2개까지만 선택 가능하게 설정
   const handleChange = (tag: string, checked: boolean) => {
     const nextSelectedTags = checked
@@ -53,23 +83,20 @@ const WriteAPostModal = () => {
       }
     });
   };
-
   // 작성하기 tanstack query함수 + invalidate
   const mutation = useMutation({
     mutationFn: async () => {
-      const uuid = shortUUID.generate();
       const url = photo ? await uploadImage(photo, uuid) : '';
-      await postBucket({
-        title: titleValue.current,
-        content: contentValue.current,
+      console.log(url);
+      await editBucket({
+        title: titleValue,
+        content: contentValue,
         selectedTags,
         uuid,
         url,
-        email: currentUser!.email as string,
-        userId: currentUser!.id,
       });
-      alert('성공적으로 업로드했습니다.');
-      dispatch(postModalToggler(false));
+      alert('성공적으로 수정했습니다.');
+      dispatch(editModalToggler(false));
       setPhoto(null);
     },
     onSuccess: () => {
@@ -85,33 +112,31 @@ const WriteAPostModal = () => {
     debounce(() => mutation.mutate(), 300),
     [],
   );
-
+  if (isLoading) return <>Loading...</>;
+  if (isError) return <>error! {error}</>;
   return (
     <modal.container style={photo ? { height: '680px' } : { height: '630px' }}>
       <modal.closeButtonContainer>
-        <CloseOutlined onClick={() => dispatch(postModalToggler(false))} />
+        <CloseOutlined onClick={() => dispatch(editModalToggler(false))} />
       </modal.closeButtonContainer>
       <Form
         name="basic"
-        initialValues={{ remember: true }}
+        // initialValues={{ remember: true }}
         autoComplete="off"
         layout="vertical"
         style={{
           width: 400,
         }}
       >
-        <Form.Item<FieldType>
-          label="제목"
-          name="title"
-          rules={[{ message: '제목을 입력해주세요.' }]}
-        >
-          <Input
-            size="large"
-            onChange={(e) => (titleValue.current = e.target.value)}
-            maxLength={30}
-          />
-        </Form.Item>
-        <span>태그</span>
+        <modal.title>제목</modal.title>
+        <Input
+          size="large"
+          value={titleValue}
+          onChange={(e) => setTitleValue(e.target.value)}
+          maxLength={30}
+          style={{ marginBottom: '1rem' }}
+        />
+        <modal.title>태그</modal.title>
         <Space style={{ marginBottom: '1rem' }} size={[0, 0]} wrap>
           {tagsData.map((tag) => (
             <CheckableTag
@@ -123,22 +148,19 @@ const WriteAPostModal = () => {
             </CheckableTag>
           ))}
         </Space>
-        <Form.Item<FieldType>
-          label="내용"
-          name="content"
-          rules={[{ message: '내용을 입력해주세요.' }]}
-        >
-          <TextArea
-            showCount
-            maxLength={500}
-            style={{
-              resize: 'none',
-              height: 200,
-            }}
-            placeholder="내용을 입력해주세요"
-            onChange={(e) => (contentValue.current = e.target.value)}
-          />
-        </Form.Item>
+        <modal.title>본문</modal.title>
+        <TextArea
+          showCount
+          maxLength={500}
+          style={{
+            resize: 'none',
+            height: 200,
+            marginBottom: '2rem',
+          }}
+          placeholder="내용을 입력해주세요"
+          value={contentValue}
+          onChange={(e) => setContentValue(e.target.value)}
+        />
         <Upload.Dragger
           accept="image/png, image/jpeg, image/jpg"
           listType="picture"
@@ -160,7 +182,7 @@ const WriteAPostModal = () => {
           style={{ width: '100%', marginTop: '1rem' }}
         >
           <Button type="primary" block onClick={() => handleSubmit()}>
-            작성하기
+            수정하기
           </Button>
         </Space>
       </Form>
@@ -168,7 +190,7 @@ const WriteAPostModal = () => {
   );
 };
 
-export default WriteAPostModal;
+export default EditPostModal;
 
 const modal = {
   container: styled.div`
@@ -197,5 +219,10 @@ const modal = {
     &:hover {
       opacity: 1;
     }
+  `,
+  title: styled.h2`
+    font-size: 1rem;
+    padding-bottom: 0.3rem;
+    font-weight: 600;
   `,
 };
