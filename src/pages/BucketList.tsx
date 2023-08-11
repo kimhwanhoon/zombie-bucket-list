@@ -6,6 +6,7 @@ import { tagColors } from '../styles/customStyles';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 import Header from '../components/Layout/Header';
+import Categories from '../components/Home/Categories/Categories';
 const BucketList = () => {
   const { data: currentUser = null } = useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
   const params = useParams().userId;
@@ -48,6 +49,7 @@ const BucketList = () => {
     <>
       <Main>
         <Header user={currentUser} />
+        <Categories />
         <WriteAPostButton />
         {content}
       </Main>
