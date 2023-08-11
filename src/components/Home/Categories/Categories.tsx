@@ -20,7 +20,7 @@ const Categories = () => {
   // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
   const bucketListData = useGetBucketList(userId as string, null);
   const bucketList = bucketListData.data?.bucket_list;
-  if (!bucketList) return <>error!!!</>;
+  if (!bucketList) return <>버킷리스트를 가져오는 중...</>;
 
   // 카테고리 탭 변경 시 호출되는 핸들러
   const onChange = (key: string) => {
