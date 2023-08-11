@@ -28,7 +28,7 @@ export const S = {
   `,
 
   UserImgNickname: styled.div`
-    margin-right: 40px;
+    margin-right: 80px;
   `,
 
   UserNickname: styled.div`
@@ -43,7 +43,20 @@ export const S = {
     font-weight: 600;
   `,
 
-  UserAbout: styled.div`
-    margin-top: 25px;
+  UserEmail: styled.div`
+    margin-top: 22px;
+  `,
+
+  UserAbout: styled.pre`
+    margin-top: 22px;
+    line-height: 22px;
+  `,
+
+  MypageButtonBox: styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 30px;
   `,
 };

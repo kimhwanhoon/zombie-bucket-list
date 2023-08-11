@@ -112,7 +112,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
               <S.UserEmailBox>
                 <S.UserLabel>email</S.UserLabel>
                 <br />
-                <S.UserAbout>{userEmail}</S.UserAbout>
+                <S.UserEmail>{userEmail}</S.UserEmail>
               </S.UserEmailBox>
               <div>
                 <S.UserLabel>자기소개</S.UserLabel>
@@ -121,11 +121,11 @@ const UserInfo = ({ user }: { user: User | null }) => {
               </div>
             </div>
           </S.UserProfileContainer>
-          <div>
+          <S.MypageButtonBox>
             <button onClick={handleEditToggleButton}>회원정보 수정</button>
             <button onClick={handleDeleteUser}>회원 탈퇴</button>
             <button onClick={handleGoHomeButton}>내 홈으로 가기</button>
-          </div>
+          </S.MypageButtonBox>
         </>
       )}
     </div>

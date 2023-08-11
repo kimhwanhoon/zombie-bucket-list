@@ -22,6 +22,8 @@ interface BucketList {
   email: string;
   userId: string;
   uuid: string;
+  viewCount: number;
+  last_editted_at: string;
 }
 
 interface postType {
@@ -45,6 +47,7 @@ interface bucketType {
   url: string;
   email: string;
   userId: string;
+  created_at: string;
 }
 
 interface postModalTogglerType {
@@ -53,4 +56,10 @@ interface postModalTogglerType {
 
 interface uploadPostImageType {
   uploadedPostImage: Blob;
+}
+
+interface State {
+  postModalToggle: boolean;
+  savedBucket: BucketList | null;
+  editModalToggle: boolean;
 }

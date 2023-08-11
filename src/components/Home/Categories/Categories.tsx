@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import supabase from '../../../api/supabase';
 import { S } from './Categories.styles';
 import { tagColors } from '../../../styles/customStyles';
 import { Tag } from 'antd';
 
 import type { TabsProps } from 'antd';
+import useGetBucketList from '../../../hooks/getBucketList';
 
 interface CategoryTab {
   key: string;
@@ -16,34 +16,17 @@ interface CategoryTab {
 const Categories = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
-
-  // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
-  const [bucketlist, setBucketlist] = useState<BucketList[]>();
   const [filteredBucketList, setFilteredBucketList] = useState<BucketList[]>();
-
-  // supabase로부터 버킷 리스트 데이터 가져오기
-  const fetchBucketList = async () => {
-    try {
-      const { data } = await supabase
-        .from('bucketList')
-        .select('*')
-        .eq('userId', userId)
-        .order('id', { ascending: false });
-      setBucketlist(data as BucketList[]);
-    } catch (error: any) {
-      return alert(error.message);
-    }
-  };
-
-  useEffect(() => {
-    fetchBucketList();
-  }, []);
+  // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
+  const bucketListData = useGetBucketList(userId as string, null);
+  const bucketList = bucketListData.data?.bucket_list;
+  if (!bucketList) return <>error!!!</>;
 
   // 카테고리 탭 변경 시 호출되는 핸들러
   const onChange = (key: string) => {
     const tempLabel = items?.find((item) => item.key === key)?.label;
 
-    const newFilteredBucketList = bucketlist?.filter((list: any) => {
+    const newFilteredBucketList = bucketList.filter((list) => {
       // some함수 : 배열의 요소 중 하나라도 조건을 만족하면 true를 반환
       return list.categories?.some((t: any) => t === tempLabel);
     });
@@ -61,7 +44,7 @@ const Categories = () => {
     {
       key: '1',
       label: `전체보기`,
-      state: bucketlist,
+      state: bucketList,
     },
     {
       key: '2',
