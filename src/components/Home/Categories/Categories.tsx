@@ -7,6 +7,8 @@ import { Tag } from 'antd';
 import type { TabsProps } from 'antd';
 import useGetBucketList from '../../../hooks/getBucketList';
 import DropDown from '../DropDown/DropDown';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/config/configStore';
 
 interface CategoryTab {
   key: string;
@@ -17,8 +19,13 @@ interface CategoryTab {
 const Categories = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
+  const statusLabel = useSelector(
+    (state: RootState) => state.statusLabel.label,
+  );
+  console.log(statusLabel);
+
   const [filteredBucketList, setFilteredBucketList] = useState<BucketList[]>();
-  const [statusLabel, setStatusLabel] = useState<string | undefined>();
+  // const [statusLabel, setStatusLabel] = useState<string | undefined>();
 
   // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
   const bucketListData = useGetBucketList(userId as string, null);
@@ -101,7 +108,7 @@ const Categories = () => {
     label: category.label,
     children: (
       <>
-        <DropDown setStatusLabel={setStatusLabel} />
+        <DropDown />
         <S.bucketListContainer>
           {category.state
             ?.filter((item) => !statusLabel || item.status === statusLabel)

@@ -3,6 +3,8 @@ import useGetBucketList from '../../../hooks/getBucketList';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { setStatusLabel } from '../../../redux/modules/statusLabelSlice';
 
 interface MenuItemType {
   key: string;
@@ -26,12 +28,9 @@ const items: MenuItemType[] = [
   },
 ];
 
-interface CategoriesProps {
-  setStatusLabel: (label: string | undefined) => void;
-}
-
-const DropDown = ({ setStatusLabel }: CategoriesProps) => {
+const DropDown = () => {
   const { userId } = useParams();
+  const dispatch = useDispatch();
 
   const bucketListData = useGetBucketList(userId as string, null);
   const bucketList = bucketListData.data?.bucket_list;
@@ -39,14 +38,14 @@ const DropDown = ({ setStatusLabel }: CategoriesProps) => {
 
   const handleItemClick: MenuProps['onClick'] = (e) => {
     const tempLabel = items?.find((item) => item?.key === e.key)?.label;
-    return setStatusLabel(tempLabel);
+    return dispatch(setStatusLabel(tempLabel));
   };
 
-  const handleDropdownOpenChange = (open: boolean) => {
-    if (!open) {
-      setStatusLabel(undefined);
-    }
-  };
+  // const handleDropdownOpenChange = (open: boolean) => {
+  //   if (!open) {
+  //     setStatusLabel(undefined);
+  //   }
+  // };
 
   return (
     <>
@@ -57,7 +56,7 @@ const DropDown = ({ setStatusLabel }: CategoriesProps) => {
           defaultSelectedKeys: ['1'],
           onClick: handleItemClick,
         }}
-        onOpenChange={handleDropdownOpenChange}
+        // onOpenChange={handleDropdownOpenChange}
       >
         <Typography.Link>
           <Space>
