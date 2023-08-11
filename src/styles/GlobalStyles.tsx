@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: var(--color-bg);
+    min-width: 590px;
     /* font-family: 'CookieRun-Regular'; */
   }
 `;

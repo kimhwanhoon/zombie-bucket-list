@@ -63,7 +63,9 @@ export default BucketList;
 
 const Main = styled.main`
   background-color: #f8f8f8;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  height: calc(100vh - 75px);
+  overflow: hidden;
 `;
 
 const S = {
@@ -79,7 +81,7 @@ const S = {
     border-radius: 8px;
     box-shadow: 1px 1px 8px 1px #e3e3e4;
     background-color: #fff;
-    height: 5rem;
+    height: 10rem;
     display: flex;
     flex-direction: column;
     align-items: center;

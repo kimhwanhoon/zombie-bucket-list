@@ -104,7 +104,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
           <S.UserProfileContainer>
             <S.UserImgNickname>
               <S.UserImage>
-                <img src={userProfile} />
+                <img src={userProfile} alt="user-pic" />
               </S.UserImage>
               <S.UserNickname>{userNickname}</S.UserNickname>
             </S.UserImgNickname>

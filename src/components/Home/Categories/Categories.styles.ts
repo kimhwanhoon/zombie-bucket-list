@@ -16,19 +16,20 @@ export const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2rem;
+    gap: 3rem;
   `,
   bucketContainer: styled.div`
     width: 500px;
     border-radius: 8px;
     box-shadow: 1px 1px 8px 1px #e3e3e4;
     background-color: #fff;
-    height: 5rem;
+    height: 6.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+    justify-content: space-between;
+    padding: 1rem 0;
+    gap: 1rem;
     cursor: pointer;
   `,
   bucketFirstLineContainer: styled.div`
