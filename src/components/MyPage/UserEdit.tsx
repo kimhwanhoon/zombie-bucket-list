@@ -183,31 +183,39 @@ const UserEdit = ({
 
         <div>
           <div>
-            <label>email: {user?.email}</label>
+            <S.UserLabel>email</S.UserLabel>
+            <br />
+            <div>{user?.email}</div>
           </div>
           <div>
-            <label>닉네임:</label>
-            <input
-              type="text"
-              value={userEditNickname}
-              onChange={(e) => setUserEditNickname(e.target.value)}
-              name="nicknameEdit"
-            />
+            <S.UserLabel>닉네임</S.UserLabel>
+            <br />
+            <div>
+              <input
+                type="text"
+                value={userEditNickname}
+                onChange={(e) => setUserEditNickname(e.target.value)}
+                name="nicknameEdit"
+              />
+            </div>
           </div>
           <div>
-            <label>자기소개:</label>
-            <textarea
-              value={userEditAbout}
-              onChange={(e) => setUserEditAbout(e.target.value)}
-              name="aboutEdit"
-            />
+            <S.UserLabel>자기소개</S.UserLabel>
+            <br />
+            <div>
+              <textarea
+                value={userEditAbout}
+                onChange={(e) => setUserEditAbout(e.target.value)}
+                name="aboutEdit"
+              />
+            </div>
           </div>
         </div>
       </S.UserProfileContainer>
-      <div>
-        <button onClick={handleProfileEditSave}>수정 완료</button>
-        <button onClick={handleEditToggleButton}>뒤로가기</button>
-      </div>
+      <S.MypageEditButton>
+        <S.Button onClick={handleProfileEditSave}>수정 완료</S.Button>
+        <S.Button onClick={handleEditToggleButton}>뒤로가기</S.Button>
+      </S.MypageEditButton>
     </>
   );
 };

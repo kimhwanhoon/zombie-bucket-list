@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import { styled } from 'styled-components';
 
 export const S = {
@@ -9,6 +10,7 @@ export const S = {
 
   UserImageUpload: styled.div`
     text-align: center;
+    margin-right: 80px;
   `,
 
   UserProfileContainer: styled.div`
@@ -49,6 +51,30 @@ export const S = {
 
     &:hover {
       color: var(--color-bg);
+    }
+  `,
+
+  UserLabel: styled.label`
+    font-weight: 600;
+    color: var(--color-text);
+  `,
+
+  MypageEditButton: styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 30px;
+  `,
+
+  Button: styled(Button)`
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-weight: 600;
+
+    &:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
     }
   `,
 };
