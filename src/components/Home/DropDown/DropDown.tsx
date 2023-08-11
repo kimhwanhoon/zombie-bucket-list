@@ -1,9 +1,17 @@
-import { DownOutlined } from '@ant-design/icons';
+import { useParams } from 'react-router-dom';
+import useGetBucketList from '../../../hooks/getBucketList';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space, Typography } from 'antd';
-import { useState } from 'react';
+import { DownOutlined } from '@ant-design/icons';
 
-const items: MenuProps['items'] = [
+interface MenuItemType {
+  key: string;
+  label: string; // 'label' 프로퍼티 추가
+  state?: BucketList[];
+}
+
+// items 배열을 정의합니다.
+const items: MenuItemType[] = [
   {
     key: '1',
     label: '시작전',
@@ -18,18 +26,28 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const DropDown = () => {
-  const [key, setKey] = useState<string>('0');
+interface CategoriesProps {
+  setStatusLabel: (label: string | undefined) => void;
+}
+
+const DropDown = ({ setStatusLabel }: CategoriesProps) => {
+  const { userId } = useParams();
+
+  const bucketListData = useGetBucketList(userId as string, null);
+  const bucketList = bucketListData.data?.bucket_list;
+  if (!bucketList) return <>error!!!</>;
 
   const handleItemClick: MenuProps['onClick'] = (e) => {
-    console.log(e.key);
+    const tempLabel = items?.find((item) => item?.key === e.key)?.label;
+    return setStatusLabel(tempLabel);
   };
 
-  // const handleMenuClick: MenuProps['onClick'] = (e) => {
-  //   if (e.key === '3') {
-  //     setOpen(false);
-  //   }
-  // };
+  const handleDropdownOpenChange = (open: boolean) => {
+    if (!open) {
+      setStatusLabel(undefined);
+    }
+  };
+
   return (
     <>
       <Dropdown
@@ -39,6 +57,7 @@ const DropDown = () => {
           defaultSelectedKeys: ['1'],
           onClick: handleItemClick,
         }}
+        onOpenChange={handleDropdownOpenChange}
       >
         <Typography.Link>
           <Space>
@@ -52,57 +71,3 @@ const DropDown = () => {
 };
 
 export default DropDown;
-
-// import React, { useState } from 'react';
-// import { DownOutlined } from '@ant-design/icons';
-// import type { MenuProps } from 'antd';
-// import { Dropdown, Space } from 'antd';
-
-// const App: React.FC = () => {
-//   const [open, setOpen] = useState(false);
-
-//   const handleMenuClick: MenuProps['onClick'] = (e) => {
-//     if (e.key === '3') {
-//       setOpen(false);
-//     }
-//   };
-
-//   const handleOpenChange = (flag: boolean) => {
-//     setOpen(flag);
-//   };
-
-//   const items: MenuProps['items'] = [
-//     {
-//       label: 'Clicking me will not close the menu.',
-//       key: '1',
-//     },
-//     {
-//       label: 'Clicking me will not close the menu also.',
-//       key: '2',
-//     },
-//     {
-//       label: 'Clicking me will close the menu.',
-//       key: '3',
-//     },
-//   ];
-
-//   return (
-//     <Dropdown
-//       menu={{
-//         items,
-//         onClick: handleMenuClick,
-//       }}
-//       onOpenChange={handleOpenChange}
-//       open={open}
-//     >
-//       <a onClick={(e) => e.preventDefault()}>
-//         <Space>
-//           Hover me
-//           <DownOutlined />
-//         </Space>
-//       </a>
-//     </Dropdown>
-//   );
-// };
-
-// export default App;

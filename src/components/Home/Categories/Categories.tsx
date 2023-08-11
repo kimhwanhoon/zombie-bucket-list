@@ -6,6 +6,7 @@ import { Tag } from 'antd';
 
 import type { TabsProps } from 'antd';
 import useGetBucketList from '../../../hooks/getBucketList';
+import DropDown from '../DropDown/DropDown';
 
 interface CategoryTab {
   key: string;
@@ -17,6 +18,8 @@ const Categories = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
   const [filteredBucketList, setFilteredBucketList] = useState<BucketList[]>();
+  const [statusLabel, setStatusLabel] = useState<string | undefined>();
+
   // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
   const bucketListData = useGetBucketList(userId as string, null);
   const bucketList = bucketListData.data?.bucket_list;
@@ -28,7 +31,7 @@ const Categories = () => {
 
     const newFilteredBucketList = bucketList.filter((list) => {
       // some함수 : 배열의 요소 중 하나라도 조건을 만족하면 true를 반환
-      return list.categories?.some((t: any) => t === tempLabel);
+      return list.categories?.some((t) => t === tempLabel);
     });
 
     // 필터링된 버킷리스트 업데이트
@@ -98,30 +101,34 @@ const Categories = () => {
     label: category.label,
     children: (
       <>
+        <DropDown setStatusLabel={setStatusLabel} />
         <S.bucketListContainer>
-          {category.state?.map((item: BucketList) => (
-            <div key={item.id}>
-              <S.bucketContainer onClick={() => handleChooseBucket(item.id)}>
-                <S.bucketFirstLineContainer>
-                  <h1>{item.title}</h1>
-                  <p>
-                    {item.categories.map((tag) => (
-                      <Tag
-                        key={tag}
-                        bordered={false}
-                        color={tagColors[`${tag}`]}
-                      >
-                        {tag}
-                      </Tag>
-                    ))}
-                  </p>
-                </S.bucketFirstLineContainer>
-                <S.bucketSecondLineContainer>
-                  <p>{item.created_at}</p>
-                </S.bucketSecondLineContainer>
-              </S.bucketContainer>
-            </div>
-          ))}
+          {category.state
+            ?.filter((item) => !statusLabel || item.status === statusLabel)
+            .map((item: BucketList) => (
+              <div key={item.id}>
+                <S.bucketContainer onClick={() => handleChooseBucket(item.id)}>
+                  <S.bucketFirstLineContainer>
+                    <h1>{item.title}</h1>
+                    <p>
+                      {item.categories.map((tag) => (
+                        <Tag
+                          key={tag}
+                          bordered={false}
+                          color={tagColors[`${tag}`]}
+                        >
+                          {tag}
+                        </Tag>
+                      ))}
+                    </p>
+                    <div>{item.status}</div>
+                  </S.bucketFirstLineContainer>
+                  <S.bucketSecondLineContainer>
+                    <p>{item.created_at}</p>
+                  </S.bucketSecondLineContainer>
+                </S.bucketContainer>
+              </div>
+            ))}
         </S.bucketListContainer>
       </>
     ),
