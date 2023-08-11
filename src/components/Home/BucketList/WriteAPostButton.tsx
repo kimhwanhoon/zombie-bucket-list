@@ -36,8 +36,9 @@ const S = {
   `,
   button: styled.button`
     position: absolute;
-    top: 2rem;
+    top: 5rem;
     right: 2rem;
     cursor: pointer;
+    z-index: 10;
   `,
 };

@@ -9,7 +9,7 @@ const postBucket = async ({
   url,
   email,
   userId,
-}: bucketType): Promise<void> => {
+}: Partial<bucketType>): Promise<void> => {
   const { error } = await supabase.from('bucketList').insert({
     uuid,
     title,
@@ -21,7 +21,7 @@ const postBucket = async ({
     status: '시작전',
     email,
     userId,
-  } as postType);
+  } as Partial<bucketType>);
   error !== null ? console.log(error) : console.log('success!');
 };
 
