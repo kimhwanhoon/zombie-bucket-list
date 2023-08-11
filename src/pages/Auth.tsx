@@ -20,14 +20,20 @@ const Auth = (props: Props) => {
   }
   currentUser();
 
-  return (<S.AuthContainer>
-  {isLogin? <LoginForm /> : <SignupForm/>}
-  <S.AuthContentBox>
-  <span>{isLogin? "아직 회원이 아니신가요?" : "이미 회원이신가요?"}</span>
-  <button onClick={handleToggleAuth}>{isLogin ? "회원가입" : "로그인"}</button>
-  </S.AuthContentBox>
-
-  </S.AuthContainer>);
+  return (
+  <>
+    <S.AuthContainer>
+      <S.AbsoluteBox>
+        {isLogin? <LoginForm /> : <SignupForm/>}
+        <S.AuthCheckUserContentBox>
+          <S.AuthCheckUserText>{isLogin? "회원이 아니신가요?" : "회원이신가요?"}</S.AuthCheckUserText>
+          <S.Button onClick={handleToggleAuth}>{isLogin ? "회원가입" : "로그인"}</S.Button>
+        </S.AuthCheckUserContentBox>
+      </S.AbsoluteBox>
+      <S.RedBox></S.RedBox>
+    </S.AuthContainer>
+  </>
+  );
 };
 
 export default Auth;

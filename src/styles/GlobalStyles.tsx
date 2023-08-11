@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: var(--color-bg);
+    color: var(--color-text);
     /* font-family: 'CookieRun-Regular'; */
   }
 `;
