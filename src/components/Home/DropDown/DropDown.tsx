@@ -41,12 +41,6 @@ const DropDown = () => {
     return dispatch(setStatusLabel(tempLabel));
   };
 
-  // const handleDropdownOpenChange = (open: boolean) => {
-  //   if (!open) {
-  //     setStatusLabel(undefined);
-  //   }
-  // };
-
   return (
     <>
       <Dropdown
@@ -56,8 +50,6 @@ const DropDown = () => {
           defaultSelectedKeys: ['1'],
           onClick: handleItemClick,
         }}
-
-        // onOpenChange={handleDropdownOpenChange}
       >
         <Typography.Link>
           <Space>
