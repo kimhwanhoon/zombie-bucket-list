@@ -59,16 +59,22 @@ const Header = () => {
   //새로고침시
   return (
     <S.Header>
-      <div>logo</div>
+      <S.HeaderLogo
+        onClick={() => {
+          navigate('/');
+        }}
+      >
+        좀비가 되기 전에 해야하는 100가지
+      </S.HeaderLogo>
       {userData && (
         <S.UserDiv>
           <S.UserImage onClick={handleMypageMove}>
             <img src={userData[0].profileImage} alt="이미지오류" />
           </S.UserImage>
           <div>{userData[0].nickname}</div>
-          <button type="button" onClick={handleLogoutButtonClick}>
+          <S.LogOutButton type="button" onClick={handleLogoutButtonClick}>
             로그아웃
-          </button>
+          </S.LogOutButton>
         </S.UserDiv>
       )}
     </S.Header>

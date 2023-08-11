@@ -2,10 +2,13 @@ import styled from 'styled-components';
 
 export const S = {
   Header: styled.header`
-    border: 3px solid #ff0fa7;
+    padding: 13px;
+    background-color: var(--color-accent);
     display: flex;
     justify-content: space-between;
     height: 75px;
+    color: var(--color-bg);
+    font-weight: 600;
     align-items: center;
   `,
 
@@ -29,5 +32,24 @@ export const S = {
       height: 36px;
       object-fit: cover;
     }
+  `,
+
+  LogOutButton: styled.button`
+    background-color: var(--color-primary);
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--color-text);
+    font-weight: 600;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: var(--color-text);
+      color: var(--color-bg);
+    }
+  `,
+
+  HeaderLogo: styled.div`
+    cursor: pointer;
   `,
 };

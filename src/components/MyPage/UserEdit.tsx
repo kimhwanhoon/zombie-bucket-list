@@ -5,7 +5,8 @@ import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '../../App';
-
+import { Input } from 'antd';
+const { TextArea } = Input;
 const UserEdit = ({
   user,
   setIsEdit,
@@ -148,7 +149,7 @@ const UserEdit = ({
   return (
     <>
       <S.UserProfileContainer>
-        <div className="profile-image">
+        <S.UserImageUpload className="profile-image">
           {newProfileImageURL ? (
             <S.UserImage>
               <img
@@ -166,9 +167,11 @@ const UserEdit = ({
           ) : (
             <span>이미지 미리보기</span>
           )}
-          <S.UserImageButton htmlFor="editProfileImg">
-            프로필 이미지 수정
-          </S.UserImageButton>
+          <div>
+            <S.UserImageButton htmlFor="editProfileImg">
+              프로필 이미지 업로드
+            </S.UserImageButton>
+          </div>
           <input
             type="file"
             accept="image/*"
@@ -177,35 +180,47 @@ const UserEdit = ({
             onChange={changhProfileImageFile}
             ref={imageRef}
           />
-        </div>
+        </S.UserImageUpload>
 
         <div>
-          <div>
-            <label>email: {user?.email}</label>
-          </div>
-          <div>
-            <label>닉네임:</label>
-            <input
-              type="text"
-              value={userEditNickname}
-              onChange={(e) => setUserEditNickname(e.target.value)}
-              name="nicknameEdit"
-            />
-          </div>
-          <div>
-            <label>자기소개:</label>
-            <textarea
-              value={userEditAbout}
-              onChange={(e) => setUserEditAbout(e.target.value)}
-              name="aboutEdit"
-            />
-          </div>
+          <S.UserAboutBox>
+            <S.UserLabel>email</S.UserLabel>
+            <br />
+            <S.UserAbout>{user?.email}</S.UserAbout>
+          </S.UserAboutBox>
+          <S.UserAboutBox>
+            <S.UserLabel>닉네임</S.UserLabel>
+            <br />
+            <S.UserAbout>
+              <Input
+                showCount
+                maxLength={10}
+                type="text"
+                value={userEditNickname}
+                onChange={(e) => setUserEditNickname(e.target.value)}
+                name="nicknameEdit"
+              />
+            </S.UserAbout>
+          </S.UserAboutBox>
+          <S.UserAboutBox>
+            <S.UserLabel>자기소개</S.UserLabel>
+            <br />
+            <S.UserAbout>
+              <TextArea
+                showCount
+                maxLength={50}
+                value={userEditAbout}
+                onChange={(e) => setUserEditAbout(e.target.value)}
+                name="aboutEdit"
+              />
+            </S.UserAbout>
+          </S.UserAboutBox>
         </div>
       </S.UserProfileContainer>
-      <div>
-        <button onClick={handleProfileEditSave}>수정 완료</button>
-        <button onClick={handleEditToggleButton}>뒤로가기</button>
-      </div>
+      <S.MypageEditButton>
+        <S.Button onClick={handleProfileEditSave}>수정 완료</S.Button>
+        <S.Button onClick={handleEditToggleButton}>뒤로가기</S.Button>
+      </S.MypageEditButton>
     </>
   );
 };
