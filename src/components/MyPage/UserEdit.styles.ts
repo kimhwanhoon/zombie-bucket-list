@@ -3,12 +3,15 @@ import { styled } from 'styled-components';
 export const S = {
   BucketContainer: styled.div`
     border: 2px solid black;
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 30px;
   `,
 
+  UserImageUpload: styled.div`
+    text-align: center;
+  `,
+
   UserProfileContainer: styled.div`
-    border: 2px solid black;
     margin-top: 10px;
     padding: 30px;
     display: flex;
@@ -24,6 +27,7 @@ export const S = {
     border-radius: 50%;
     overflow: hidden;
     background-color: black;
+    margin-bottom: 17px;
 
     img {
       width: 130px;
@@ -34,7 +38,17 @@ export const S = {
 
   UserImageButton: styled.label`
     cursor: pointer;
-    border: 2px solid gray;
+    border: none;
     border-radius: 8px;
+    padding: 7px;
+    text-align: center;
+    font-size: 10px;
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-weight: 600;
+
+    &:hover {
+      color: var(--color-bg);
+    }
   `,
 };

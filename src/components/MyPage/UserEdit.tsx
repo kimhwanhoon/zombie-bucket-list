@@ -148,7 +148,7 @@ const UserEdit = ({
   return (
     <>
       <S.UserProfileContainer>
-        <div className="profile-image">
+        <S.UserImageUpload className="profile-image">
           {newProfileImageURL ? (
             <S.UserImage>
               <img
@@ -166,9 +166,11 @@ const UserEdit = ({
           ) : (
             <span>이미지 미리보기</span>
           )}
-          <S.UserImageButton htmlFor="editProfileImg">
-            프로필 이미지 수정
-          </S.UserImageButton>
+          <div>
+            <S.UserImageButton htmlFor="editProfileImg">
+              프로필 이미지 수정
+            </S.UserImageButton>
+          </div>
           <input
             type="file"
             accept="image/*"
@@ -177,7 +179,7 @@ const UserEdit = ({
             onChange={changhProfileImageFile}
             ref={imageRef}
           />
-        </div>
+        </S.UserImageUpload>
 
         <div>
           <div>

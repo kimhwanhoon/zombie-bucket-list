@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Button } from 'antd';
 
 export const S = {
   UserProfileContainer: styled.div`
@@ -33,6 +34,7 @@ export const S = {
 
   UserNickname: styled.div`
     text-align: center;
+    color: var(--color-text);
   `,
 
   UserEmailBox: styled.div`
@@ -41,15 +43,18 @@ export const S = {
 
   UserLabel: styled.label`
     font-weight: 600;
+    color: var(--color-text);
   `,
 
   UserEmail: styled.div`
     margin-top: 22px;
+    color: var(--color-text);
   `,
 
   UserAbout: styled.pre`
     margin-top: 22px;
     line-height: 22px;
+    color: var(--color-text);
   `,
 
   MypageButtonBox: styled.div`
@@ -60,5 +65,22 @@ export const S = {
     gap: 30px;
   `,
 
-  MypageButton: styled.button``,
+  Button: styled(Button)`
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    font-weight: 600;
+
+    &:hover {
+      color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+  `,
+  ButtonOut: styled(Button)`
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 600;
+    &:hover {
+      color: var(--color-accent);
+    }
+  `,
 };
