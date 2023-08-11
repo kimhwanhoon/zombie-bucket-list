@@ -177,6 +177,13 @@ const SignupForm = () => {
         profileImage: userImage.publicUrl,
       }); //userImage 객체의 publicUrl 값이 db에 들어가게 연결
 
+      // 토큰 가져오기!
+      const getToken = async () =>{
+        const { data:response } = await supabase.auth.getSession()
+        localStorage.setItem("token", response.session?.access_token as string)
+      }
+      getToken();
+
       // 로그인 시 메인으로 이동
       if (user) {
         navigate('/');

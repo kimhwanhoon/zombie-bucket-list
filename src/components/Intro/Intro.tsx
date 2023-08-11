@@ -2,6 +2,7 @@ import { useState } from 'react';
 import TypeIt from 'typeit-react';
 import { S } from '../Intro/Intro.styles';
 import { useNavigate } from 'react-router-dom';
+import useGetCurrentUser from '../../hooks/getCurrentUser';
 
 const Intro = () => {
   const navigate = useNavigate();
@@ -15,9 +16,13 @@ const Intro = () => {
     setCurrentStep(currentStep + 1);
   };
 
+
   return (
     <S.IntroWrapper>
-      <S.AllSkipButton type="text" onClick={() => navigate('/auth')}>
+      <S.AllSkipButton type="text" onClick={()=>{
+         alert('로그인 페이지로 이동합니다.')
+         navigate('/auth')
+      }}>
         전체스킵 &gt;&gt;
       </S.AllSkipButton>
       {currentStep === 0 && (
@@ -87,7 +92,10 @@ const Intro = () => {
                 </p>
                 <p>그럼 시작해보자!</p>
               </S.IntroText>
-              <S.Button onClick={() => navigate('/auth')}>입장하기</S.Button>
+              <S.Button onClick={() => {
+                alert('로그인 페이지로 이동합니다!')
+                navigate('/auth')
+                }}>입장하기</S.Button>
             </>
           ) : (
             <>
