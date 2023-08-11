@@ -24,7 +24,6 @@ const Header = () => {
     isStale,
     refetch,
   } = useQuery(['userData'], async () => {
-    console.log('user', user);
     try {
       if (user) return await fetchUserDB(user.email as string);
     } catch (error) {
@@ -34,14 +33,12 @@ const Header = () => {
 
   //
   //
-  console.log('header data', userData);
 
   useEffect(() => {
     if (!userData && isStale) {
       refetch();
     }
   }, [user, userData, isStale, refetch]);
-  console.log(user);
 
   //로그아웃 버튼
   const handleLogoutButtonClick = async (

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { Button, Space, Tag, Form, Input } from 'antd';
+import { Button, Space, Tag, Form, Input, Slider } from 'antd';
 import postBucket from '../../../../api/postBucket';
 import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
 import Upload, { RcFile } from 'antd/es/upload';
@@ -47,27 +47,45 @@ const EditPostModal = () => {
     userId as string,
     postId as string,
   ) as BucketListResponse;
-
+  const targetPost = postData.bucket_list.filter(
+    (post) => post.id.toString() === postId,
+  );
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   // Form
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
-  const [titleValue, setTitleValue] = useState<string>(
-    postData.bucket_list[0].title,
-  );
+  const [titleValue, setTitleValue] = useState<string>(targetPost[0].title);
   const [contentValue, setContentValue] = useState<string>(
-    postData.bucket_list[0].content,
+    targetPost[0].content,
   );
   const [selectedTags, setSelectedTags] = useState<string[]>(['기타']);
+  const [statusValue, setStatusValue] = useState<number>(1);
   const [photo, setPhoto] = useState<RcFile | null>(null);
-  const uuid = postData.bucket_list[0].uuid;
+  const uuid = targetPost[0].uuid;
   //
   useEffect(() => {
-    if (postData && postData.bucket_list.length > 0) {
-      setSelectedTags(postData.bucket_list[0].categories);
+    if (postData && targetPost.length > 0) {
+      setSelectedTags(targetPost[0].categories);
+      switch (targetPost[0].status) {
+        case '시작전': {
+          setStatusValue(0);
+          break;
+        }
+        case '진행중': {
+          setStatusValue(1);
+          break;
+        }
+        case '완료': {
+          setStatusValue(2);
+          break;
+        }
+      }
     }
   }, [postData]);
+  const handleStatusChange = (value: number) => {
+    setStatusValue(value);
+  };
   //
   // 작성 모달에 태그 선택관련.. 최대 2개까지만 선택 가능하게 설정
   const handleChange = (tag: string, checked: boolean) => {
@@ -94,6 +112,7 @@ const EditPostModal = () => {
         selectedTags,
         uuid,
         url,
+        statusValue,
       });
       alert('성공적으로 수정했습니다.');
       dispatch(editModalToggler(false));
@@ -115,7 +134,7 @@ const EditPostModal = () => {
   if (isLoading) return <>Loading...</>;
   if (isError) return <>error! {error}</>;
   return (
-    <modal.container style={photo ? { height: '680px' } : { height: '630px' }}>
+    <modal.container style={photo ? { height: '730px' } : { height: '670px' }}>
       <modal.closeButtonContainer>
         <CloseOutlined onClick={() => dispatch(editModalToggler(false))} />
       </modal.closeButtonContainer>
@@ -148,6 +167,17 @@ const EditPostModal = () => {
             </CheckableTag>
           ))}
         </Space>
+        <Slider
+          defaultValue={0}
+          max={2}
+          autoFocus
+          keyboard
+          dots
+          tooltip={{ open: false }}
+          marks={{ 0: '시작전', 1: '진행중', 2: '완료' }}
+          value={statusValue}
+          onChange={handleStatusChange}
+        />
         <modal.title>본문</modal.title>
         <TextArea
           showCount
@@ -196,7 +226,6 @@ const modal = {
   container: styled.div`
     display: flex;
     width: 500px;
-    height: 630px;
     position: fixed;
     top: 50%;
     left: 50%;
