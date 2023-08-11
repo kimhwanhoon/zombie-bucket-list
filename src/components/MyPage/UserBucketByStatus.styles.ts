@@ -1,19 +1,24 @@
 import styled from 'styled-components';
 
 export const S = {
+  BodyColor: styled.div`
+    background-color: var(--color-bg);
+    height: 100%;
+  `,
 
   BucketContainer: styled.div`
-  border: 2px solid black;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-weight: bold;
-  font-size: 16px;
-`,
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 20px;
+    border-bottom: 2px solid var(--color-primary);
+  `,
 
   BucketStatusTitle: styled.h2`
-  font-size: 20px;
+    font-size: 20px;
   `,
 
   BucketStatusBox: styled.div`
@@ -38,25 +43,24 @@ export const S = {
   BucketStatusListTitle: styled.p`
     margin-bottom: 15px;
 
-    color: ${({datatype})=>{
-      switch(datatype){
-        case "beforeStart":
-          return "#F02121";
-        case "inProgress":
-          return "#EB8D00"
-        case "done":
-          return "#039F00";
+    color: ${({ datatype }) => {
+      switch (datatype) {
+        case 'beforeStart':
+          return '#F02121';
+        case 'inProgress':
+          return '#EB8D00';
+        case 'done':
+          return '#039F00';
         default:
-          return "black";
+          return 'black';
       }
-    }}
+    }};
   `,
 
-  BucketStatusListCount: styled.p`
-  `,
+  BucketStatusListCount: styled.p``,
 
   BucketStatusListCountNumber: styled.span`
-  font-size: 40px;
-  margin-left: 5px;
+    font-size: 40px;
+    margin-left: 5px;
   `,
-}
+};

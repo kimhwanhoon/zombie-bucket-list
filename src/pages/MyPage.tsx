@@ -3,6 +3,7 @@ import supabase from '../api/supabase';
 import UserInfo from '../components/MyPage/UserInfo';
 import { User } from '@supabase/supabase-js';
 import Header from '../components/Layout/Header';
+import styled from 'styled-components';
 
 type Props = {};
 const MyPage = (props: Props) => {

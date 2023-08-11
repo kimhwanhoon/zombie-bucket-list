@@ -64,7 +64,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
       try {
         const { error } = await supabaseService.auth.admin.deleteUser(UserUID);
         await supabase.from('users').delete().eq('email', user?.email);
-        localStorage.removeItem("token")
+        localStorage.removeItem('token');
         deleteProfileImage();
 
         if (error) {
@@ -80,7 +80,6 @@ const UserInfo = ({ user }: { user: User | null }) => {
       }
     }
   };
-
 
   //유저 정보 수정 버튼
   const handleEditToggleButton = () => {
@@ -103,15 +102,23 @@ const UserInfo = ({ user }: { user: User | null }) => {
       ) : (
         <>
           <S.UserProfileContainer>
-            <div>
+            <S.UserImgNickname>
               <S.UserImage>
                 <img src={userProfile} />
               </S.UserImage>
-              <div>{userNickname}</div>
-            </div>
+              <S.UserNickname>{userNickname}</S.UserNickname>
+            </S.UserImgNickname>
             <div>
-              <div>email:{userEmail}</div>
-              <div>자기소개:{userAbout}</div>
+              <S.UserEmailBox>
+                <S.UserLabel>email</S.UserLabel>
+                <br />
+                <S.UserAbout>{userEmail}</S.UserAbout>
+              </S.UserEmailBox>
+              <div>
+                <S.UserLabel>자기소개</S.UserLabel>
+                <br />
+                <S.UserAbout>{userAbout}</S.UserAbout>
+              </div>
             </div>
           </S.UserProfileContainer>
           <div>
