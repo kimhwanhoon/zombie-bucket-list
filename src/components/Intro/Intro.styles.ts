@@ -28,7 +28,7 @@ export const S = {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    color: white;
+    color: var(--color-white);
     font-size: 1.5rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   `,
@@ -38,24 +38,26 @@ export const S = {
   `,
 
   AllSkipButton: styled(Button)`
-    color: white;
+    color: var(--color-white);
     position: absolute;
     top: 0;
     right: 0;
     margin: 1.5rem;
 
     &:hover {
-      color: #ff5349 !important;
+      font-weight: 600;
+      color: var(--color-accent) !important;
       transition: color 0.3s ease-in-out;
     }
   `,
 
   SkipButton: styled(Button)`
-    color: white;
+    color: var(--color-white);
     margin: 1rem;
 
     &:hover {
-      color: #ff5349 !important;
+      font-weight: 600;
+      color: var(--color-accent) !important;
       transition: color 0.3s ease-in-out;
     }
   `,

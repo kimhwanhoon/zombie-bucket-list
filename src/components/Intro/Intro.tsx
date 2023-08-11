@@ -1,30 +1,36 @@
 import { useState } from 'react';
-import TypeIt from 'typeit-react';
-import { S } from '../Intro/Intro.styles';
 import { useNavigate } from 'react-router-dom';
-import useGetCurrentUser from '../../hooks/getCurrentUser';
+import { S } from '../Intro/Intro.styles';
+import TypeIt from 'typeit-react';
 
 const Intro = () => {
   const navigate = useNavigate();
 
+  // 현재 스텝 및 버튼 상태를 관리하는 상태 변수들
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [enterButton, setEnterButton] = useState<boolean>(false);
   const [skipToggler, setSkipToggler] = useState<boolean>(false);
   const [lastSkipToggler, setLastSkipToggler] = useState<boolean>(true);
 
+  // 스킵 버튼 클릭 핸들러
   const handleSkipButtonClick = () => {
     setCurrentStep(currentStep + 1);
   };
 
-
   return (
     <S.IntroWrapper>
-      <S.AllSkipButton type="text" onClick={()=>{
-         alert('로그인 페이지로 이동합니다.')
-         navigate('/auth')
-      }}>
+      {/* 전체 스킵 버튼 */}
+      <S.AllSkipButton
+        type="text"
+        onClick={() => {
+          alert('로그인 페이지로 이동합니다.');
+          navigate('/auth');
+        }}
+      >
         전체스킵 &gt;&gt;
       </S.AllSkipButton>
+
+      {/* 스텝에 따른 컨텐츠 표시 */}
       {currentStep === 0 && (
         <>
           <TypeIt
@@ -32,6 +38,7 @@ const Intro = () => {
               speed: 100,
               cursor: false,
               afterComplete: async (instance: typeof TypeIt) => {
+                // 애니메이션 완료 후 스텝 전환
                 setTimeout(() => {
                   setCurrentStep(1);
                 }, 1500);
@@ -82,6 +89,7 @@ const Intro = () => {
       )}
       {currentStep === 2 && (
         <>
+          {/* 스킵 토글 상태에 따른 컨텐츠 표시 */}
           {skipToggler ? (
             <>
               <S.IntroText>
@@ -92,10 +100,14 @@ const Intro = () => {
                 </p>
                 <p>그럼 시작해보자!</p>
               </S.IntroText>
-              <S.Button onClick={() => {
-                alert('로그인 페이지로 이동합니다!')
-                navigate('/auth')
-                }}>입장하기</S.Button>
+              <S.Button
+                onClick={() => {
+                  alert('로그인 페이지로 이동합니다!');
+                  navigate('/auth');
+                }}
+              >
+                입장하기
+              </S.Button>
             </>
           ) : (
             <>
@@ -104,10 +116,9 @@ const Intro = () => {
                   speed: 100,
                   cursor: false,
                   afterComplete: async (instance: typeof TypeIt) => {
-                    // setTimeout(() => {
+                    // 스킵 토글과 버튼 활성화 상태 업데이트
                     setEnterButton(true);
                     setLastSkipToggler(false);
-                    // }, 100);
                   },
                 }}
               >
@@ -122,6 +133,7 @@ const Intro = () => {
                   <p>그럼 시작해보자!</p>
                 </S.IntroText>
               </TypeIt>
+              {/* 마지막 스킵 버튼 */}
               {lastSkipToggler && (
                 <S.SkipButton type="text" onClick={() => setSkipToggler(true)}>
                   스킵 &gt;&gt;
@@ -131,6 +143,7 @@ const Intro = () => {
           )}
         </>
       )}
+      {/* 입장하기 버튼 활성화 상태에 따른 버튼 표시 */}
       {enterButton && (
         <S.Button onClick={() => navigate('/auth')}>입장하기</S.Button>
       )}
