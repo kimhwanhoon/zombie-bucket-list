@@ -3,7 +3,7 @@ import store from './redux/config/configStore';
 import Router from './shared/Router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import GlobalStyle from './styles/GlobalStyles';
+import { GlobalStyle } from './styles/GlobalStyles';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +17,6 @@ export const queryClient = new QueryClient({
 });
 
 const App: React.FC = (): JSX.Element => {
-
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyle />
