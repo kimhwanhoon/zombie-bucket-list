@@ -54,8 +54,6 @@ const WriteAPostModal = () => {
     });
   };
 
-  console.log(currentUser);
-
   // 작성하기 tanstack query함수 + invalidate
   const mutation = useMutation({
     mutationFn: async () => {

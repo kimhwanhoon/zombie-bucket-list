@@ -49,9 +49,8 @@ const BucketList = () => {
     <>
       <Main>
         <Header user={currentUser} />
-        <Categories />
         <WriteAPostButton />
-        {content}
+        <Categories />
       </Main>
     </>
   );

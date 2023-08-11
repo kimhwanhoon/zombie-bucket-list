@@ -4,11 +4,11 @@ import './reset.css';
 const GlobalStyle = createGlobalStyle`
 
 :root {
-  /* --color-bg: #FFF4E0;
-  --color-text: #4D4D4D;
-  --color-accent: #B46060;
-  --color-box: #FFBF9B;
-  --color-white: #FEFEFE; */
+  --color-bg: #FBFBFB;
+  --color-text: #160E0E;
+  --color-accent: #C12D2D;
+  --color-white: #FEFEFE;
+  --color-primary: #D1CFCF
 }
 
 /* @font-face {
@@ -23,7 +23,7 @@ const GlobalStyle = createGlobalStyle`
   } */
 
   body {
-    /* background-color: var(--color-bg); */
+    background-color: var(--color-bg);
     /* font-family: 'CookieRun-Regular'; */
   }
 `;
