@@ -18,6 +18,7 @@ const BucketDetail = () => {
     userId as string,
     postId as string,
   );
+  // 수정하기
 
   // 삭제하기
   const queryClient = useQueryClient();
