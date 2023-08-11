@@ -1,15 +1,16 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { RootState } from '../../../redux/config/configStore';
+import useGetBucketList from '../../../hooks/getBucketList';
+import DropDown from '../DropDown/DropDown';
 import { S } from './Categories.styles';
 import { tagColors } from '../../../styles/customStyles';
 import { Tag } from 'antd';
 
 import type { TabsProps } from 'antd';
-import useGetBucketList from '../../../hooks/getBucketList';
-import DropDown from '../DropDown/DropDown';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/config/configStore';
 
+// 카테고리 탭에 대한 정보를 담는 인터페이스
 interface CategoryTab {
   key: string;
   label: string;
@@ -19,14 +20,16 @@ interface CategoryTab {
 const Categories = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
+
+  // 리덕스 스토어에서 상태값 가져오기
   const statusLabel = useSelector(
     (state: RootState) => state.statusLabel.label,
   );
 
+  // 필터링된 버킷리스트를 저장하는 상태
   const [filteredBucketList, setFilteredBucketList] = useState<BucketList[]>();
-  // const [statusLabel, setStatusLabel] = useState<string | undefined>();
 
-  // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
+  // 버킷리스트 데이터 가져오기
   const bucketListData = useGetBucketList(userId as string, null);
   const bucketList = bucketListData.data?.bucket_list;
   if (!bucketList) return <>error!!!</>;
@@ -49,6 +52,7 @@ const Categories = () => {
     navigate(`/userId/${userId}/bucket-list/${id}`);
   };
 
+  // 카테고리 탭 정보
   const categoriesTabs: CategoryTab[] = [
     {
       key: '1',
@@ -102,6 +106,7 @@ const Categories = () => {
     },
   ];
 
+  // Ant Design Tabs 컴포넌트에 전달할 아이템 정보
   const items: TabsProps['items'] = categoriesTabs.map((category) => ({
     key: category.key,
     label: category.label,
@@ -140,6 +145,7 @@ const Categories = () => {
     ),
   }));
 
+  // Ant Design Tabs 컴포넌트 출력
   return <S.Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
 };
 
