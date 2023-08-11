@@ -169,6 +169,7 @@ const SignupForm = () => {
 
       // users에 user 정보 insert
       await supabase.from('users').insert({
+        id:user?.id,
         nickname,
         email,
         password,
@@ -179,6 +180,7 @@ const SignupForm = () => {
       // 로그인 시 메인으로 이동
       if (user) {
         navigate('/');
+        alert('회원가입이 완료되었습니다.')
       }
     } catch (error) {
       alert(
