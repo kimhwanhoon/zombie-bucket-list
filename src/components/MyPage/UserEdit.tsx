@@ -5,7 +5,8 @@ import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { queryClient } from '../../App';
-
+import { Input } from 'antd';
+const { TextArea } = Input;
 const UserEdit = ({
   user,
   setIsEdit,
@@ -168,7 +169,7 @@ const UserEdit = ({
           )}
           <div>
             <S.UserImageButton htmlFor="editProfileImg">
-              프로필 이미지 수정
+              프로필 이미지 업로드
             </S.UserImageButton>
           </div>
           <input
@@ -182,34 +183,38 @@ const UserEdit = ({
         </S.UserImageUpload>
 
         <div>
-          <div>
+          <S.UserAboutBox>
             <S.UserLabel>email</S.UserLabel>
             <br />
-            <div>{user?.email}</div>
-          </div>
-          <div>
+            <S.UserAbout>{user?.email}</S.UserAbout>
+          </S.UserAboutBox>
+          <S.UserAboutBox>
             <S.UserLabel>닉네임</S.UserLabel>
             <br />
-            <div>
-              <input
+            <S.UserAbout>
+              <Input
+                showCount
+                maxLength={10}
                 type="text"
                 value={userEditNickname}
                 onChange={(e) => setUserEditNickname(e.target.value)}
                 name="nicknameEdit"
               />
-            </div>
-          </div>
-          <div>
+            </S.UserAbout>
+          </S.UserAboutBox>
+          <S.UserAboutBox>
             <S.UserLabel>자기소개</S.UserLabel>
             <br />
-            <div>
-              <textarea
+            <S.UserAbout>
+              <TextArea
+                showCount
+                maxLength={50}
                 value={userEditAbout}
                 onChange={(e) => setUserEditAbout(e.target.value)}
                 name="aboutEdit"
               />
-            </div>
-          </div>
+            </S.UserAbout>
+          </S.UserAboutBox>
         </div>
       </S.UserProfileContainer>
       <S.MypageEditButton>

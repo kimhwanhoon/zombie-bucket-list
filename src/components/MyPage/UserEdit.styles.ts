@@ -77,4 +77,12 @@ export const S = {
       border-color: var(--color-accent);
     }
   `,
+  UserAboutBox: styled.div`
+    margin-bottom: 10px;
+  `,
+
+  UserAbout: styled.div`
+    margin-top: 22px;
+    color: var(--color-text);
+  `,
 };
