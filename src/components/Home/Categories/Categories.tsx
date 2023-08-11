@@ -32,7 +32,7 @@ const Categories = () => {
   // 버킷리스트 데이터 가져오기
   const bucketListData = useGetBucketList(userId as string, null);
   const bucketList = bucketListData.data?.bucket_list;
-  if (!bucketList) return <>error!!!</>;
+  if (!bucketList) return <>버킷리스트를 가져오는 중...</>;
 
   // 카테고리 탭 변경 시 호출되는 핸들러
   const onChange = (key: string) => {
@@ -115,7 +115,15 @@ const Categories = () => {
         <DropDown />
         <S.bucketListContainer>
           {category.state
-            ?.filter((item) => !statusLabel || item.status === statusLabel)
+            ?.filter((item) => {
+              if (!statusLabel) {
+                return item;
+              } else if (statusLabel === '전체 보기') {
+                return item;
+              } else {
+                return item.status === statusLabel;
+              }
+            })
             .map((item: BucketList) => (
               <div key={item.id}>
                 <S.bucketContainer onClick={() => handleChooseBucket(item.id)}>
@@ -135,7 +143,7 @@ const Categories = () => {
                   </S.bucketFirstLineContainer>
                   <S.bucketSecondLineContainer>
                     <p>{item.created_at}</p>
-                    <div>{item.status}</div>
+                    <span>{item.status}</span>
                   </S.bucketSecondLineContainer>
                 </S.bucketContainer>
               </div>
