@@ -24,6 +24,7 @@ interface BucketList {
   uuid: string;
   viewCount: number;
   last_editted_at: string;
+  statusValue: number | string;
 }
 
 interface postType {
@@ -48,6 +49,7 @@ interface bucketType {
   email: string;
   userId: string;
   created_at: string;
+  statusValue: number | string;
 }
 
 interface postModalTogglerType {
