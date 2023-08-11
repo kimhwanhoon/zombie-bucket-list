@@ -2,65 +2,99 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../../api/supabase';
 import { S } from './Header.Styles';
+// import useGetCurrentUser from '../../hooks/getCurrentUser';
 import { User } from '@supabase/supabase-js';
-import { useQuery } from '@tanstack/react-query';
-import { fetchUserDB } from '../../api/user';
-import useGetCurrentUser from '../../hooks/getCurrentUser';
 
-const Header = () => {
-  const {data:user} = useGetCurrentUser();
+const Header = ({ user }: { user: User | null }) => {
   const params = useParams().userId;
+  // console.log(params);
   const navigate = useNavigate();
-  const token = localStorage.getItem('token')
 
+  //user의 프로필,닉네임 정보 관리
+  const [userProfile, setUserProfile] = useState<string>();
+  const [userNickname, setUserNickname] = useState<string>();
+  const [userData, setUserData] = useState();
 
-  // user의 프로필,닉네임 정보 관리
-  // const [userProfile, setUserProfile] = useState<string>();
-  // const [userNickname, setUserNickname] = useState<string>();
+  useEffect(() => {
+    const fetchUserDB = async () => {
+      // 현재 유저의 프로필URL과 nickname 가져오기
+      const { data, error } = await supabase
+        .from('users')
+        .select('nickname, profileImage')
+        .eq('email', user?.email);
+      // console.log("users의 데이터 있나!!!",data)
 
-  const { data: userData } = useQuery(["userData"], async () => {
-    console.log(user)
-    if(user) {
-      const reponse = await fetchUserDB(user.email as string);
-      return reponse;
-    }
-    }
-  );
+      if (error) {
+        alert(
+          '사용자 정보를 가져오지 못하는 오류가 발생했습니다. 고객센터에 문의해주세요. error:header.',
+        );
+      } else {
+        if (data && data.length > 0) {
+          setUserNickname(data[0].nickname);
+          setUserProfile(data[0].profileImage);
+        }
+      }
+    };
+    fetchUserDB();
 
-  console.log("header data", userData)
-  console.log(user)
+    //실시간 업뎃
+    // const userDataUpdate = supabase
+    //   .channel('users')
+    //   .on(
+    //     'postgres_changes',
+    //     { event: 'UPDATE', schema: 'public', table: 'users' },
+    //     (payload) => {
+    //       // Update user data when changes occur
+    //       if (payload.new.email === user?.email) {
+    //         setUserNickname(payload.new.nickname);
+    //         setUserProfile(payload.new.profileImage);
+    //       }
+    //     },
+    //   )
+    //   .subscribe();
+
+    // return () => {
+    //   userDataUpdate.unsubscribe();
+    // };
+  }, [user]);
+  // console.log('현재 user 닉네임?', userNickname);
+  // console.log('현재 user profileURL?', userProfile);
 
   //로그아웃 버튼
   const handleLogoutButtonClick = async (
     event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
-    localStorage.removeItem("token")
-    alert('로그아웃 되었습니다. 로그인 페이지로 이동합니다.')
     const { error } = await supabase.auth.signOut();
+
     navigate('/auth');
   };
 
+  // 회원가입 이동 버튼(유저가 없는 경우)
+  const handleSignUpMovement = () => {
+    navigate('/auth');
+  };
 
   //마이페이지로 이동 버튼
   const handleMypageMove = () => {
     navigate(`/userId/${params}/my-page/`);
   };
 
-  //새로고침시 
   return (
     <S.Header>
       <div>logo</div>
-      {userData && (
+      {user ? (
         <S.UserDiv>
           <S.UserImage onClick={handleMypageMove}>
-            <img src={userData[0].profileImage} alt="이미지오류" />
+            <img src={userProfile} alt="이미지오류" />
           </S.UserImage>
-          <div>{userData[0].nickname}</div>
+          <div>{userNickname}</div>
           <button type="button" onClick={handleLogoutButtonClick}>
             로그아웃
           </button>
         </S.UserDiv>
+      ) : (
+        <button onClick={() => handleSignUpMovement()}>회원가입</button>
       )}
     </S.Header>
   );

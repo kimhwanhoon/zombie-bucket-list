@@ -28,15 +28,12 @@ const UserEdit = ({
   // console.log('수정거 적히는지>>>>', userEditNickname);
   // console.log('수정거 적히는지>>>>', userEditAbout);
 
-  const { data: userData } = useQuery(
-    ["userData"],
-    async () => {
+  const { data: userData } = useQuery(['userData'], async () => {
     const reponse = await fetchUserDB();
     return reponse;
-    }
-    );
+  });
 
-    console.log(userData);
+  console.log(userData);
 
   const fetchUserDB = async () => {
     const { data, error } = await supabase
@@ -56,7 +53,6 @@ const UserEdit = ({
     }
     return data;
   };
-
 
   // // 현재 유저 정보 DB 불러오기
   // useEffect(() => {
@@ -107,7 +103,7 @@ const UserEdit = ({
       .from('users')
       .update({ nickname: userEditNickname, about: userEditAbout })
       .eq('email', user?.email);
-  
+
     if (!error) {
       if (!userEditNickname) {
         alert('닉네임은 필수입니다. 닉네임을 입력해주세요.');
@@ -119,14 +115,15 @@ const UserEdit = ({
         setIsEdit(false);
       }
     } else {
-      alert('프로필 수정에 오류가 있습니다. 고객센터에 문의해주세요. error: profileEdit.');
+      alert(
+        '프로필 수정에 오류가 있습니다. 고객센터에 문의해주세요. error: profileEdit.',
+      );
     }
   };
-  
-  
+
   const testMutation = useMutation(test, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["userData"]);
+      queryClient.invalidateQueries(['userData']);
     },
   });
   // 수정 완료 버튼
@@ -154,7 +151,10 @@ const UserEdit = ({
         <div className="profile-image">
           {newProfileImageURL ? (
             <S.UserImage>
-              <img src={newProfileImageURL as string} alt="새로운 프로필 이미지" />
+              <img
+                src={newProfileImageURL as string}
+                alt="새로운 프로필 이미지"
+              />
             </S.UserImage>
           ) : prevProfileImageURL ? (
             <S.UserImage>
