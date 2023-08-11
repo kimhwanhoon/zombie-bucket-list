@@ -115,7 +115,15 @@ const Categories = () => {
         <DropDown />
         <S.bucketListContainer>
           {category.state
-            ?.filter((item) => !statusLabel || item.status === statusLabel)
+            ?.filter((item) => {
+              if (!statusLabel) {
+                return item;
+              } else if (statusLabel === '전체 보기') {
+                return item;
+              } else {
+                return item.status === statusLabel;
+              }
+            })
             .map((item: BucketList) => (
               <div key={item.id}>
                 <S.bucketContainer onClick={() => handleChooseBucket(item.id)}>
@@ -135,7 +143,7 @@ const Categories = () => {
                   </S.bucketFirstLineContainer>
                   <S.bucketSecondLineContainer>
                     <p>{item.created_at}</p>
-                    <div>{item.status}</div>
+                    <span>{item.status}</span>
                   </S.bucketSecondLineContainer>
                 </S.bucketContainer>
               </div>

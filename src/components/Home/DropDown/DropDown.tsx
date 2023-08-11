@@ -3,7 +3,7 @@ import useGetBucketList from '../../../hooks/getBucketList';
 import type { MenuProps } from 'antd';
 import { Dropdown, Space, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setStatusLabel } from '../../../redux/modules/statusLabelSlice';
 
 interface MenuItemType {
@@ -14,6 +14,10 @@ interface MenuItemType {
 
 // items 배열을 정의합니다.
 const items: MenuItemType[] = [
+  {
+    key: '0',
+    label: '전체 보기',
+  },
   {
     key: '1',
     label: '시작전',

@@ -45,8 +45,13 @@ export const S = {
   bucketSecondLineContainer: styled.div`
     width: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     padding: 0 2rem;
     color: #8e8e8e;
+    span {
+      color: #555;
+      font-weight: 600;
+      letter-spacing: 0.35px;
+    }
   `,
 };
