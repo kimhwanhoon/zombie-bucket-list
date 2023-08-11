@@ -16,8 +16,7 @@ import useGetCurrentUser from '../hooks/getCurrentUser';
 // 토큰 정보가 없어도 되는 화면 : Home(인트로), Auth(로그인, 회원가입)
 const Router: React.FC = (): JSX.Element => {
 
-  const {data:user} = useGetCurrentUser();
-  return (
+  const {data:user} = useGetCurrentUser();  return (
     <BrowserRouter>
       <Routes>
         <Route element={<NonAuthLayout />}>
@@ -25,7 +24,7 @@ const Router: React.FC = (): JSX.Element => {
           <Route path="/auth" element={<Auth />} />
         </Route>
 
-        <Route element={<><Header user={user || null} /><AuthLayout /></>}>
+        <Route element={<><Header/><AuthLayout /></>}>
           <Route path="/userId/:userId/my-page" element={<MyPage />} />
           <Route path="/userId/:userId/bucket-list" element={<BucketList />} />
           <Route path="/userId/:userId/bucket-list/:postId" element={<BucketDetail />} />

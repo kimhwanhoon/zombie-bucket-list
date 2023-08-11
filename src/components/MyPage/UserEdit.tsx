@@ -3,6 +3,8 @@ import { S } from './UserEdit.styles';
 import { User } from '@supabase/supabase-js';
 import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { queryClient } from '../../App';
 
 const UserEdit = ({
   user,
@@ -26,28 +28,40 @@ const UserEdit = ({
   // console.log('수정거 적히는지>>>>', userEditNickname);
   // console.log('수정거 적히는지>>>>', userEditAbout);
 
-  // 현재 유저 정보 DB 불러오기
-  useEffect(() => {
-    const fetchUserDB = async () => {
-      const { data, error } = await supabase
-        .from('users')
-        .select('nickname, profileImage, email, about')
-        .eq('email', user?.email);
-      console.log('현재 유저 정보 ', data);
+  const { data: userData } = useQuery(
+    ["userData"],
+    async () => {
+    const reponse = await fetchUserDB();
+    return reponse;
+    }
+    );
 
-      if (error) {
-        alert('프로필 수정 오류가 발생했습니다. 고객센터에 문의해주세요.');
-      } else {
-        if (data && data.length > 0) {
-          setUserEditNickname(data[0].nickname);
-          setUserEditAbout(data[0].about);
-          setPrevProfileImageURL(data[0].profileImage);
-        }
+    console.log(userData);
+
+  const fetchUserDB = async () => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('nickname, profileImage, email, about')
+      .eq('email', user?.email);
+    console.log('현재 유저 정보 ', data);
+
+    if (error) {
+      alert('프로필 수정 오류가 발생했습니다. 고객센터에 문의해주세요.');
+    } else {
+      if (data && data.length > 0) {
+        setUserEditNickname(data[0].nickname);
+        setUserEditAbout(data[0].about);
+        setPrevProfileImageURL(data[0].profileImage);
       }
-    };
+    }
+    return data;
+  };
 
-    fetchUserDB();
-  }, [user]);
+
+  // // 현재 유저 정보 DB 불러오기
+  // useEffect(() => {
+
+  // }, [user]);
 
   // 변경 전 이미지 URL(prevProfileImageURL)이 수정 완료 버튼 클릭 시 적용된 URL과 같으면 변경 로직 실행 X
   // 미리보기
@@ -88,35 +102,47 @@ const UserEdit = ({
   //   }
   // };
 
-  // 수정 완료 버튼
-  const handleProfileEditSave = async () => {
-    try {
-      const { error } = await supabase
-        .from('users')
-        .update({ nickname: userEditNickname, about: userEditAbout })
-        .eq('email', user?.email);
-
-      if (!error) {
-        if (!userEditNickname) {
-          alert('닉네임은 필수입니다. 닉네임을 입력해주세요.');
-          return false;
-        }
-
+  const test = async (): Promise<void> => {
+    const { error } = await supabase
+      .from('users')
+      .update({ nickname: userEditNickname, about: userEditAbout })
+      .eq('email', user?.email);
+  
+    if (!error) {
+      if (!userEditNickname) {
+        alert('닉네임은 필수입니다. 닉네임을 입력해주세요.');
+      } else {
         await updateStorageAndProfile();
         alert('프로필 수정이 완료됐습니다!');
         setUserEditNickname('');
         setUserEditAbout('');
         setIsEdit(false);
-      } else {
-        alert(
-          '프로필 수정에 오류가 있습니다. 고객센터에 문의해주세요. error: profileEdit.',
-        );
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      alert('프로필 수정에 오류가 있습니다. 고객센터에 문의해주세요. error: profileEdit.');
     }
   };
-
+  
+  
+  const testMutation = useMutation(test, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userData"]);
+    },
+  });
+  // 수정 완료 버튼
+  const handleProfileEditSave = async () => {
+    testMutation.mutate();
+  };
+  // try {
+  //   const testMutation = useMutation(test, {
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries(["userData"]);
+  //     },
+  //     }
+  //     );
+  // } catch (error) {
+  //   console.log(error);
+  // }
   // 뒤로가기 버튼
   const handleEditToggleButton = () => {
     setIsEdit(false);
@@ -128,13 +154,13 @@ const UserEdit = ({
         <div className="profile-image">
           {newProfileImageURL ? (
             <S.UserImage>
-              <img src={newProfileImageURL as string} alt="new-profile-image" />
+              <img src={newProfileImageURL as string} alt="새로운 프로필 이미지" />
             </S.UserImage>
           ) : prevProfileImageURL ? (
             <S.UserImage>
               <img
                 src={prevProfileImageURL as string}
-                alt="prev-profile-image"
+                alt="이전 프로필 이미지"
               />
             </S.UserImage>
           ) : (
