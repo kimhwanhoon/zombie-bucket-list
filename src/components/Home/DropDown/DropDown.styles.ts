@@ -2,11 +2,6 @@ import { Tabs } from 'antd';
 import { styled } from 'styled-components';
 
 export const S = {
-  NavSection: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-
   Tabs: styled(Tabs)`
     margin: 1rem;
   `,
