@@ -64,7 +64,7 @@ export const S = {
   SignUpImageText: styled.label`
     margin: 10px 0;
     font-weight: bold;
-    color: var(--color-accent)
+    color: var(--color-accent);
   `
 
 

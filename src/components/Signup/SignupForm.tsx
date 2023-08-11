@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
 import { S } from './SignupForm.styles';
+import { Input } from 'antd';
 
-const SignupForm = () => {
+const SignupForm= () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
