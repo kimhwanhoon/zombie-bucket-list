@@ -13,7 +13,7 @@ const Router: React.FC = (): JSX.Element => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />
-        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/userId/:userId/my-page" element={<MyPage />} />
         <Route path="/userId/:userId/bucket-list" element={<BucketList />} />
         <Route
           path="/userId/:userId/bucket-list/:postId"

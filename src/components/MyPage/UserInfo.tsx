@@ -5,6 +5,7 @@ import supabase from '../../api/supabase';
 import { useNavigate } from 'react-router-dom';
 import supabaseService from '../../api/supabaseService';
 import UserEdit from './UserEdit';
+import UserBucketByStatus from './UserBucketByStatus';
 
 const UserInfo = ({ user }: { user: User | null }) => {
   const navigate = useNavigate();
@@ -98,11 +99,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
   return (
     <div>
       {/* 내가 쓴 글 상태 보기 */}
-      <S.BucketContainer>
-        <div></div>
-        <div>작성한 버킷리스트</div>
-        <div>상태</div>
-      </S.BucketContainer>
+      <UserBucketByStatus />
 
       {/* 내 정보 관리 */}
       {isEdit ? (

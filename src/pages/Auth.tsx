@@ -21,7 +21,8 @@ const Auth = (props: Props) => {
 
   return (<>
   {isLogin? <LoginForm /> : <SignupForm/>}
-  <button onClick={handleToggleAuth}>{isLogin ? "회원가입하기" : "로그인하기"}</button>
+  <span>{isLogin? "아직 회원이 아니신가요?" : "이미 회원이신가요?"}</span>
+  <button onClick={handleToggleAuth}>{isLogin ? "회원가입" : "로그인"}</button>
 
   </>);
 };

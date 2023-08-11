@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import supabase from '../../api/supabase';
 import { S } from './Header.Styles';
 import { User } from '@supabase/supabase-js';
 
 const Header = ({ user }: { user: User | null }) => {
+  const params = useParams().userId;
+  console.log(params)
   const navigate = useNavigate();
 
   // console.log("현재 user의 이메일:" ,user?.email)
@@ -56,7 +58,7 @@ const Header = ({ user }: { user: User | null }) => {
 
   //마이페이지로 이동 버튼
   const handleMypageMove = () => {
-    navigate('/my-page');
+    navigate(`/userId/${params}/my-page/`);
   };
 
   return (
