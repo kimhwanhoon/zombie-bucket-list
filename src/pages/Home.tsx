@@ -5,13 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 
 const Home = () => {
-  const { data: currentUser = null } = useGetCurrentUser();
+  const { data: currentUser = null, refetch } = useGetCurrentUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser) {
+      refetch();
+      return;
+    }
     navigate(`/redirecting`);
-  }, [currentUser, navigate]);
+  }, [currentUser, navigate, refetch]);
 
   return (
     <Main>

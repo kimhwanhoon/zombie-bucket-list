@@ -66,6 +66,13 @@ const LoginForm = () => {
     if (user) {
       navigate('/');
     }
+
+     // 토큰 가져오기!
+    const getToken = async () =>{
+      const { data:response } = await supabase.auth.getSession()
+      localStorage.setItem("token", response.session?.access_token as string)
+    }
+    getToken();
   };
 
   return (

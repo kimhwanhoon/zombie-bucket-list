@@ -64,7 +64,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
       try {
         const { error } = await supabaseService.auth.admin.deleteUser(UserUID);
         await supabase.from('users').delete().eq('email', user?.email);
-
+        localStorage.removeItem('token');
         deleteProfileImage();
 
         if (error) {
@@ -81,19 +81,14 @@ const UserInfo = ({ user }: { user: User | null }) => {
     }
   };
 
-  //로그아웃 버튼
-  const handleLogoutButtonClick = async (
-    event: React.MouseEvent<HTMLButtonElement>,
-  ) => {
-    event.preventDefault();
-    const { error } = await supabase.auth.signOut();
-
-    navigate('/auth');
-  };
-
   //유저 정보 수정 버튼
   const handleEditToggleButton = () => {
     setIsEdit(!isEdit);
+  };
+
+  //홈으로 가기 버튼
+  const handleGoHomeButton = () => {
+    navigate(`/userId/${user?.id}/bucket-list`);
   };
 
   return (
@@ -107,22 +102,30 @@ const UserInfo = ({ user }: { user: User | null }) => {
       ) : (
         <>
           <S.UserProfileContainer>
-            <div>
+            <S.UserImgNickname>
               <S.UserImage>
                 <img src={userProfile} />
               </S.UserImage>
-              <div>{userNickname}</div>
-            </div>
+              <S.UserNickname>{userNickname}</S.UserNickname>
+            </S.UserImgNickname>
             <div>
-              <div>email:{userEmail}</div>
-              <div>자기소개:{userAbout}</div>
+              <S.UserEmailBox>
+                <S.UserLabel>email</S.UserLabel>
+                <br />
+                <S.UserEmail>{userEmail}</S.UserEmail>
+              </S.UserEmailBox>
+              <div>
+                <S.UserLabel>자기소개</S.UserLabel>
+                <br />
+                <S.UserAbout>{userAbout}</S.UserAbout>
+              </div>
             </div>
           </S.UserProfileContainer>
-          <div>
+          <S.MypageButtonBox>
             <button onClick={handleEditToggleButton}>회원정보 수정</button>
-            <button onClick={handleLogoutButtonClick}>로그아웃</button>
             <button onClick={handleDeleteUser}>회원 탈퇴</button>
-          </div>
+            <button onClick={handleGoHomeButton}>내 홈으로 가기</button>
+          </S.MypageButtonBox>
         </>
       )}
     </div>
