@@ -1,12 +1,16 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { RootState } from '../../../redux/config/configStore';
+import useGetBucketList from '../../../hooks/getBucketList';
+import DropDown from '../DropDown/DropDown';
 import { S } from './Categories.styles';
 import { tagColors } from '../../../styles/customStyles';
 import { Tag } from 'antd';
 
 import type { TabsProps } from 'antd';
-import useGetBucketList from '../../../hooks/getBucketList';
 
+// 카테고리 탭에 대한 정보를 담는 인터페이스
 interface CategoryTab {
   key: string;
   label: string;
@@ -16,8 +20,16 @@ interface CategoryTab {
 const Categories = () => {
   const navigate = useNavigate();
   const { userId } = useParams();
+
+  // 리덕스 스토어에서 상태값 가져오기
+  const statusLabel = useSelector(
+    (state: RootState) => state.statusLabel.label,
+  );
+
+  // 필터링된 버킷리스트를 저장하는 상태
   const [filteredBucketList, setFilteredBucketList] = useState<BucketList[]>();
-  // 버킷리스트와 필터링된 리스트를 저장하는 상태 변수
+
+  // 버킷리스트 데이터 가져오기
   const bucketListData = useGetBucketList(userId as string, null);
   const bucketList = bucketListData.data?.bucket_list;
   if (!bucketList) return <>버킷리스트를 가져오는 중...</>;
@@ -28,7 +40,7 @@ const Categories = () => {
 
     const newFilteredBucketList = bucketList.filter((list) => {
       // some함수 : 배열의 요소 중 하나라도 조건을 만족하면 true를 반환
-      return list.categories?.some((t: any) => t === tempLabel);
+      return list.categories?.some((t) => t === tempLabel);
     });
 
     // 필터링된 버킷리스트 업데이트
@@ -40,6 +52,7 @@ const Categories = () => {
     navigate(`/userId/${userId}/bucket-list/${id}`);
   };
 
+  // 카테고리 탭 정보
   const categoriesTabs: CategoryTab[] = [
     {
       key: '1',
@@ -93,40 +106,46 @@ const Categories = () => {
     },
   ];
 
+  // Ant Design Tabs 컴포넌트에 전달할 아이템 정보
   const items: TabsProps['items'] = categoriesTabs.map((category) => ({
     key: category.key,
     label: category.label,
     children: (
       <>
+        <DropDown />
         <S.bucketListContainer>
-          {category.state?.map((item: BucketList) => (
-            <div key={item.id}>
-              <S.bucketContainer onClick={() => handleChooseBucket(item.id)}>
-                <S.bucketFirstLineContainer>
-                  <h1>{item.title}</h1>
-                  <p>
-                    {item.categories.map((tag) => (
-                      <Tag
-                        key={tag}
-                        bordered={false}
-                        color={tagColors[`${tag}`]}
-                      >
-                        {tag}
-                      </Tag>
-                    ))}
-                  </p>
-                </S.bucketFirstLineContainer>
-                <S.bucketSecondLineContainer>
-                  <p>{item.created_at}</p>
-                </S.bucketSecondLineContainer>
-              </S.bucketContainer>
-            </div>
-          ))}
+          {category.state
+            ?.filter((item) => !statusLabel || item.status === statusLabel)
+            .map((item: BucketList) => (
+              <div key={item.id}>
+                <S.bucketContainer onClick={() => handleChooseBucket(item.id)}>
+                  <S.bucketFirstLineContainer>
+                    <h1>{item.title}</h1>
+                    <p>
+                      {item.categories.map((tag) => (
+                        <Tag
+                          key={tag}
+                          bordered={false}
+                          color={tagColors[`${tag}`]}
+                        >
+                          {tag}
+                        </Tag>
+                      ))}
+                    </p>
+                  </S.bucketFirstLineContainer>
+                  <S.bucketSecondLineContainer>
+                    <p>{item.created_at}</p>
+                    <div>{item.status}</div>
+                  </S.bucketSecondLineContainer>
+                </S.bucketContainer>
+              </div>
+            ))}
         </S.bucketListContainer>
       </>
     ),
   }));
 
+  // Ant Design Tabs 컴포넌트 출력
   return <S.Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
 };
 
