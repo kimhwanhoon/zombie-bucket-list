@@ -19,7 +19,9 @@ export const S = {
   SignUpForm: styled.form`
     display: flex;
     flex-direction: column;
-    width: 60vw;
+    justify-content: space-around;
+    width: 50vw;
+    height: 450px;
     background-color: var(--color-primary);
     border-radius: 10px;
     padding: 20px 10px;
@@ -50,6 +52,7 @@ export const S = {
     border-radius: 50%;
     background-color:black;
     overflow: hidden;
+    margin: 10px 0;
 
     img {
       object-fit: cover;
