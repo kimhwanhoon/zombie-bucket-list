@@ -48,7 +48,7 @@ const BucketList = () => {
   return (
     <>
       <Main>
-        <Header user={currentUser} />
+        {/* <Header user={currentUser} /> */}
         <Categories />
         <WriteAPostButton />
         {content}
