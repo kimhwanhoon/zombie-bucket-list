@@ -42,10 +42,8 @@ const Categories = () => {
   // 카테고리 탭 변경 시 호출되는 핸들러
   const onChange = (key: string) => {
     const tempLabel = items?.find((item) => item.key === key)?.label;
-    console.log('temp', tempLabel);
 
     const newFilteredBucketList = bucketlist?.filter((list: any) => {
-      console.log('list', list);
       // some함수 : 배열의 요소 중 하나라도 조건을 만족하면 true를 반환
       return list.categories?.some((t: any) => t === tempLabel);
     });

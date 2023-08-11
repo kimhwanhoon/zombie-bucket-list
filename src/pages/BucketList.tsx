@@ -50,8 +50,8 @@ const BucketList = () => {
       <Main>
         <Header user={currentUser} />
         <Categories />
-        <WriteAPostButton />
-        {content}
+        {/* <WriteAPostButton />
+        {content} */}
       </Main>
     </>
   );
