@@ -7,7 +7,16 @@ const editBucket = async ({
   selectedTags,
   uuid,
   url,
+  statusValue,
 }: Partial<bucketType>): Promise<void> => {
+  const status =
+    statusValue === 0
+      ? '시작전'
+      : statusValue === 1
+      ? '진행중'
+      : statusValue === 2
+      ? '완료'
+      : 0;
   const { error } = await supabase
     .from('bucketList')
     .update({
@@ -16,7 +25,7 @@ const editBucket = async ({
       last_editted_at: moment().format('YYYY-MM-DD HH:mm'),
       categories: selectedTags,
       photoURL: url,
-      status: '시작전',
+      status,
     } as Partial<bucketType>)
     .eq('uuid', uuid);
   error !== null ? console.log(error) : console.log('success!');

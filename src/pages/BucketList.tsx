@@ -5,14 +5,18 @@ import useGetBucketList from '../hooks/getBucketList';
 import { tagColors } from '../styles/customStyles';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
-import Header from '../components/Layout/Header';
 import Categories from '../components/Home/Categories/Categories';
+import { useEffect } from 'react';
 const BucketList = () => {
   const { data: currentUser = null } = useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
   const params = useParams().userId;
   const bucketListData = useGetBucketList(params as string, null);
   const data: Array<BucketList> | null | undefined =
     bucketListData.data?.bucket_list;
+
+  useEffect(() => {
+    if (data && data.length <= 1) bucketListData.refetch();
+  });
   // 상세 선택
   const navigate = useNavigate();
 
@@ -48,7 +52,6 @@ const BucketList = () => {
   return (
     <>
       <Main>
-        {/* <Header /> */}
         <WriteAPostButton />
         <Categories />
       </Main>
