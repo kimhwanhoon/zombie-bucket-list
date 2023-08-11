@@ -65,7 +65,7 @@ const Main = styled.main`
   background-color: #f8f8f8;
   /* min-height: 100vh; */
   height: calc(100vh - 75px);
-  overflow: hidden;
+  overflow: auto;
 `;
 
 const S = {
