@@ -34,10 +34,23 @@ const WriteAPostModal = () => {
   const currentUser = useGetCurrentUser().data;
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
-  const titleValue = useRef('');
-  const contentValue = useRef('');
+  const [titleValue, setTitleValue] = useState<string>('');
+  const [contentValue, setContentValue] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>(['기타']);
   const [photo, setPhoto] = useState<RcFile | null>(null);
+  // 무결성 체크
+  const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(true);
+  const [isTagMoreThanTwo, setIsTagMoreThanTwo] = useState<boolean>(false);
+  const [isContentEmpty, setIsContentEmpty] = useState<boolean>(true);
+  useEffect(() => {
+    titleValue.length > 0 ? setIsTitleEmpty(false) : setIsTitleEmpty(true);
+  }, [titleValue]);
+  useEffect(() => {
+    contentValue.length > 0
+      ? setIsContentEmpty(false)
+      : setIsContentEmpty(true);
+  }, [contentValue]);
+  //
   const queryClient = useQueryClient();
   // 작성 모달에 태그 선택관련.. 최대 2개까지만 선택 가능하게 설정
   const handleChange = (tag: string, checked: boolean) => {
@@ -45,8 +58,11 @@ const WriteAPostModal = () => {
       ? [...selectedTags, tag]
       : selectedTags.filter((t) => t !== tag);
     setSelectedTags((prev) => {
-      if (nextSelectedTags.length > 2) {
-        alert('최대 2가지 태그만 선택할 수 있습니다.');
+      if (nextSelectedTags.length <= 2) {
+        setIsTagMoreThanTwo(false);
+        return nextSelectedTags;
+      } else if (nextSelectedTags.length > 2) {
+        setIsTagMoreThanTwo(true);
         return prev;
       } else {
         return nextSelectedTags;
@@ -60,8 +76,8 @@ const WriteAPostModal = () => {
       const uuid = shortUUID.generate();
       const url = photo ? await uploadImage(photo, uuid) : '';
       await postBucket({
-        title: titleValue.current,
-        content: contentValue.current,
+        title: titleValue,
+        content: contentValue,
         selectedTags,
         uuid,
         url,
@@ -100,18 +116,23 @@ const WriteAPostModal = () => {
           width: 400,
         }}
       >
-        <Form.Item<FieldType>
-          label="제목"
-          name="title"
-          rules={[{ message: '제목을 입력해주세요.' }]}
-        >
-          <Input
-            size="large"
-            onChange={(e) => (titleValue.current = e.target.value)}
-            maxLength={30}
-          />
-        </Form.Item>
-        <span>태그</span>
+        <modal.titleContainer>
+          <modal.title>제목</modal.title>
+          {isTitleEmpty && <modal.warning>내용을 입력해주세요.</modal.warning>}
+        </modal.titleContainer>
+
+        <Input
+          size="large"
+          onChange={(e) => setTitleValue(e.target.value)}
+          maxLength={30}
+          placeholder="제목"
+        />
+        <modal.titleContainer>
+          <modal.title>태그</modal.title>
+          {isTagMoreThanTwo && (
+            <modal.warning>최대 2가지 태그만 선택할 수 있습니다.</modal.warning>
+          )}
+        </modal.titleContainer>
         <Space style={{ marginBottom: '1rem' }} size={[0, 0]} wrap>
           {tagsData.map((tag) => (
             <CheckableTag
@@ -123,22 +144,23 @@ const WriteAPostModal = () => {
             </CheckableTag>
           ))}
         </Space>
-        <Form.Item<FieldType>
-          label="내용"
-          name="content"
-          rules={[{ message: '내용을 입력해주세요.' }]}
-        >
-          <TextArea
-            showCount
-            maxLength={500}
-            style={{
-              resize: 'none',
-              height: 200,
-            }}
-            placeholder="내용을 입력해주세요"
-            onChange={(e) => (contentValue.current = e.target.value)}
-          />
-        </Form.Item>
+        <modal.titleContainer>
+          <modal.title>본문</modal.title>
+          {isContentEmpty && (
+            <modal.warning>내용을 입력해주세요.</modal.warning>
+          )}
+        </modal.titleContainer>
+        <TextArea
+          showCount
+          maxLength={500}
+          style={{
+            resize: 'none',
+            height: 200,
+            marginBottom: '1.25rem',
+          }}
+          placeholder="내용을 입력해주세요"
+          onChange={(e) => setContentValue(e.target.value)}
+        />
         <Upload.Dragger
           accept="image/png, image/jpeg, image/jpg"
           listType="picture"
@@ -159,7 +181,12 @@ const WriteAPostModal = () => {
           direction="vertical"
           style={{ width: '100%', marginTop: '1rem' }}
         >
-          <Button type="primary" block onClick={() => handleSubmit()}>
+          <Button
+            disabled={isTitleEmpty || isContentEmpty}
+            type="primary"
+            block
+            onClick={() => handleSubmit()}
+          >
             작성하기
           </Button>
         </Space>
@@ -197,5 +224,18 @@ const modal = {
     &:hover {
       opacity: 1;
     }
+  `,
+  title: styled.h2`
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    font-weight: 600;
+  `,
+  titleContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  `,
+  warning: styled.span`
+    color: var(--color-accent);
   `,
 };

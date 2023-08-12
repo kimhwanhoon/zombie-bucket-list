@@ -53,6 +53,7 @@ const EditPostModal = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   // Form
+
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
   const [titleValue, setTitleValue] = useState<string>(targetPost[0].title);
@@ -63,6 +64,19 @@ const EditPostModal = () => {
   const [statusValue, setStatusValue] = useState<number>(1);
   const [photo, setPhoto] = useState<RcFile | null>(null);
   const uuid = targetPost[0].uuid;
+  // 무결성 체크
+  const [isTitleEmpty, setIsTitleEmpty] = useState<boolean>(true);
+  const [isTagMoreThanTwo, setIsTagMoreThanTwo] = useState<boolean>(false);
+  const [isContentEmpty, setIsContentEmpty] = useState<boolean>(true);
+  useEffect(() => {
+    titleValue.length > 0 ? setIsTitleEmpty(false) : setIsTitleEmpty(true);
+  }, [titleValue]);
+  useEffect(() => {
+    contentValue.length > 0
+      ? setIsContentEmpty(false)
+      : setIsContentEmpty(true);
+  }, [contentValue]);
+  //
   //
   useEffect(() => {
     if (postData && targetPost.length > 0) {
@@ -86,6 +100,7 @@ const EditPostModal = () => {
   const handleStatusChange = (value: number) => {
     setStatusValue(value);
   };
+
   //
   // 작성 모달에 태그 선택관련.. 최대 2개까지만 선택 가능하게 설정
   const handleChange = (tag: string, checked: boolean) => {
@@ -93,8 +108,11 @@ const EditPostModal = () => {
       ? [...selectedTags, tag]
       : selectedTags.filter((t) => t !== tag);
     setSelectedTags((prev) => {
-      if (nextSelectedTags.length > 2) {
-        alert('최대 2가지 태그만 선택할 수 있습니다.');
+      if (nextSelectedTags.length <= 2) {
+        setIsTagMoreThanTwo(false);
+        return nextSelectedTags;
+      } else if (nextSelectedTags.length > 2) {
+        setIsTagMoreThanTwo(true);
         return prev;
       } else {
         return nextSelectedTags;
@@ -137,7 +155,7 @@ const EditPostModal = () => {
   if (isLoading) return <>Loading...</>;
   if (isError) return <>error! {error}</>;
   return (
-    <modal.container style={photo ? { height: '730px' } : { height: '670px' }}>
+    <modal.container style={photo ? { height: '770px' } : { height: '700px' }}>
       <modal.closeButtonContainer>
         <CloseOutlined onClick={() => dispatch(editModalToggler(false))} />
       </modal.closeButtonContainer>
@@ -150,7 +168,10 @@ const EditPostModal = () => {
           width: 400,
         }}
       >
-        <modal.title>제목</modal.title>
+        <modal.titleContainer>
+          <modal.title>제목</modal.title>
+          {isTitleEmpty && <modal.warning>내용을 입력해주세요.</modal.warning>}
+        </modal.titleContainer>
         <Input
           size="large"
           value={titleValue}
@@ -158,7 +179,12 @@ const EditPostModal = () => {
           maxLength={30}
           style={{ marginBottom: '1rem' }}
         />
-        <modal.title>태그</modal.title>
+        <modal.titleContainer>
+          <modal.title>태그</modal.title>
+          {isTagMoreThanTwo && (
+            <modal.warning>최대 2가지 태그만 선택할 수 있습니다.</modal.warning>
+          )}
+        </modal.titleContainer>
         <Space style={{ marginBottom: '1rem' }} size={[0, 0]} wrap>
           {tagsData.map((tag) => (
             <CheckableTag
@@ -181,7 +207,12 @@ const EditPostModal = () => {
           value={statusValue}
           onChange={handleStatusChange}
         />
-        <modal.title>본문</modal.title>
+        <modal.titleContainer>
+          <modal.title>본문</modal.title>
+          {isContentEmpty && (
+            <modal.warning>내용을 입력해주세요.</modal.warning>
+          )}
+        </modal.titleContainer>
         <TextArea
           showCount
           maxLength={500}
@@ -214,7 +245,12 @@ const EditPostModal = () => {
           direction="vertical"
           style={{ width: '100%', marginTop: '1rem' }}
         >
-          <Button type="primary" block onClick={() => handleSubmit()}>
+          <Button
+            disabled={isTitleEmpty || isContentEmpty}
+            type="primary"
+            block
+            onClick={() => handleSubmit()}
+          >
             수정하기
           </Button>
         </Space>
@@ -254,7 +290,15 @@ const modal = {
   `,
   title: styled.h2`
     font-size: 1rem;
-    padding-bottom: 0.3rem;
+    padding: 0.5rem 0;
     font-weight: 600;
+  `,
+  titleContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  `,
+  warning: styled.span`
+    color: var(--color-accent);
   `,
 };

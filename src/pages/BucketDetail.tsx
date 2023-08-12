@@ -1,15 +1,36 @@
-import { styled } from 'styled-components';
 import useGetBucketList from '../hooks/getBucketList';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 import { useNavigate, useParams } from 'react-router-dom';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import {
+  CalendarOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  SmileOutlined,
+  TagOutlined,
+} from '@ant-design/icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import supabase from '../api/supabase';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { debounce } from 'lodash';
 import EditPostModal from '../components/Home/BucketList/modal/EditPostModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { editModalToggler } from '../redux/modules/editPostModalToggler';
+import { Divider, Slider } from 'antd';
+import { tagColors } from '../styles/customStyles';
+import useGetWriter from '../hooks/getWriter';
+import {
+  S,
+  StatusDivider,
+  StyledProgress,
+  StyledTag,
+  StyledUserOutlined,
+  deleteModalStyle,
+} from '../styles/bucketDetail.styles';
+
+interface PostUser {
+  nickname: string;
+  profileImage: string;
+}
 
 const BucketDetail = () => {
   useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
@@ -18,13 +39,51 @@ const BucketDetail = () => {
   const [deleteToggle, setDeleteToggle] = useState(false);
   const editToggle = useSelector((state: State) => state.editModalToggle);
   const dispatch = useDispatch();
-
+  const [statusValue, setStatusValue] = useState<number>(0);
   const { data, isLoading, isError, error } = useGetBucketList!(
     userId as string,
     postId as string,
   );
-  // 수정하기
+  // 글의 유저 정보 가져오기
+  const [postUser, setPostUser] = useState<PostUser | null>(null);
 
+  const {
+    data: postUserData,
+    isStale: isPostUserDataStale,
+    refetch: refetchPostUser,
+  } = useGetWriter(userId!);
+
+  console.log('postUser', postUser);
+
+  useEffect(() => {
+    if (isPostUserDataStale) {
+      refetchPostUser();
+    }
+  }, [isPostUserDataStale, refetchPostUser]);
+
+  useEffect(() => {
+    if (postUserData) setPostUser(postUserData[0]);
+  }, [postUserData]);
+  //
+  // 수정하기
+  useEffect(() => {
+    if (data && targetPost.length > 0) {
+      switch (targetPost[0].status) {
+        case '시작전': {
+          setStatusValue(0);
+          break;
+        }
+        case '진행중': {
+          setStatusValue(50);
+          break;
+        }
+        case '완료': {
+          setStatusValue(100);
+          break;
+        }
+      }
+    }
+  }, [data]);
   // 삭제하기
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -102,8 +161,18 @@ const BucketDetail = () => {
       />
       <S.detailContainer>
         <S.leftContainer>
+          <S.postDetails>
+            <h1>{title}</h1>
+            <p>{content}</p>
+          </S.postDetails>
+          <Divider></Divider>
+          <S.photoLibrary>
+            <img src={photoURL} alt="" />
+          </S.photoLibrary>
+        </S.leftContainer>
+        <S.rightContainer>
           <S.iconContainer
-            style={{ position: 'absolute', top: '1.5rem', right: '1.5rem' }}
+            style={{ position: 'absolute', top: '1.1rem', right: '1.1rem' }}
           >
             <EditOutlined
               style={{
@@ -120,55 +189,76 @@ const BucketDetail = () => {
               onClick={() => setDeleteToggle(true)}
             />
           </S.iconContainer>
-
-          <S.postDetails>
-            <h1>{title}</h1>
-            <p>{content}</p>
-          </S.postDetails>
-
-          <S.photoLibrary>
-            <img src={photoURL} alt="" />
-          </S.photoLibrary>
-        </S.leftContainer>
-        <S.rightContainer>
           <S.postStatsContainer>
-            <div className="post-stats-inside-container">
-              <div>icon</div>
-              <div className="post-stats-inside-right">
-                <div>조회수</div>
-                <div>{viewCount}</div>
-              </div>
-            </div>
-            <div className="post-stats-inside-container">
-              <div>icon</div>
-              <div className="post-stats-inside-right">
-                <div>상태</div>
-                <div>{status}</div>
-              </div>
-            </div>
-            <div className="post-stats-inside-container">
-              <div>icon</div>
-              <div className="post-stats-inside-right">
-                <div>작성일</div>
-                <div>{created_at}</div>
-              </div>
-            </div>
-            <div className="post-stats-inside-container">
-              <div>icon</div>
-              <div className="post-stats-inside-right">
-                <div>태그</div>
-                <div>{categories}</div>
-              </div>
-            </div>
+            <S.postStatsElementContainer>
+              <SmileOutlined />
+              <S.postStatsElement>
+                <span>조회수:</span>
+                <span>{viewCount}</span>
+              </S.postStatsElement>
+            </S.postStatsElementContainer>
+            <S.postStatsElementContainer>
+              <CalendarOutlined />
+              <S.postStatsElement>
+                <span>작성일:</span>
+                <span>{created_at}</span>
+              </S.postStatsElement>
+            </S.postStatsElementContainer>
+            <S.postStatsElementContainer>
+              <TagOutlined />
+              <S.postStatsTagElement>
+                <span>태그:</span>
+                {categories.map((tag) => (
+                  <StyledTag
+                    key={tag}
+                    bordered={false}
+                    color={tagColors[`${tag}`]}
+                  >
+                    {tag}
+                  </StyledTag>
+                ))}
+              </S.postStatsTagElement>
+            </S.postStatsElementContainer>
+            <S.statusContainer>
+              <StatusDivider>진행 상태</StatusDivider>
+              <Slider
+                defaultValue={0}
+                max={100}
+                autoFocus
+                keyboard
+                dots
+                tooltip={{ open: false }}
+                marks={{ 0: '시작전', 50: '진행중', 100: '완료' }}
+                value={statusValue}
+                disabled
+              />
+              <S.progressContainer>
+                <StyledProgress
+                  type="circle"
+                  percent={statusValue}
+                  size={50}
+                  strokeColor={{
+                    '0%': '#e92727',
+                    '100%': '#c12d2d',
+                  }}
+                  strokeWidth={8}
+                />
+                <span>
+                  {statusValue === 0
+                    ? '시작전'
+                    : statusValue === 50
+                    ? '시작이 반이다.'
+                    : '완료'}
+                </span>
+              </S.progressContainer>
+            </S.statusContainer>
           </S.postStatsContainer>
           <S.userDetailContainer>
-            <div className="post-stats-inside-container">
-              <div>icon</div>
-              <div className="post-stats-inside-right">
-                <div>글쓴이</div>
-                <div>{writer}</div>
-              </div>
-            </div>
+            <S.userDetail>
+              <StyledUserOutlined />
+              <img src={postUser?.profileImage} alt="post user" />
+              <span>{postUser?.nickname}</span>
+            </S.userDetail>
           </S.userDetailContainer>
         </S.rightContainer>
       </S.detailContainer>
@@ -177,160 +267,3 @@ const BucketDetail = () => {
 };
 
 export default BucketDetail;
-
-const S = {
-  main: styled.main`
-    position: relative;
-    background-color: #f9fafb;
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 30%;
-    #back-button {
-      position: absolute;
-      top: 2rem;
-      left: 2rem;
-      width: 32px;
-      cursor: pointer;
-      transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-  `,
-  detailContainer: styled.div`
-    width: 100%;
-    height: 50%;
-    height: 550px;
-    display: flex;
-    padding: 2rem;
-    gap: 2rem;
-    padding-top: 5rem;
-  `,
-  leftContainer: styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 1.5rem;
-    align-items: center;
-    width: 60%;
-    background-color: #fff;
-    gap: 1rem;
-    border-radius: 15px;
-    box-shadow: 0 0 5px 5px #f1f3f5;
-    h1 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-    p {
-      color: #555;
-      line-height: 1.2;
-    }
-  `,
-  postDetails: styled.div`
-    height: 30%;
-    width: 100%;
-  `,
-  iconContainer: styled.div`
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  `,
-  photoLibrary: styled.div`
-    height: 70%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    width: 90%;
-    margin-bottom: 1rem;
-    background-size: contain;
-    border-radius: 15px;
-    img {
-      border-radius: 10px;
-    }
-  `,
-  rightContainer: styled.div`
-    height: 100%;
-    width: 40%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    .post-stats-inside-container {
-      display: flex;
-      gap: 0.8rem;
-    }
-
-    .post-stats-inside-right {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-  `,
-  postStatsContainer: styled.div`
-    background-color: #fff;
-    height: 80%;
-    border-radius: 15px;
-    box-shadow: 0 0 5px 5px #f1f3f5;
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-  `,
-  userDetailContainer: styled.div`
-    background-color: #fff;
-    height: 20%;
-    border-radius: 15px;
-    box-shadow: 0 0 5px 5px #f1f3f5;
-    padding: 2rem;
-  `,
-};
-
-const deleteModalStyle = {
-  container: styled.div`
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 2rem;
-    background-color: #f4eaea;
-    border-radius: 10px;
-    box-shadow: 0 0 5px 1px #dfdada;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 100;
-    justify-content: center;
-    align-items: center;
-  `,
-  titleContainer: styled.div`
-    font-size: 1.05rem;
-    color: #333;
-    letter-spacing: 0.2px;
-  `,
-  buttonContainer: styled.div`
-    display: flex;
-    width: 100%;
-    gap: 1rem;
-    :nth-child(1) {
-      &:hover {
-        background-color: #fafafa;
-      }
-    }
-    :nth-child(2) {
-      &:hover {
-        background-color: #fafafa;
-      }
-    }
-    > * {
-      width: 100%;
-      border: none;
-      background-color: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  `,
-};
