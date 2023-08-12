@@ -40,10 +40,14 @@ const BucketDetail = () => {
   const editToggle = useSelector((state: State) => state.editModalToggle);
   const dispatch = useDispatch();
   const [statusValue, setStatusValue] = useState<number>(0);
-  const { data, isLoading, isError, error } = useGetBucketList!(
-    userId as string,
-    postId as string,
-  );
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    refetch: refetchViewCount,
+    isSuccess,
+  } = useGetBucketList!(userId as string, postId as string);
   // 글의 유저 정보 가져오기
   const [postUser, setPostUser] = useState<PostUser | null>(null);
 
@@ -53,18 +57,21 @@ const BucketDetail = () => {
     refetch: refetchPostUser,
   } = useGetWriter(userId!);
 
-  console.log('postUser', postUser);
-
   useEffect(() => {
     if (isPostUserDataStale) {
       refetchPostUser();
     }
   }, [isPostUserDataStale, refetchPostUser]);
-
+  // 조회수 늘리기
+  useEffect(() => {
+    if (isSuccess) {
+      viewCounter();
+    }
+  }, []);
   useEffect(() => {
     if (postUserData) setPostUser(postUserData[0]);
   }, [postUserData]);
-  //
+
   // 수정하기
   useEffect(() => {
     if (data && targetPost.length > 0) {
@@ -130,13 +137,23 @@ const BucketDetail = () => {
     categories,
     content,
     created_at,
-    photoURL,
-    status,
+    photoURL = 'https://media.tenor.com/X3ZCzdwffvMAAAAi/pvz-zombie.gif',
     title,
-    writer,
     viewCount,
-    id,
+    uuid,
   } = targetPost[0];
+  const finalPhotoURL =
+    photoURL || 'https://media.tenor.com/X3ZCzdwffvMAAAAi/pvz-zombie.gif';
+
+  const viewCounter = async () => {
+    if (typeof viewCount === 'number') {
+      await supabase
+        .from('bucketList')
+        .update({ viewCount: viewCount + 1 })
+        .eq('uuid', uuid);
+      refetchViewCount();
+    }
+  };
 
   const deleteModal = (
     <deleteModalStyle.container>
@@ -167,7 +184,7 @@ const BucketDetail = () => {
           </S.postDetails>
           <Divider></Divider>
           <S.photoLibrary>
-            <img src={photoURL} alt="" />
+            <img src={finalPhotoURL} alt="" />
           </S.photoLibrary>
         </S.leftContainer>
         <S.rightContainer>

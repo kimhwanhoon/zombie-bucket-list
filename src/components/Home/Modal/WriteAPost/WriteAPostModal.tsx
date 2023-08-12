@@ -74,7 +74,7 @@ const WriteAPostModal = () => {
   const mutation = useMutation({
     mutationFn: async () => {
       const uuid = shortUUID.generate();
-      const url = photo ? await uploadImage(photo, uuid) : '';
+      const url = photo ? await uploadImage(photo, uuid) : null;
       await postBucket({
         title: titleValue,
         content: contentValue,

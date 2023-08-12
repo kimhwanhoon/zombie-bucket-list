@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { Button, Space, Tag, Form, Input, Slider } from 'antd';
-import postBucket from '../../../../api/postBucket';
 import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
 import Upload, { RcFile } from 'antd/es/upload';
 import uploadImage from '../../../../api/uploadImage';
-import shortUUID from 'short-uuid';
 import { useDispatch } from 'react-redux';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
