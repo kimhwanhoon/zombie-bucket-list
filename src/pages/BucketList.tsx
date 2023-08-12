@@ -80,7 +80,7 @@ const S = {
     border-radius: 8px;
     box-shadow: 1px 1px 8px 1px #e3e3e4;
     background-color: #fff;
-    height: 5rem;
+    height: 10rem;
     display: flex;
     flex-direction: column;
     align-items: center;

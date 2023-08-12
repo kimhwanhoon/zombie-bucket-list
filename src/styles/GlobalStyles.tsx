@@ -23,6 +23,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: var(--color-bg);
+    min-width: 590px;
     color: var(--color-text);
     /* font-family: 'CookieRun-Regular'; */
   }
