@@ -4,14 +4,16 @@ import { styled } from 'styled-components';
 
 export const S = {
   main: styled.main`
+    width: 100%;
+    max-width: 1200px;
+    min-width: 800px;
     position: relative;
     background-color: var(--color-bg);
     min-height: 100vh;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 30%;
+    padding-bottom: 20%;
     #back-button {
       position: absolute;
       top: calc(2rem + 75px);

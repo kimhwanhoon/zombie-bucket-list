@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import { Button, Space, Tag, Form, Input, Slider } from 'antd';
+import { Button, Space, Tag, Form, Input, Slider, Modal, message } from 'antd';
 import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
 import Upload, { RcFile } from 'antd/es/upload';
 import uploadImage from '../../../../api/uploadImage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import useGetCurrentUser from '../../../../hooks/getCurrentUser';
@@ -51,7 +51,9 @@ const EditPostModal = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
   // Form
-
+  // 모달
+  const editModalToggle = useSelector((state: State) => state.editModalToggle);
+  //
   const { TextArea } = Input;
   const { CheckableTag } = Tag;
   const [titleValue, setTitleValue] = useState<string>(targetPost[0].title);
@@ -133,7 +135,7 @@ const EditPostModal = () => {
         url,
         statusValue,
       });
-      alert('성공적으로 수정했습니다.');
+      message.success('성공적으로 등록되었습니다.');
       dispatch(editModalToggler(false));
       setPhoto(null);
     },
@@ -153,107 +155,117 @@ const EditPostModal = () => {
   if (isLoading) return <>Loading...</>;
   if (isError) return <>error! {error}</>;
   return (
-    <modal.container style={photo ? { height: '770px' } : { height: '700px' }}>
-      <modal.closeButtonContainer>
-        <CloseOutlined onClick={() => dispatch(editModalToggler(false))} />
-      </modal.closeButtonContainer>
-      <Form
-        name="basic"
-        // initialValues={{ remember: true }}
-        autoComplete="off"
-        layout="vertical"
-        style={{
-          width: 400,
-        }}
-      >
-        <modal.titleContainer>
-          <modal.title>제목</modal.title>
-          {isTitleEmpty && <modal.warning>내용을 입력해주세요.</modal.warning>}
-        </modal.titleContainer>
-        <Input
-          size="large"
-          value={titleValue}
-          onChange={(e) => setTitleValue(e.target.value)}
-          maxLength={30}
-          style={{ marginBottom: '1rem' }}
-        />
-        <modal.titleContainer>
-          <modal.title>태그</modal.title>
-          {isTagMoreThanTwo && (
-            <modal.warning>최대 2가지 태그만 선택할 수 있습니다.</modal.warning>
-          )}
-        </modal.titleContainer>
-        <Space style={{ marginBottom: '1rem' }} size={[0, 0]} wrap>
-          {tagsData.map((tag) => (
-            <CheckableTag
-              key={tag}
-              checked={selectedTags.includes(tag)}
-              onChange={(checked) => handleChange(tag, checked)}
-            >
-              {tag}
-            </CheckableTag>
-          ))}
-        </Space>
-        <Slider
-          defaultValue={0}
-          max={2}
-          autoFocus
-          keyboard
-          dots
-          tooltip={{ open: false }}
-          marks={{ 0: '시작전', 1: '진행중', 2: '완료' }}
-          value={statusValue}
-          onChange={handleStatusChange}
-        />
-        <modal.titleContainer>
-          <modal.title>본문</modal.title>
-          {isContentEmpty && (
-            <modal.warning>내용을 입력해주세요.</modal.warning>
-          )}
-        </modal.titleContainer>
-        <TextArea
-          showCount
-          maxLength={500}
+    <Modal
+      // title="Title"
+      open={editModalToggle}
+      footer={null}
+      // onOk={handleOk}
+      // confirmLoading={confirmLoading}
+      onCancel={() => dispatch(editModalToggler(false))}
+    >
+      <modal.container>
+        <Form
+          name="basic"
+          // initialValues={{ remember: true }}
+          autoComplete="off"
+          layout="vertical"
           style={{
-            resize: 'none',
-            height: 200,
-            marginBottom: '2rem',
-          }}
-          placeholder="내용을 입력해주세요"
-          value={contentValue}
-          onChange={(e) => setContentValue(e.target.value)}
-        />
-        <Upload.Dragger
-          accept="image/png, image/jpeg, image/jpg"
-          listType="picture"
-          className="upload-list-inline"
-          maxCount={1}
-          onRemove={() => setPhoto(null)}
-          beforeUpload={(file) => {
-            if (file) setPhoto(file);
-            return false;
+            width: 400,
           }}
         >
-          <span>사진을 드래그 하거나 밑의 업로드 버튼을 눌러주세요.</span>
-          <Button block icon={<UploadOutlined />}>
-            업로드
-          </Button>
-        </Upload.Dragger>
-        <Space
-          direction="vertical"
-          style={{ width: '100%', marginTop: '1rem' }}
-        >
-          <Button
-            disabled={isTitleEmpty || isContentEmpty}
-            type="primary"
-            block
-            onClick={() => handleSubmit()}
+          <modal.titleContainer>
+            <modal.title>제목</modal.title>
+            {isTitleEmpty && (
+              <modal.warning>내용을 입력해주세요.</modal.warning>
+            )}
+          </modal.titleContainer>
+          <Input
+            size="large"
+            value={titleValue}
+            onChange={(e) => setTitleValue(e.target.value)}
+            maxLength={30}
+            style={{ marginBottom: '1rem' }}
+          />
+          <modal.titleContainer>
+            <modal.title>태그</modal.title>
+            {isTagMoreThanTwo && (
+              <modal.warning>
+                최대 2가지 태그만 선택할 수 있습니다.
+              </modal.warning>
+            )}
+          </modal.titleContainer>
+          <Space style={{ marginBottom: '1rem' }} size={[0, 0]} wrap>
+            {tagsData.map((tag) => (
+              <CheckableTag
+                key={tag}
+                checked={selectedTags.includes(tag)}
+                onChange={(checked) => handleChange(tag, checked)}
+              >
+                {tag}
+              </CheckableTag>
+            ))}
+          </Space>
+          <Slider
+            defaultValue={0}
+            max={2}
+            autoFocus
+            keyboard
+            dots
+            tooltip={{ open: false }}
+            marks={{ 0: '시작전', 1: '진행중', 2: '완료' }}
+            value={statusValue}
+            onChange={handleStatusChange}
+          />
+          <modal.titleContainer>
+            <modal.title>본문</modal.title>
+            {isContentEmpty && (
+              <modal.warning>내용을 입력해주세요.</modal.warning>
+            )}
+          </modal.titleContainer>
+          <TextArea
+            showCount
+            maxLength={500}
+            style={{
+              resize: 'none',
+              height: 200,
+              marginBottom: '2rem',
+            }}
+            placeholder="내용을 입력해주세요"
+            value={contentValue}
+            onChange={(e) => setContentValue(e.target.value)}
+          />
+          <Upload.Dragger
+            accept="image/png, image/jpeg, image/jpg"
+            listType="picture"
+            className="upload-list-inline"
+            maxCount={1}
+            onRemove={() => setPhoto(null)}
+            beforeUpload={(file) => {
+              if (file) setPhoto(file);
+              return false;
+            }}
           >
-            수정하기
-          </Button>
-        </Space>
-      </Form>
-    </modal.container>
+            <span>사진을 드래그 하거나 밑의 업로드 버튼을 눌러주세요.</span>
+            <Button block icon={<UploadOutlined />}>
+              업로드
+            </Button>
+          </Upload.Dragger>
+          <Space
+            direction="vertical"
+            style={{ width: '100%', marginTop: '1rem' }}
+          >
+            <Button
+              disabled={isTitleEmpty || isContentEmpty}
+              type="primary"
+              block
+              onClick={() => handleSubmit()}
+            >
+              수정하기
+            </Button>
+          </Space>
+        </Form>
+      </modal.container>
+    </Modal>
   );
 };
 
@@ -262,30 +274,11 @@ export default EditPostModal;
 const modal = {
   container: styled.div`
     display: flex;
-    width: 500px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 15px;
-    z-index: 100;
-    background-color: #fafafa;
-    box-shadow: 0 1px 5px 0 #ccc;
     justify-content: center;
     align-items: center;
     transition: cubic-bezier(0, 0, 0.2, 1) 0.3s;
   `,
-  closeButtonContainer: styled.div`
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    cursor: pointer;
-    font-size: 1.25rem;
-    opacity: 0.5;
-    &:hover {
-      opacity: 1;
-    }
-  `,
+
   title: styled.h2`
     font-size: 1rem;
     padding: 0.5rem 0;

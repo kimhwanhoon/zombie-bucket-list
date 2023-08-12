@@ -94,7 +94,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
   };
 
   return (
-    <div>
+    <S.main>
       {/* 내가 쓴 글 상태 보기 */}
       <UserBucketByStatus />
 
@@ -130,7 +130,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
           </S.MypageButtonBox>
         </>
       )}
-    </div>
+    </S.main>
   );
 };
 
