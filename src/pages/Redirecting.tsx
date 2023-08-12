@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TypeIt from 'typeit-react';
 import useGetCurrentUser from '../hooks/getCurrentUser';
-import { Player, Controls } from '@lottiefiles/react-lottie-player';
+import { Player } from '@lottiefiles/react-lottie-player';
 const Redirecting = () => {
   const navigate = useNavigate();
   const { data: currentUser = null } = useGetCurrentUser();
@@ -14,7 +14,7 @@ const Redirecting = () => {
     }
     setTimeout(() => {
       navigate(`/userId/${currentUser.id}/bucket-list/`);
-    }, 3000);
+    }, 2500);
   }, [navigate, currentUser]);
 
   const photo = (

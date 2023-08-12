@@ -15,7 +15,7 @@ import { debounce } from 'lodash';
 import EditPostModal from '../components/Home/BucketList/modal/EditPostModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { editModalToggler } from '../redux/modules/editPostModalToggler';
-import { Divider, Slider } from 'antd';
+import { Button, Divider, Popconfirm, Slider, message } from 'antd';
 import { tagColors } from '../styles/customStyles';
 import useGetWriter from '../hooks/getWriter';
 import {
@@ -24,7 +24,6 @@ import {
   StyledProgress,
   StyledTag,
   StyledUserOutlined,
-  deleteModalStyle,
 } from '../styles/bucketDetail.styles';
 
 interface PostUser {
@@ -36,7 +35,6 @@ const BucketDetail = () => {
   useGetCurrentUser(); // 유저 정보 가져오기 (새로고침했을 때, 현재 유저 정보가 없는 것을 보완)
   const { userId, postId } = useParams();
   const navigate = useNavigate();
-  const [deleteToggle, setDeleteToggle] = useState(false);
   const editToggle = useSelector((state: State) => state.editModalToggle);
   const dispatch = useDispatch();
   const [statusValue, setStatusValue] = useState<number>(0);
@@ -99,7 +97,7 @@ const BucketDetail = () => {
         .from('bucketList')
         .delete()
         .eq('id', postId);
-      alert('삭제 완료!');
+      message.success('삭제 완료!');
       if (error) console.log(error);
     },
     onSuccess: () => {
@@ -154,21 +152,18 @@ const BucketDetail = () => {
       refetchViewCount();
     }
   };
+  // 삭제하기
+  const deleteConfirmHandler = () => {
+    handleDelete();
+    message.success('삭제되었습니다.');
+  };
 
-  const deleteModal = (
-    <deleteModalStyle.container>
-      <deleteModalStyle.titleContainer>
-        <p>삭제하시겠습니까?</p>
-      </deleteModalStyle.titleContainer>
-      <deleteModalStyle.buttonContainer>
-        <button onClick={() => handleDelete()}>삭제</button>
-        <button onClick={() => setDeleteToggle(false)}>취소</button>
-      </deleteModalStyle.buttonContainer>
-    </deleteModalStyle.container>
-  );
+  const deleteCancelHandler = () => {
+    message.error('삭제 취소하였습니다.');
+  };
+
   return (
     <S.main>
-      {deleteToggle && deleteModal}
       {editToggle && <EditPostModal />}
       <img
         id="back-button"
@@ -198,13 +193,22 @@ const BucketDetail = () => {
               }}
               onClick={() => dispatch(editModalToggler(true))}
             />
-            <DeleteOutlined
-              style={{
-                fontSize: '1.25rem',
-                cursor: 'pointer',
-              }}
-              onClick={() => setDeleteToggle(true)}
-            />
+
+            <Popconfirm
+              title="버킷리스트 삭제"
+              description="정말 삭제하시겠습니까?"
+              onConfirm={deleteConfirmHandler}
+              onCancel={deleteCancelHandler}
+              okText="삭제"
+              cancelText="취소"
+            >
+              <DeleteOutlined
+                style={{
+                  fontSize: '1.25rem',
+                  cursor: 'pointer',
+                }}
+              />
+            </Popconfirm>
           </S.iconContainer>
           <S.postStatsContainer>
             <S.postStatsElementContainer>

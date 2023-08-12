@@ -64,4 +64,5 @@ interface State {
   postModalToggle: boolean;
   savedBucket: BucketList | null;
   editModalToggle: boolean;
+  statusLabel: any;
 }

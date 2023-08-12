@@ -25,7 +25,7 @@ const WriteAPostButton = () => {
           </AntStyledButton>
         </S.container>
       )}
-      {postModalToggle && <WriteAPostModal />}
+      <WriteAPostModal />
     </>
   );
 };

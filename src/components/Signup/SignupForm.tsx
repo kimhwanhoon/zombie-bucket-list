@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
 import { S } from './SignupForm.styles';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
 
-const SignupForm= () => {
+const SignupForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
@@ -171,7 +171,7 @@ const SignupForm= () => {
 
       // users에 user 정보 insert
       await supabase.from('users').insert({
-        id:user?.id,
+        id: user?.id,
         nickname,
         email,
         password,
@@ -180,16 +180,16 @@ const SignupForm= () => {
       }); //userImage 객체의 publicUrl 값이 db에 들어가게 연결
 
       // 토큰 가져오기!
-      const getToken = async () =>{
-        const { data:response } = await supabase.auth.getSession()
-        localStorage.setItem("token", response.session?.access_token as string)
-      }
+      const getToken = async () => {
+        const { data: response } = await supabase.auth.getSession();
+        localStorage.setItem('token', response.session?.access_token as string);
+      };
       getToken();
 
       // 로그인 시 메인으로 이동
       if (user) {
         navigate('/');
-        alert('회원가입이 완료되었습니다.')
+        message.success('회원가입이 완료되었습니다.');
       }
     } catch (error) {
       alert(
@@ -200,20 +200,28 @@ const SignupForm= () => {
 
   return (
     <S.SignUpContainer>
-      <S.SignUpTitle><img src='https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/logo/logo.png' alt='logo' width={'300px'}/></S.SignUpTitle>
+      <S.SignUpTitle>
+        <img
+          src="https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/logo/logo.png"
+          alt="logo"
+          width={'300px'}
+        />
+      </S.SignUpTitle>
       <S.SignUpForm>
         <S.SignUpImageInputWrapper>
           <S.SignUpImageContentWrapper>
             <S.SignUpImageBox>
-                {newProfileImageURL ? (
-                  <img src={newProfileImageURL as string} alt="new-priview-img" />
-                ) : defaultProfileImageURL ? (
-                  <img src={defaultProfileImageURL} alt="default=priview-img" />
-                ) : (
-                  <span>이미지 미리보기</span>
-                )}
+              {newProfileImageURL ? (
+                <img src={newProfileImageURL as string} alt="new-priview-img" />
+              ) : defaultProfileImageURL ? (
+                <img src={defaultProfileImageURL} alt="default=priview-img" />
+              ) : (
+                <span>이미지 미리보기</span>
+              )}
             </S.SignUpImageBox>
-            <S.SignUpImageText htmlFor="profileImg">프로필 이미지 등록</S.SignUpImageText>
+            <S.SignUpImageText htmlFor="profileImg">
+              프로필 이미지 등록
+            </S.SignUpImageText>
             <input
               type="file"
               accept="image/*"
@@ -223,49 +231,46 @@ const SignupForm= () => {
               ref={imageRef}
             />
           </S.SignUpImageContentWrapper>
-          
-            <S.SignUpInputWrapper>
-              <S.Input
-                showCount
-                maxLength={10}
-                type="nickname"
-                value={nickname}
-                onChange={onChange}
-                name="nickname"
-                placeholder="닉네임"
-                id='nickname'
-                autoFocus
-              />
-              <S.Input
-                type="email"
-                value={email}
-                onChange={onChange}
-                name="email"
-                placeholder="이메일"
-                id='email'
-              />
-              <S.PasswordInput
-                type="password"
-                value={password}
-                onChange={onChange}
-                name="password"
-                placeholder="비밀번호"
-              />
-              <S.PasswordInput
-                type="password"
-                value={checkPassword}
-                onChange={onChange}
-                name="checkPassword"
-                placeholder="비밀번호 확인"
-              />
-            </S.SignUpInputWrapper>
-          </S.SignUpImageInputWrapper>
-        <div>
-        </div>
+
+          <S.SignUpInputWrapper>
+            <S.Input
+              showCount
+              maxLength={10}
+              type="nickname"
+              value={nickname}
+              onChange={onChange}
+              name="nickname"
+              placeholder="닉네임"
+              id="nickname"
+              autoFocus
+            />
+            <S.Input
+              type="email"
+              value={email}
+              onChange={onChange}
+              name="email"
+              placeholder="이메일"
+              id="email"
+            />
+            <S.PasswordInput
+              type="password"
+              value={password}
+              onChange={onChange}
+              name="password"
+              placeholder="비밀번호"
+            />
+            <S.PasswordInput
+              type="password"
+              value={checkPassword}
+              onChange={onChange}
+              name="checkPassword"
+              placeholder="비밀번호 확인"
+            />
+          </S.SignUpInputWrapper>
+        </S.SignUpImageInputWrapper>
+        <div></div>
         <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
-        <S.Button onClick={handleSignUpButtonClick}>
-          회원가입
-        </S.Button>
+        <S.Button onClick={handleSignUpButtonClick}>회원가입</S.Button>
       </S.SignUpForm>
     </S.SignUpContainer>
   );
