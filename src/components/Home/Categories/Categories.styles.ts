@@ -2,17 +2,22 @@ import { Tabs } from 'antd';
 import { styled } from 'styled-components';
 
 export const S = {
-  NavSection: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-
   Tabs: styled(Tabs)`
-    margin: 1rem;
+    margin: auto;
+    margin-top: 1.5rem;
+    width: 100%;
+
+    .ant-tabs-nav {
+      display: flex;
+      justify-content: center;
+    }
+
+    .ant-tabs-nav-wrap {
+    }
   `,
 
   bucketListContainer: styled.div`
-    padding: 5rem 2rem 1rem 2rem;
+    padding: 1rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;

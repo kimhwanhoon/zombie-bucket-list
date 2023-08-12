@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import './reset.css';
+// import bucketBackground from '../assets/zombies1.jpg';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -21,13 +22,12 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     /* font-family: 'Arita-buri-SemiBold'; */
-  } */
-
+  } 
+  
   body {
     background-color: var(--color-bg);
     min-width: 590px;
-    color: var(--color-text);
-    /* font-family: 'CookieRun-Regular'; */
+    color: var(--color-text); 
   }
 `;
 

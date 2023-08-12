@@ -4,7 +4,10 @@ import useGetBucketList from '../hooks/getBucketList';
 import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 import Categories from '../components/Home/Categories/Categories';
+import Layout from '../components/Layout/Layout';
+import bucketBackground from '../assets/zombie.png';
 import { useEffect } from 'react';
+
 const BucketList = () => {
   useGetCurrentUser();
   const params = useParams().userId;
@@ -17,20 +20,25 @@ const BucketList = () => {
   });
 
   return (
-    <>
+    <Layout>
       <Main>
         <WriteAPostButton />
         <Categories />
       </Main>
-    </>
+    </Layout>
   );
 };
 
 export default BucketList;
 
 const Main = styled.main`
-  background-color: #f8f8f8;
+  background-color: transparent;
+  width: 100%;
   min-height: 100vh;
   padding-top: 60px;
-  width: 100%;
+
+  background-image: url(${bucketBackground});
+  background-repeat: no-repeat;
+  background-size: 1400px 500px;
+  background-position: bottom;
 `;

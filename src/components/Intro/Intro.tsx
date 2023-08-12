@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { S } from '../Intro/Intro.styles';
 import TypeIt from 'typeit-react';
-import { keyframes, styled } from 'styled-components';
 
 const Intro = () => {
   const navigate = useNavigate();
@@ -101,14 +100,15 @@ const Intro = () => {
                 </p>
                 <p>그럼 시작해보자..!</p>
               </S.IntroText>
-              <S.Button
-                onClick={() => {
-                  alert('로그인 페이지로 이동합니다!');
-                  navigate('/auth');
-                }}
+              <S.BtnWrapper
+                className="glitch"
+                data-text="입장하기"
+                onClick={() => navigate('/auth')}
               >
+                <S.GlitchBefore data-text="입장하기" />
                 입장하기
-              </S.Button>
+                <S.GlitchAfter data-text="입장하기" />
+              </S.BtnWrapper>
             </>
           ) : (
             <>
@@ -131,7 +131,7 @@ const Intro = () => {
                     눈에 보이지 않는 위험한 적들과 맞서 싸우며, 내 삶을 다시
                     채워나가는 거야.
                   </p>
-                  <p>그럼 시작해보자!</p>
+                  <p>그럼 시작해보자..!</p>
                 </S.IntroText>
               </TypeIt>
               {/* 마지막 스킵 버튼 */}
@@ -146,76 +146,18 @@ const Intro = () => {
       )}
       {/* 입장하기 버튼 활성화 상태에 따른 버튼 표시 */}
       {enterButton && (
-        <S.Button onClick={() => navigate('/auth')}>입장하기</S.Button>
+        <S.BtnWrapper
+          className="glitch"
+          data-text="입장하기"
+          onClick={() => navigate('/auth')}
+        >
+          <S.GlitchBefore data-text="입장하기" />
+          입장하기
+          <S.GlitchAfter data-text="입장하기" />
+        </S.BtnWrapper>
       )}
-
-      {/* <GlitchButton>glitch</GlitchButton> */}
     </S.IntroWrapper>
   );
 };
 
 export default Intro;
-
-// const glitchAnimation = keyframes`
-//     0% {
-//         transform: rotateX(10deg) skewX(90deg);
-//         background-color: #0ffbf9;
-//         filter: blur(3px);
-//     }
-//     1% {
-//         transform: none;
-//         background-color: #eee;
-//         filter: blur(0);
-//     }
-//     2% {
-//         transform: rotateX(10deg) skewX(90deg);
-//         background-color: #cc0f39;
-//         filter: blur(3px);
-//     }
-//     3% {
-//         transform: rotateX(12deg) skewX(79deg);
-//         background-color: #eee;
-//         filter: blur(0);
-//     }
-//     4% {
-//         transform: translateX(20px) skewX(11deg);
-//         background-color: #0ffbf9;
-//         filter: blur(3px);
-//     }
-//     5% {
-//         transform: rotateY(10deg) skewY(30deg);
-//         background-color: #eee;
-//         filter: blur(0);
-//     }
-//     6% {
-//         transform: translateX(-50px) skewX(40deg);
-//         background-color: #cc0f39;
-//         filter: blur(3px);
-//     }
-//     7% {
-//         transform: rotateX(7deg) skewX(81deg);
-//         background-color: #eee;
-//         filter: blur(0);
-//     }
-//     8% {
-//         transform: none;
-//     }
-// `;
-
-// const GlitchButton = styled.button`
-//   width: 15rem;
-//   height: 4rem;
-//   font-size: 1.2rem;
-//   background-color: #eee;
-//   color: black;
-//   box-shadow: -5px 5px #aaa;
-//   animation: ${glitchAnimation} 3s linear infinite;
-//   font-family: monospace;
-//   transition: all 0.2s;
-
-//   &:active {
-//     transform: translateX(-5px) translateY(5px);
-//     box-shadow: -2px 2px #aaa;
-//     transition: all 0.2s;
-//   }
-// `;
