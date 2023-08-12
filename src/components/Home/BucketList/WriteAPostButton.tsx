@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { postModalToggler } from '../../../redux/modules/writeAPostModalToggler';
 import { useParams } from 'react-router-dom';
 import useGetCurrentUser from '../../../hooks/getCurrentUser';
+import { Button } from 'antd';
 
 const WriteAPostButton = () => {
   const { data: currentUser = null } = useGetCurrentUser();
@@ -16,11 +17,12 @@ const WriteAPostButton = () => {
     <>
       {currentUser !== null && currentUser.id === params && (
         <S.container>
-          <S.button
+          <AntStyledButton
+            loading={postModalToggle}
             onClick={() => dispatch(postModalToggler(!postModalToggle))}
           >
-            {!postModalToggle ? '작성하기' : '닫기'}
-          </S.button>
+            {!postModalToggle ? '작성하기' : '작성중'}
+          </AntStyledButton>
         </S.container>
       )}
       {postModalToggle && <WriteAPostModal />}
@@ -34,11 +36,12 @@ const S = {
   container: styled.div`
     position: relative;
   `,
-  button: styled.button`
-    position: absolute;
-    top: 5rem;
-    right: 2rem;
-    cursor: pointer;
-    z-index: 10;
-  `,
 };
+
+const AntStyledButton = styled(Button)`
+  position: absolute;
+  top: 5rem;
+  right: 2rem;
+  cursor: pointer;
+  z-index: 10;
+`;
