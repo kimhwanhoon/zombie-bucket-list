@@ -8,7 +8,7 @@ export const S = {
   `,
 
   Tabs: styled(Tabs)`
-    margin-left: 1rem;
+    margin: 1rem;
   `,
 
   bucketListContainer: styled.div`
@@ -18,6 +18,7 @@ export const S = {
     align-items: center;
     gap: 3rem;
   `,
+
   bucketContainer: styled.div`
     width: 500px;
     border-radius: 8px;
@@ -32,6 +33,7 @@ export const S = {
     gap: 1rem;
     cursor: pointer;
   `,
+
   bucketFirstLineContainer: styled.div`
     width: 100%;
     display: flex;
@@ -43,6 +45,7 @@ export const S = {
       letter-spacing: 0.25px;
     }
   `,
+
   bucketSecondLineContainer: styled.div`
     width: 100%;
     display: flex;

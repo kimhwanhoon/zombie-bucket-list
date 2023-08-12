@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setStatusLabel } from '../../../redux/modules/statusLabelSlice';
 import useGetBucketList from '../../../hooks/getBucketList';
+import { S } from './DropDown.styles';
 import { Dropdown, Space, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
@@ -50,25 +51,27 @@ const DropDown = () => {
   };
 
   return (
-    <>
+    <S.Container>
       {/* Ant Design의 드롭다운 컴포넌트 */}
       <Dropdown
         menu={{
           items,
           selectable: true,
-          defaultSelectedKeys: ['1'],
+          defaultSelectedKeys: ['0'],
           onClick: handleItemClick,
         }}
       >
         {/* 드롭다운 트리거 역할을 하는 링크 */}
         <Typography.Link>
           <Space>
-            진행상태
-            <DownOutlined />
+            <S.Statuslabel>
+              진행상태&nbsp;
+              <DownOutlined />
+            </S.Statuslabel>
           </Space>
         </Typography.Link>
       </Dropdown>
-    </>
+    </S.Container>
   );
 };
 
