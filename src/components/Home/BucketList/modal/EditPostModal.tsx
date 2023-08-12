@@ -102,10 +102,13 @@ const EditPostModal = () => {
     });
   };
   // 작성하기 tanstack query함수 + invalidate
+
   const mutation = useMutation({
     mutationFn: async () => {
-      const url = photo ? await uploadImage(photo, uuid) : '';
-      console.log(url);
+      const url = photo
+        ? await uploadImage(photo, uuid)
+        : targetPost[0].photoURL;
+
       await editBucket({
         title: titleValue,
         content: contentValue,

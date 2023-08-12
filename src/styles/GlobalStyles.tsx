@@ -25,7 +25,9 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     background-color: var(--color-bg);
-    /* font-family: 'Arita-buri-SemiBold'; */
+    min-width: 590px;
+    color: var(--color-text);
+    /* font-family: 'CookieRun-Regular'; */
   }
 `;
 

@@ -65,6 +65,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
       try {
         const { error } = await supabaseService.auth.admin.deleteUser(UserUID);
         await supabase.from('users').delete().eq('email', user?.email);
+        await supabase.from('ducketList').delete().eq('email', user?.email);
         localStorage.removeItem('token');
         deleteProfileImage();
 
@@ -105,7 +106,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
           <S.UserProfileContainer>
             <S.UserImgNickname>
               <S.UserImage>
-                <img src={userProfile} />
+                <img src={userProfile} alt="user-pic" />
               </S.UserImage>
               <S.UserNickname>{userNickname}</S.UserNickname>
             </S.UserImgNickname>

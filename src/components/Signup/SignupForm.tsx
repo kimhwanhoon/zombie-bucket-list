@@ -2,8 +2,10 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
+import { S } from './SignupForm.styles';
+import { Input } from 'antd';
 
-const SignupForm = () => {
+const SignupForm= () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checkPassword, setCheckPassword] = useState('');
@@ -24,7 +26,7 @@ const SignupForm = () => {
   // default image url을 storage에서 가져오기
   const { data } = supabaseService.storage
     .from('user-profile')
-    .getPublicUrl('pms.jpg');
+    .getPublicUrl('default-profile-image.png');
   const defaultImageUrl = data.publicUrl;
   console.log('defaultImageUrl : ', defaultImageUrl);
 
@@ -197,62 +199,75 @@ const SignupForm = () => {
   };
 
   return (
-    <>
-      <div>좀비가 되기 전에 해야하는 100가지</div>
-
-      <form>
+    <S.SignUpContainer>
+      <S.SignUpTitle><img src='https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/logo/logo.png' alt='logo' width={'300px'}/></S.SignUpTitle>
+      <S.SignUpForm>
+        <S.SignUpImageInputWrapper>
+          <S.SignUpImageContentWrapper>
+            <S.SignUpImageBox>
+                {newProfileImageURL ? (
+                  <img src={newProfileImageURL as string} alt="new-priview-img" />
+                ) : defaultProfileImageURL ? (
+                  <img src={defaultProfileImageURL} alt="default=priview-img" />
+                ) : (
+                  <span>이미지 미리보기</span>
+                )}
+            </S.SignUpImageBox>
+            <S.SignUpImageText htmlFor="profileImg">프로필 이미지 등록</S.SignUpImageText>
+            <input
+              type="file"
+              accept="image/*"
+              id="profileImg"
+              style={{ display: 'none' }}
+              onChange={changhProfileImageFile}
+              ref={imageRef}
+            />
+          </S.SignUpImageContentWrapper>
+          
+            <S.SignUpInputWrapper>
+              <S.Input
+                showCount
+                maxLength={10}
+                type="nickname"
+                value={nickname}
+                onChange={onChange}
+                name="nickname"
+                placeholder="닉네임"
+                id='nickname'
+                autoFocus
+              />
+              <S.Input
+                type="email"
+                value={email}
+                onChange={onChange}
+                name="email"
+                placeholder="이메일"
+                id='email'
+              />
+              <S.PasswordInput
+                type="password"
+                value={password}
+                onChange={onChange}
+                name="password"
+                placeholder="비밀번호"
+              />
+              <S.PasswordInput
+                type="password"
+                value={checkPassword}
+                onChange={onChange}
+                name="checkPassword"
+                placeholder="비밀번호 확인"
+              />
+            </S.SignUpInputWrapper>
+          </S.SignUpImageInputWrapper>
         <div>
-          {newProfileImageURL ? (
-            <img src={newProfileImageURL as string} alt="new-priview-img" />
-          ) : defaultProfileImageURL ? (
-            <img src={defaultProfileImageURL} alt="default=priview-img" />
-          ) : (
-            <span>이미지 미리보기</span>
-          )}
-          <label htmlFor="profileImg">프로필 이미지 등록</label>
-          <input
-            type="file"
-            accept="image/*"
-            id="profileImg"
-            style={{ display: 'none' }}
-            onChange={changhProfileImageFile}
-            ref={imageRef}
-          />
         </div>
-        <input
-          type="nickname"
-          value={nickname}
-          onChange={onChange}
-          name="nickname"
-          placeholder="닉네임"
-        />
-        <input
-          type="email"
-          value={email}
-          onChange={onChange}
-          name="email"
-          placeholder="이메일"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={onChange}
-          name="password"
-          placeholder="비밀번호"
-        />
-        <input
-          type="password"
-          value={checkPassword}
-          onChange={onChange}
-          name="checkPassword"
-          placeholder="비밀번호 체크"
-        />
-        <button type="submit" onClick={handleSignUpButtonClick}>
+        <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
+        <S.Button onClick={handleSignUpButtonClick}>
           회원가입
-        </button>
-      </form>
-      <span>{errorMessage}</span>
-    </>
+        </S.Button>
+      </S.SignUpForm>
+    </S.SignUpContainer>
   );
 };
 
