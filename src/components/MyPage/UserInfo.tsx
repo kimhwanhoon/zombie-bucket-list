@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import supabaseService from '../../api/supabaseService';
 import UserEdit from './UserEdit';
 import UserBucketByStatus from './UserBucketByStatus';
+import { Button } from 'antd';
 
 const UserInfo = ({ user }: { user: User | null }) => {
   const navigate = useNavigate();
@@ -64,6 +65,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
       try {
         const { error } = await supabaseService.auth.admin.deleteUser(UserUID);
         await supabase.from('users').delete().eq('email', user?.email);
+        await supabase.from('ducketList').delete().eq('email', user?.email);
         localStorage.removeItem('token');
         deleteProfileImage();
 
@@ -122,9 +124,9 @@ const UserInfo = ({ user }: { user: User | null }) => {
             </div>
           </S.UserProfileContainer>
           <S.MypageButtonBox>
-            <button onClick={handleEditToggleButton}>회원정보 수정</button>
-            <button onClick={handleDeleteUser}>회원 탈퇴</button>
-            <button onClick={handleGoHomeButton}>내 홈으로 가기</button>
+            <S.Button onClick={handleEditToggleButton}>회원정보 수정</S.Button>
+            <S.Button onClick={handleGoHomeButton}>내 홈으로 가기</S.Button>
+            <S.ButtonOut onClick={handleDeleteUser}>회원 탈퇴</S.ButtonOut>
           </S.MypageButtonBox>
         </>
       )}

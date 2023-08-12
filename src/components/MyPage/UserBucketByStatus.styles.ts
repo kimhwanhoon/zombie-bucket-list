@@ -15,10 +15,12 @@ export const S = {
     font-size: 16px;
     margin-top: 20px;
     border-bottom: 2px solid var(--color-primary);
+    color: var(--color-text);
   `,
 
   BucketStatusTitle: styled.h2`
     font-size: 20px;
+    color: var(--color-text);
   `,
 
   BucketStatusBox: styled.div`
@@ -31,6 +33,8 @@ export const S = {
 
   BucketTotalCountNumber: styled.span`
     font-size: 50px;
+    color: var(--color-text);
+    margin-right: 5px;
   `,
 
   BucketStatusListBox: styled.div`
@@ -57,10 +61,13 @@ export const S = {
     }};
   `,
 
-  BucketStatusListCount: styled.p``,
+  BucketStatusListCount: styled.p`
+    color: var(--color-text);
+  `,
 
   BucketStatusListCountNumber: styled.span`
     font-size: 40px;
-    margin-left: 5px;
+    margin-right: 5px;
+    color: var(--color-text);
   `,
 };

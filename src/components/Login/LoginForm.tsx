@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from '../../api/supabase';
+import { S } from './LoginForm.styles';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -76,31 +77,40 @@ const LoginForm = () => {
   };
 
   return (
-    <>
-      <div>좀비가 되기 전에 해야하는 100가지</div>
+    <S.LoginContainer>
+      <S.LoginTitle><img src='https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/logo/logo.png' alt='logo' width={'300px'}/></S.LoginTitle>
+      <S.LoginForm> 
+        <S.WelcomeTextWrapper>
+          <S.WelcomeText>welcome...☠</S.WelcomeText>
+        </S.WelcomeTextWrapper>
+        <S.LoginInputWrapper>
+          <S.LoginInputInnerWrapper>
+            <S.Input
+              type="email"
+              value={email}
+              onChange={onChange}
+              name="email"
+              placeholder="이메일"
+              autoFocus
+            />
+            <S.PasswordInput
+              type="password"
+              value={password}
+              onChange={onChange}
+              name="password"
+              placeholder="비밀번호"
+            />
+          </S.LoginInputInnerWrapper>
+        </S.LoginInputWrapper>
 
-      <form>
-        <input
-          type="email"
-          value={email}
-          onChange={onChange}
-          name="email"
-          placeholder="이메일"
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={onChange}
-          name="password"
-          placeholder="비밀번호"
-        />
-        <button type="submit" onClick={handleLoginButtonClick}>
-          로그인
-        </button>
-        <br />
-      </form>
-      <span>{errorMessage}</span>
-    </>
+        <S.LoginButtonAndErrorMessageWrapper>
+          <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
+          <S.Button onClick={handleLoginButtonClick}>
+            로그인
+          </S.Button>
+        </S.LoginButtonAndErrorMessageWrapper>
+      </S.LoginForm>
+    </S.LoginContainer>
   );
 };
 

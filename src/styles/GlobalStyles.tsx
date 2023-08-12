@@ -10,7 +10,6 @@ const GlobalStyle = createGlobalStyle`
   --color-white: #FEFEFE;
   --color-primary: #D1CFCF
 }
-
 /* @font-face {
     font-family: 'CookieRun-Regular';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff');
@@ -25,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: var(--color-bg);
     min-width: 590px;
+    color: var(--color-text);
     /* font-family: 'CookieRun-Regular'; */
   }
 `;

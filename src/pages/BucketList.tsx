@@ -63,9 +63,8 @@ export default BucketList;
 
 const Main = styled.main`
   background-color: #f8f8f8;
-  /* min-height: 100vh; */
-  height: calc(100vh - 75px);
-  overflow: auto;
+  min-height: 100vh;
+  padding-top: 60px;
 `;
 
 const S = {
