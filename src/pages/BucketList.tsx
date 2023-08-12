@@ -32,4 +32,5 @@ const Main = styled.main`
   background-color: #f8f8f8;
   min-height: 100vh;
   padding-top: 60px;
+  width: 100%;
 `;
