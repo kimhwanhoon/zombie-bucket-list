@@ -8,7 +8,7 @@ export const S = {
   `,
 
   Tabs: styled(Tabs)`
-    margin: 1rem;
+    margin-left: 1rem;
   `,
 
   bucketListContainer: styled.div`

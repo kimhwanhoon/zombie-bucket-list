@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 import { Button } from 'antd';
 import introBackground from '../../assets/introBackground.jpg';
 
@@ -11,11 +11,12 @@ export const S = {
     background-image: linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.5),
-        rgba(0, 0, 0, 0.5)
+        rgba(0, 0, 0, 0.7)
       ),
       url(${introBackground});
     background-size: cover;
     background-position: center;
+    font-family: 'Arita-buri-SemiBold';
 
     display: flex;
     flex-direction: column;
@@ -34,11 +35,13 @@ export const S = {
   `,
 
   Button: styled(Button)`
+    font-family: 'Arita-buri-SemiBold';
     margin: 1rem;
   `,
 
   AllSkipButton: styled(Button)`
     color: var(--color-white);
+    font-family: 'Arita-buri-SemiBold';
     position: absolute;
     top: 0;
     right: 0;
@@ -53,7 +56,8 @@ export const S = {
 
   SkipButton: styled(Button)`
     color: var(--color-white);
-    margin: 1rem;
+    font-family: 'Arita-buri-SemiBold';
+    margin: 1.5rem;
 
     &:hover {
       font-weight: 600;

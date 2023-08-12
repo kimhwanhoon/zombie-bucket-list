@@ -153,6 +153,7 @@ const Categories = () => {
     ),
   }));
 
+  // Ant Design Tabs 컴포넌트 출력
   return <S.Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
 };
 
