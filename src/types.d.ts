@@ -45,7 +45,7 @@ interface bucketType {
   content: string;
   selectedTags: string[];
   uuid: string;
-  url: string;
+  url: string | null;
   email: string;
   userId: string;
   created_at: string;
