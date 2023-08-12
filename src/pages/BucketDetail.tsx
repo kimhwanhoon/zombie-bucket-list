@@ -155,7 +155,7 @@ const BucketDetail = () => {
   // 삭제하기
   const deleteConfirmHandler = () => {
     handleDelete();
-    message.success('삭제되었습니다.');
+    message.loading('삭제하는중...');
   };
 
   const deleteCancelHandler = () => {
