@@ -34,31 +34,28 @@ const UserEdit = ({
     return reponse;
   });
 
-  console.log(userData);
+  // console.log(userData);
+
+  useEffect(() => {
+    if (userData && userData.length > 0) {
+      setUserEditNickname(userData[0].nickname);
+      setUserEditAbout(userData[0].about);
+      setPrevProfileImageURL(userData[0].profileImage);
+    }
+  }, []);
 
   const fetchUserDB = async () => {
     const { data, error } = await supabase
       .from('users')
       .select('nickname, profileImage, email, about')
       .eq('email', user?.email);
-    console.log('현재 유저 정보 ', data);
+    // console.log('현재 유저 정보 ', data);
 
     if (error) {
       alert('프로필 수정 오류가 발생했습니다. 고객센터에 문의해주세요.');
-    } else {
-      if (data && data.length > 0) {
-        setUserEditNickname(data[0].nickname);
-        setUserEditAbout(data[0].about);
-        setPrevProfileImageURL(data[0].profileImage);
-      }
     }
     return data;
   };
-
-  // // 현재 유저 정보 DB 불러오기
-  // useEffect(() => {
-
-  // }, [user]);
 
   // 변경 전 이미지 URL(prevProfileImageURL)이 수정 완료 버튼 클릭 시 적용된 URL과 같으면 변경 로직 실행 X
   // 미리보기
@@ -85,7 +82,7 @@ const UserEdit = ({
         cacheControl: '3600',
         upsert: true,
       });
-    console.log(data);
+    // console.log(data);
   };
 
   //   // storage image update에 error가 없다면
