@@ -25,7 +25,7 @@ export const S = {
     background-color: var(--color-bg);
     border: 3px solid var(--color-accent);
     border-radius: 10px;
-    padding: 20px 10px;
+    padding: 20px 20px;
   `,
 
   SignUpImageInputWrapper: styled.div`
@@ -75,7 +75,7 @@ export const S = {
 
   Input: styled(Input)`
     max-width: 350px;
-    min-width: 300px;
+    min-width: 230px;
     height: 50px;
 
     &:hover {
@@ -91,7 +91,7 @@ export const S = {
 
   PasswordInput: styled(Input.Password)`
     max-width: 350px;
-    min-width: 300px;
+    min-width: 230px;
     height: 50px;
 
     &:hover {

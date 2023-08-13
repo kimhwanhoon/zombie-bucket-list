@@ -6,11 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchUserDB } from '../../api/user';
 import useGetCurrentUser from '../../hooks/getCurrentUser';
 
-const Header = () => {
+const Header =  ({queryClient}: queryClientProps) => {
   const { data: user } = useGetCurrentUser();
   const params = useParams().userId;
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
 
   // user의 프로필,닉네임 정보 관리
   // const [userProfile, setUserProfile] = useState<string>();
@@ -18,9 +17,6 @@ const Header = () => {
 
   const {
     data: userData,
-    isLoading,
-    isError,
-    error,
     isStale,
     refetch,
   } = useQuery(['userData'], async () => {
@@ -31,8 +27,9 @@ const Header = () => {
     }
   });
 
-  //
-  //
+  console.log("header-user : ", user);
+  console.log("header-userData : ", userData);
+
 
   useEffect(() => {
     if (!userData && isStale) {
@@ -46,8 +43,11 @@ const Header = () => {
   ) => {
     event.preventDefault();
     localStorage.removeItem('token');
-    alert('로그아웃 되었습니다. 로그인 페이지로 이동합니다.');
     const { error } = await supabase.auth.signOut();
+    queryClient.removeQueries('userData')
+    queryClient.removeQueries('currentUser')
+    alert('로그아웃 되었습니다. 로그인 페이지로 이동합니다.');
+    console.log("logout error: ",error)
     navigate('/auth');
   };
 

@@ -15,6 +15,7 @@ export const S = {
     margin-top: 20px;
     border-bottom: 2px solid var(--color-primary);
     color: var(--color-text);
+    padding-top: 90px;
   `,
 
   BucketStatusTitle: styled.h2`

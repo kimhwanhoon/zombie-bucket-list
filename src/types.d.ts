@@ -66,3 +66,15 @@ interface State {
   editModalToggle: boolean;
   statusLabel: any;
 }
+
+type UserData = {
+  nickname: string;
+  email: string;
+  profileImage: string;
+  about: string;
+}[];
+
+interface queryClientProps {
+  queryClient: QueryClient;
+  removeQueries?: (key: string | string[]) => void;
+}

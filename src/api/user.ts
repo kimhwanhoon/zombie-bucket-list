@@ -5,7 +5,7 @@ export const fetchUserDB = async (email: string) => {
   console.log(' >>>>>', email);
   const { data, error } = await supabase
     .from('users')
-    .select('nickname, profileImage, about')
+    .select('nickname, email, profileImage, about')
     .eq('email', email);
 
   console.log('더이상..쓸말이..', data);

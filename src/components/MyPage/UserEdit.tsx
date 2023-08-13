@@ -3,16 +3,18 @@ import { S } from './UserEdit.styles';
 import { User } from '@supabase/supabase-js';
 import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../../App';
 import { Input } from 'antd';
 const { TextArea } = Input;
 const UserEdit = ({
   user,
   setIsEdit,
+  userData
 }: {
   user: User | null;
   setIsEdit: any;
+  userData: any;
 }) => {
   // 수정되는 유저 정보
   const [userEditNickname, setUserEditNickname] = useState<string>();
@@ -25,16 +27,20 @@ const UserEdit = ({
   const [newProfileImageFile, setNewProfileImageFile] = useState<File | null>(
     null,
   );
+  
+  console.log("userEditUser!!!!!!!!!!! : ", user)
 
   // console.log('수정거 적히는지>>>>', userEditNickname);
   // console.log('수정거 적히는지>>>>', userEditAbout);
 
-  const { data: userData } = useQuery(['userData'], async () => {
-    const reponse = await fetchUserDB();
-    return reponse;
-  });
+  // const {data: userData} = useQuery(['userData'], async () => {
+  //   console.log(user?.email)
+  //   const reponse = await fetchUserDB(user?.email as string);
+  //   console.log("userEditResponse!!!!! : ", reponse)
+  //   return reponse;
+  // });
 
-  // console.log(userData);
+  console.log("userEdit!!!!!!!!!! : ", userData);
 
   useEffect(() => {
     if (userData && userData.length > 0) {
@@ -44,18 +50,18 @@ const UserEdit = ({
     }
   }, []);
 
-  const fetchUserDB = async () => {
-    const { data, error } = await supabase
-      .from('users')
-      .select('nickname, profileImage, email, about')
-      .eq('email', user?.email);
-    // console.log('현재 유저 정보 ', data);
+  // const fetchUserDB = async () => {
+  //   const { data, error } = await supabase
+  //     .from('users')
+  //     .select('nickname, profileImage, email, about')
+  //     .eq('email', user?.email);
+  //   // console.log('현재 유저 정보 ', data);
 
-    if (error) {
-      alert('프로필 수정 오류가 발생했습니다. 고객센터에 문의해주세요.');
-    }
-    return data;
-  };
+  //   if (error) {
+  //     alert('프로필 수정 오류가 발생했습니다. 고객센터에 문의해주세요.');
+  //   }
+  //   return data;
+  // };
 
   // 변경 전 이미지 URL(prevProfileImageURL)이 수정 완료 버튼 클릭 시 적용된 URL과 같으면 변경 로직 실행 X
   // 미리보기

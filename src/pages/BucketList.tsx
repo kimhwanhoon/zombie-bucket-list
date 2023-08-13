@@ -5,7 +5,7 @@ import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 import Categories from '../components/Home/Categories/Categories';
 import Layout from '../components/Layout/Layout';
-import bucketBackground from '../assets/zombie.png';
+import bucketBackground from '../assets/zombie1.png';
 import { useEffect } from 'react';
 
 const BucketList = () => {
@@ -35,9 +35,9 @@ const Main = styled.main`
   background-color: transparent;
   width: 100%;
   /* min-height: 100vh; */
-  padding-top: 60px;
+  padding-top: 15px;
   background-image: url(${bucketBackground});
   background-repeat: no-repeat;
-  background-size: 1400px 600px;
+  background-size: 1600px 500px;
   background-position: bottom;
 `;

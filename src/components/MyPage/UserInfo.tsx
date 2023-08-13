@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import supabaseService from '../../api/supabaseService';
 import UserEdit from './UserEdit';
 import UserBucketByStatus from './UserBucketByStatus';
-import { Button } from 'antd';
 
-const UserInfo = ({ user }: { user: User | null }) => {
+const UserInfo = ({ user, userData, queryClient }: { user: User | null; userData: UserData; queryClient: queryClientProps}, ) => {
   const navigate = useNavigate();
   const UserUID = user?.id;
 
@@ -54,6 +53,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
   };
 
   //유저 정보 수정
+  console.log(user?.id)
 
   //회원 탈퇴 버튼
   const handleDeleteUser = async () => {
@@ -65,12 +65,27 @@ const UserInfo = ({ user }: { user: User | null }) => {
         await supabase.from('users').delete().eq('email', user?.email);
         await supabase.from('ducketList').delete().eq('email', user?.email);
         localStorage.removeItem('token');
+        if(queryClient && queryClient.removeQueries){
+          queryClient.removeQueries('userData')
+          queryClient.removeQueries('currentUser')
+        }
         deleteProfileImage();
-
         if (error) {
           alert('회원 탈퇴 중 오류가 발생했습니다.');
         } else {
+          const { error } = await supabase
+          .from('bucketList')
+          .delete()
+          .eq('email', user?.email)
+          console.log("signOut error : ", error)
+
+        await supabaseService
+        .storage
+        .from('user-profile')
+        .remove([`${user!.id}`])
+
           await supabase.auth.signOut();
+          alert("탈퇴 되었습니다. 로그인 페이지로 이동합니다.")
           navigate('/auth');
         }
       } catch (error) {
@@ -98,7 +113,7 @@ const UserInfo = ({ user }: { user: User | null }) => {
 
       {/* 내 정보 관리 */}
       {isEdit ? (
-        <UserEdit user={user} setIsEdit={setIsEdit} />
+        <UserEdit user={user} setIsEdit={setIsEdit}  userData={userData}/>
       ) : (
         <>
           <S.UserProfileContainer>

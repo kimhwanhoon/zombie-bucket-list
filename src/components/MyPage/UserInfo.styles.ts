@@ -5,6 +5,7 @@ export const S = {
   main: styled.main`
     width: 100%;
   `,
+
   UserProfileContainer: styled.div`
     margin-top: 15px;
     padding: 30px;
@@ -13,6 +14,7 @@ export const S = {
     align-content: center;
     gap: 30px;
     background-color: var(--color-bg);
+    padding-top: 80px;
   `,
 
   UserImage: styled.div`
@@ -78,6 +80,7 @@ export const S = {
       border-color: var(--color-accent);
     }
   `,
+  
   ButtonOut: styled(Button)`
     background-color: var(--color-accent);
     color: var(--color-bg);
