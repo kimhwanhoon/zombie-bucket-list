@@ -6,6 +6,7 @@ export const S = {
     margin: auto;
     margin-top: 1.5rem;
     width: 100%;
+    font-family: 'Pretendard-Regular';
 
     .ant-tabs-nav-wrap {
       display: flex;

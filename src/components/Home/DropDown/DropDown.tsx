@@ -60,6 +60,7 @@ const DropDown = () => {
           defaultSelectedKeys: ['0'],
           onClick: handleItemClick,
         }}
+        placement="bottom"
       >
         {/* 드롭다운 트리거 역할을 하는 링크 */}
         <Typography.Link>
