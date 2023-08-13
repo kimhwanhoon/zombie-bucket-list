@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const S = {
   Header: styled.header`
-    padding: 13px;
+    padding: 13px 150px;
     background-color: var(--color-accent);
     display: flex;
     justify-content: space-between;

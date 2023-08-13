@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const S = {
   BodyColor: styled.div`
     background-color: var(--color-bg);
-    height: 100%;
   `,
 
   BucketContainer: styled.div`

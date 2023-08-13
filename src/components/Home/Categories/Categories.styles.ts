@@ -2,22 +2,25 @@ import { Tabs } from 'antd';
 import { styled } from 'styled-components';
 
 export const S = {
-  NavSection: styled.div`
-    display: flex;
-    justify-content: space-between;
-  `,
-
   Tabs: styled(Tabs)`
-    margin: 1rem;
+    margin: auto;
+    margin-top: 1.5rem;
+    width: 100%;
+
+    .ant-tabs-nav-wrap {
+      display: flex;
+      justify-content: center;
+    }
   `,
 
   bucketListContainer: styled.div`
-    padding: 5rem 2rem 1rem 2rem;
+    padding: 1rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 3rem;
   `,
+
   bucketContainer: styled.div`
     width: 500px;
     border-radius: 8px;
@@ -32,6 +35,7 @@ export const S = {
     gap: 1rem;
     cursor: pointer;
   `,
+
   bucketFirstLineContainer: styled.div`
     width: 100%;
     display: flex;
@@ -43,6 +47,7 @@ export const S = {
       letter-spacing: 0.25px;
     }
   `,
+
   bucketSecondLineContainer: styled.div`
     width: 100%;
     display: flex;
