@@ -4,7 +4,7 @@ import { styled } from 'styled-components';
 export const S = {
   Tabs: styled(Tabs)`
     margin: auto;
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     width: 100%;
     font-family: 'Pretendard-Regular';
 
@@ -15,9 +15,9 @@ export const S = {
   `,
 
   bucketListContainer: styled.div`
-    height: calc(100vh - 115px);
+    height: calc(100vh - 155px);
     overflow: auto;
-    padding: 1rem 2rem 1rem 2rem;
+    padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
