@@ -15,6 +15,8 @@ export const S = {
   `,
 
   bucketListContainer: styled.div`
+    height: calc(100vh - 115px);
+    overflow: auto;
     padding: 1rem 2rem 1rem 2rem;
     display: flex;
     flex-direction: column;

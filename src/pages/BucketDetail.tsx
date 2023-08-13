@@ -171,7 +171,7 @@ const BucketDetail = () => {
         alt="back"
         onClick={() => navigate(`/userId/${userId}/bucket-list`)}
       />
-      <S.detailContainer>
+      <S.detailContainer className="detail-container">
         <S.leftContainer>
           <S.postDetails>
             <h1>{title}</h1>

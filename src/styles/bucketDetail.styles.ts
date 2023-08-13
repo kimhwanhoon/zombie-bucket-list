@@ -1,12 +1,11 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Divider, Progress, Tag } from 'antd';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
+import media from '../styles/media';
 
 export const S = {
   main: styled.main`
     width: 100%;
-    max-width: 1200px;
-    min-width: 800px;
     position: relative;
     background-color: var(--color-bg);
     min-height: 100vh;
@@ -27,25 +26,39 @@ export const S = {
     }
   `,
   detailContainer: styled.div`
-    width: 100%;
-    height: 50%;
-    height: 550px;
+    /* your CSS code for mobile first */
     display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
     padding: 2rem;
     gap: 2rem;
-    padding-top: 5rem;
+    padding-top: 10rem;
+    ${media.greaterThan('lg')`
+    flex-direction: row;
+    width: 100%;
+    height: 700px;
+ `}
+    ${media.greaterThan('lg')`
+    max-width: 1000px;
+ `}
   `,
   leftContainer: styled.div`
     display: flex;
     flex-direction: column;
     padding: 1.5rem;
     align-items: center;
-    width: 60%;
+    width: 100%;
     background-color: #fff;
     gap: 1rem;
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     margin-bottom: -0.8rem;
+    order: 2;
+    ${media.greaterThan('lg')`
+    height: 100%;
+    width: 60%;
+ `}
     h1 {
       font-size: 1.25rem;
       font-weight: 600;
@@ -76,16 +89,23 @@ export const S = {
     border-radius: 15px;
     img {
       border-radius: 10px;
+      ${media.greaterThan('lg')`
+    /* width: 100%; */
+ `}
     }
   `,
   rightContainer: styled.div`
     position: relative;
     height: 100%;
-    width: 40%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-
+    order: 1;
+    ${media.greaterThan('lg')`
+    width: 40%;
+    order: 2;
+ `}
     .post-stats-inside-container {
       display: flex;
       gap: 0.8rem;
@@ -107,6 +127,10 @@ export const S = {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    order: 2;
+    ${media.greaterThan('lg')`
+    order: 1;
+ `}
   `,
   postStatsElementContainer: styled.div`
     display: flex;
@@ -143,6 +167,10 @@ export const S = {
     border-radius: 15px;
     box-shadow: 0 0 5px 5px #f1f3f5;
     padding: 2rem;
+    order: 1;
+    ${media.greaterThan('sm')`
+    order: 2;
+ `}
   `,
   userDetail: styled.div`
     display: flex;
