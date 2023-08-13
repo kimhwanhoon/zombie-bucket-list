@@ -10,6 +10,7 @@ const getCurrentUser = async () => {
 
 const useGetCurrentUser = () => {
   const currentUser = useQuery(['currentUser'], getCurrentUser);
+
   return currentUser;
 };
 

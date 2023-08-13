@@ -28,7 +28,7 @@ export const S = {
     width: 130px;
     border-radius: 50%;
     overflow: hidden;
-    background-color: black;
+    background-color: white;
     margin-bottom: 17px;
 
     img {
