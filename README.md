@@ -87,12 +87,10 @@
 <br />
 
 ## 🤔 트러블 슈팅
-- 카테고리 필터링 기능 구현 후 버킷리스트 목록 새로고침 이슈  
-    - [Axios message: 'Network Error'(CORS 오류)](https://leeseong010.tistory.com/117)
-- api 호출 시 중복되는 헤더 작업 간소화하기
-    - [axios interceptor 적용하기](https://leeseong010.tistory.com/133)
-- axios 요청하기
-    - [axios delete 요청 시 body에 data 넣는 방법](https://leeseong010.tistory.com/111)
+- 새로운 버킷 작성 시 목록이 즉시 갱신되지 않고 새로고침이 필요한 이슈 
+    - [샘플](https://leeseong010.tistory.com/117)
+- 진행상태 필터링 후 "카테고리 전체보기"탭에 버킷리스트가 렌더링되지 않는 이슈
+    - [샘플 Axios message: 'Network Error'(CORS 오류)](https://leeseong010.tistory.com/117)     
 - 탈퇴 후 같은 아이디로 회원가입 시 이미 회원가입한 유저라는 이슈
     - [Authentication과 Table 다루기](https://www.notion.so/100-A-7ca88957d9c74ecd9229bb74f6ff9d96?pvs=4)
 - 회원가입 기능은 되지만 로그인 기능은 되지 않은 이슈
