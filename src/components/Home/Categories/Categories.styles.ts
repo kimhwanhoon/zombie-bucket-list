@@ -7,12 +7,9 @@ export const S = {
     margin-top: 1.5rem;
     width: 100%;
 
-    .ant-tabs-nav {
+    .ant-tabs-nav-wrap {
       display: flex;
       justify-content: center;
-    }
-
-    .ant-tabs-nav-wrap {
     }
   `,
 

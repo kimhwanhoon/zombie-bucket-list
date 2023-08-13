@@ -48,7 +48,7 @@ const S = {
   Wrapper: styled.div`
     position: absolute;
     right: 4rem;
-    margin: 5rem 4rem 0 0;
+    margin: 6.3rem 4rem 0 0;
 
     &:last-child {
       display: flex;

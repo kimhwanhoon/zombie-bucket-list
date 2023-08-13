@@ -154,7 +154,15 @@ const Categories = () => {
   }));
 
   // Ant Design Tabs 컴포넌트 출력
-  return <S.Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
+  return (
+    <S.Tabs
+      defaultActiveKey="1"
+      size="large"
+      tabBarGutter={70}
+      items={items}
+      onChange={onChange}
+    />
+  );
 };
 
 export default Categories;
