@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 
 export const S = {
+  main: styled.main`
+    width: 100%;
+  `,
   UserProfileContainer: styled.div`
     margin-top: 15px;
     padding: 30px;

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const S = {
   BodyColor: styled.div`
     background-color: var(--color-bg);
-    height: 100%;
   `,
 
   BucketContainer: styled.div`
@@ -34,6 +33,7 @@ export const S = {
   BucketTotalCountNumber: styled.span`
     font-size: 50px;
     color: var(--color-text);
+    margin-right: 5px;
   `,
 
   BucketStatusListBox: styled.div`
@@ -66,7 +66,7 @@ export const S = {
 
   BucketStatusListCountNumber: styled.span`
     font-size: 40px;
-    margin-left: 5px;
+    margin-right: 5px;
     color: var(--color-text);
   `,
 };

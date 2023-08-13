@@ -3,12 +3,13 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RootState } from '../../../redux/config/configStore';
 import useGetBucketList from '../../../hooks/getBucketList';
-import DropDown from '../DropDown/DropDown';
+
 import { S } from './Categories.styles';
 import { tagColors } from '../../../styles/customStyles';
 import { Tag } from 'antd';
 
 import type { TabsProps } from 'antd';
+import TabPane from 'antd/es/tabs/TabPane';
 
 // 카테고리 탭에 대한 정보를 담는 인터페이스
 interface CategoryTab {
@@ -112,7 +113,6 @@ const Categories = () => {
     label: category.label,
     children: (
       <>
-        <DropDown />
         <S.bucketListContainer>
           {category.state
             ?.filter((item) => {
@@ -154,7 +154,15 @@ const Categories = () => {
   }));
 
   // Ant Design Tabs 컴포넌트 출력
-  return <S.Tabs defaultActiveKey="1" items={items} onChange={onChange} />;
+  return (
+    <S.Tabs
+      defaultActiveKey="1"
+      size="large"
+      tabBarGutter={70}
+      items={items}
+      onChange={onChange}
+    />
+  );
 };
 
 export default Categories;

@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import './reset.css';
+// import bucketBackground from '../assets/zombies1.jpg';
 
 const GlobalStyle = createGlobalStyle`
 
@@ -10,20 +11,23 @@ const GlobalStyle = createGlobalStyle`
   --color-white: #FEFEFE;
   --color-primary: #D1CFCF
 }
-/* @font-face {
-    font-family: 'CookieRun-Regular';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff');
+
+/* 인트로 폰트 */
+@font-face {
+    font-family: 'Arita-buri-SemiBold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-buri-SemiBold.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
   * {
-    font-family: 'CookieRun-Regular';
-  } */
-
+    /* font-family: 'Arita-buri-SemiBold'; */
+  } 
+  
   body {
     background-color: var(--color-bg);
-    /* font-family: 'CookieRun-Regular'; */
+    min-width: 590px;
+    color: var(--color-text); 
   }
 `;
 

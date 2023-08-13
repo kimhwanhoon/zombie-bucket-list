@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TypeIt from 'typeit-react';
 import useGetCurrentUser from '../hooks/getCurrentUser';
-
+import { Player } from '@lottiefiles/react-lottie-player';
 const Redirecting = () => {
   const navigate = useNavigate();
   const { data: currentUser = null } = useGetCurrentUser();
@@ -14,25 +14,27 @@ const Redirecting = () => {
     }
     setTimeout(() => {
       navigate(`/userId/${currentUser.id}/bucket-list/`);
-    }, 3000);
+    }, 2500);
   }, [navigate, currentUser]);
 
   const photo = (
-    <img
-      src="https://i.ibb.co/HzWWLB7/redirecting.png"
-      alt="redirecting..."
-      style={{ maxWidth: '80%', maxHeight: '50%' }}
-    ></img>
+    <Player
+      autoplay
+      speed={1.5}
+      loop
+      src="https://lottie.host/2ee03a4d-e32e-41c1-b5d4-e39e45a23184/HMPdw8LWjh.json"
+      style={{ height: '500px', width: '500px' }}
+    ></Player>
   );
   const typeIt = (
     <TypeIt
       options={{
-        speed: 50,
+        speed: 60,
         cursor: false,
       }}
       style={{ fontSize: '30px' }}
     >
-      Redirecting to your Bucket List...
+      버킷리스트를 불러오는 중...
     </TypeIt>
   );
   return (

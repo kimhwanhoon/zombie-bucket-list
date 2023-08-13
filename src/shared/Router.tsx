@@ -11,12 +11,11 @@ import AuthLayout from './AuthLayout';
 import Header from '../components/Layout/Header';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 
-
 // 토큰 정보가 필요한 화면/헤더가 필요한 화면 : 버킷리스트, 버킷리스트 상세페이지, 마이페이지
 // 토큰 정보가 없어도 되는 화면 : Home(인트로), Auth(로그인, 회원가입)
 const Router: React.FC = (): JSX.Element => {
-
-  const {data:user} = useGetCurrentUser();  return (
+  const { data: user } = useGetCurrentUser();
+  return (
     <BrowserRouter>
       <Routes>
         <Route element={<NonAuthLayout />}>
@@ -24,10 +23,20 @@ const Router: React.FC = (): JSX.Element => {
           <Route path="/auth" element={<Auth />} />
         </Route>
 
-        <Route element={<><Header/><AuthLayout /></>}>
+        <Route
+          element={
+            <>
+              <Header />
+              <AuthLayout />
+            </>
+          }
+        >
           <Route path="/userId/:userId/my-page" element={<MyPage />} />
           <Route path="/userId/:userId/bucket-list" element={<BucketList />} />
-          <Route path="/userId/:userId/bucket-list/:postId" element={<BucketDetail />} />
+          <Route
+            path="/userId/:userId/bucket-list/:postId"
+            element={<BucketDetail />}
+          />
         </Route>
         <Route path="/redirecting" element={<Redirecting />} />
       </Routes>
