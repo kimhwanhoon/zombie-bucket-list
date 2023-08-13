@@ -25,6 +25,7 @@ import {
   StyledTag,
   StyledUserOutlined,
 } from '../styles/bucketDetail.styles';
+import supabaseService from '../api/supabaseService';
 
 interface PostUser {
   nickname: string;
@@ -89,6 +90,7 @@ const BucketDetail = () => {
       }
     }
   }, [data]);
+
   // 삭제하기
   const queryClient = useQueryClient();
   const mutation = useMutation({
@@ -97,6 +99,11 @@ const BucketDetail = () => {
         .from('bucketList')
         .delete()
         .eq('id', postId);
+
+        const { data: storageDeletedata } = await supabaseService
+        .storage
+        .from('Users')
+        .remove([`posts/${data?.bucket_list![0].uuid}/${data?.bucket_list![0].photoURL.slice(-13)}`])
       message.success('삭제 완료!');
       if (error) console.log(error);
     },

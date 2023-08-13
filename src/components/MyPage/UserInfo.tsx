@@ -53,6 +53,7 @@ const UserInfo = ({ user, userData, queryClient }: { user: User | null; userData
   };
 
   //유저 정보 수정
+  console.log(user?.id)
 
   //회원 탈퇴 버튼
   const handleDeleteUser = async () => {
@@ -72,6 +73,17 @@ const UserInfo = ({ user, userData, queryClient }: { user: User | null; userData
         if (error) {
           alert('회원 탈퇴 중 오류가 발생했습니다.');
         } else {
+          const { error } = await supabase
+          .from('bucketList')
+          .delete()
+          .eq('email', user?.email)
+          console.log("signOut error : ", error)
+
+        await supabaseService
+        .storage
+        .from('user-profile')
+        .remove([`${user!.id}`])
+
           await supabase.auth.signOut();
           alert("탈퇴 되었습니다. 로그인 페이지로 이동합니다.")
           navigate('/auth');

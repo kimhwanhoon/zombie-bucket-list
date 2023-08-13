@@ -2,12 +2,6 @@ import { Button } from 'antd';
 import { styled } from 'styled-components';
 
 export const S = {
-  BucketContainer: styled.div`
-    border: 2px solid black;
-    margin-top: 15px;
-    padding: 30px;
-  `,
-
   UserImageUpload: styled.div`
     text-align: center;
     margin-right: 80px;
