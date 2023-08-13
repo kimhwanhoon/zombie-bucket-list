@@ -1,5 +1,5 @@
 import { keyframes, styled } from 'styled-components';
-import introBackground from '../../assets/zombies.gif';
+import introBackground from '../../assets/introBackground.jpg';
 import { Button } from 'antd';
 
 const glitchAnim = keyframes`
@@ -209,7 +209,7 @@ export const S = {
 
     background-image: linear-gradient(
         0deg,
-        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.7),
         rgba(0, 0, 0, 0.7)
       ),
       url(${introBackground});
