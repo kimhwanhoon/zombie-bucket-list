@@ -93,6 +93,9 @@
     - [axios interceptor 적용하기](https://leeseong010.tistory.com/133)
 - axios 요청하기
     - [axios delete 요청 시 body에 data 넣는 방법](https://leeseong010.tistory.com/111)
-
+- 탈퇴 후 같은 아이디로 회원가입 시 이미 회원가입한 유저라는 이슈
+    - [Authentication과 Table 다루기](https://www.notion.so/100-A-7ca88957d9c74ecd9229bb74f6ff9d96?pvs=4)
+- 회원가입 기능은 되지만 로그인 기능은 되지 않은 이슈
+    - [Supabase Providers email 설정하기](https://www.notion.so/100-A-c853d59fd3da495e8cc2aa52efed5661?pvs=4)
 <br />
 
