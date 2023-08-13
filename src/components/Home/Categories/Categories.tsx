@@ -9,7 +9,6 @@ import { tagColors } from '../../../styles/customStyles';
 import { Tag } from 'antd';
 
 import type { TabsProps } from 'antd';
-import TabPane from 'antd/es/tabs/TabPane';
 
 // 카테고리 탭에 대한 정보를 담는 인터페이스
 interface CategoryTab {
