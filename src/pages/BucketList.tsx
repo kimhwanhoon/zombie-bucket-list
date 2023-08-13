@@ -20,12 +20,12 @@ const BucketList = () => {
   });
 
   return (
-    <Layout>
-      <Main>
+    <Main>
+      <Layout>
         <WriteAPostButton />
         <Categories />
-      </Main>
-    </Layout>
+      </Layout>
+    </Main>
   );
 };
 
@@ -34,11 +34,10 @@ export default BucketList;
 const Main = styled.main`
   background-color: transparent;
   width: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding-top: 60px;
-
   background-image: url(${bucketBackground});
   background-repeat: no-repeat;
-  background-size: 1400px 500px;
+  background-size: 1400px 600px;
   background-position: bottom;
 `;

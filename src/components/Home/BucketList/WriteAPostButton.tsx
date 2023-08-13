@@ -18,7 +18,7 @@ const WriteAPostButton = () => {
     <>
       {currentUser !== null && currentUser.id === params && (
         <S.container>
-          <S.Wrapper>
+          <S.WriteWrapper>
             <div>
               <AntStyledButton
                 loading={postModalToggle}
@@ -27,10 +27,10 @@ const WriteAPostButton = () => {
                 {!postModalToggle ? '작성하기' : '작성중'}
               </AntStyledButton>
             </div>
-            <S.DropDown>
+            <S.DropDownWrapper>
               <DropDown />
-            </S.DropDown>
-          </S.Wrapper>
+            </S.DropDownWrapper>
+          </S.WriteWrapper>
         </S.container>
       )}
       <WriteAPostModal />
@@ -45,22 +45,21 @@ const S = {
     position: relative;
   `,
 
-  Wrapper: styled.div`
+  WriteWrapper: styled.div`
     position: absolute;
     right: 4rem;
-    margin: 6.3rem 4rem 0 0;
+    margin: 5rem 4rem 0 0;
 
-    &:last-child {
-      display: flex;
-      gap: 10px;
-    }
+    display: flex;
+    gap: 10px;
   `,
 
-  DropDown: styled.div`
+  DropDownWrapper: styled.div`
     margin-top: 10px;
     padding: 4px 8px;
     border: 1px solid lightgray;
     border-radius: 8px;
+    z-index: 11;
   `,
 };
 
