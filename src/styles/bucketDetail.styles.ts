@@ -159,7 +159,6 @@ export const S = {
     gap: 1.25rem;
     align-items: center;
     padding-top: 1rem;
-    /* justify-content: center; */
   `,
   userDetailContainer: styled.div`
     background-color: #fff;
