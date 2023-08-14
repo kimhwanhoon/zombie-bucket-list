@@ -85,12 +85,15 @@ const WriteAPostModal = () => {
         email: currentUser!.email as string,
         userId: currentUser!.id,
       });
-      message.success('성공적으로 등록되었습니다.');
-      dispatch(postModalToggler(false));
-      setPhoto(null);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bucketList'] });
+      setPhoto(null);
+      setTitleValue('');
+      setContentValue('');
+      setSelectedTags(['기타']);
+      dispatch(postModalToggler(false));
+      message.success('성공적으로 등록되었습니다.');
     },
     onError: (err) => {
       console.log(err);
