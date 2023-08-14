@@ -95,7 +95,7 @@
 - 새로운 버킷 작성 시 목록이 즉시 갱신되지 않고 새로고침이 필요한 이슈 
     - [invalidateQueries 함수를 사용하여 데이터 캐시를 무효화하기](https://hamut.tistory.com/66)
 - 진행상태 필터링 후 "카테고리 전체보기" 탭에 버킷리스트가 렌더링되지 않는 이슈
-    - [조건문을 사용하여 필터링하기](https://hamut.tistory.com/67)
+    - [조건문을 사용하여 렌더링하기](https://hamut.tistory.com/67)
 <br />
 
 ## ⚒️ 라이브러리 사용
