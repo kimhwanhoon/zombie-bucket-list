@@ -6,6 +6,8 @@ import supabaseService from '../../api/supabaseService';
 import { useMutation } from '@tanstack/react-query';
 import { queryClient } from '../../App';
 import { Input } from 'antd';
+import { uuid } from 'short-uuid';
+import { ControlOutlined } from '@ant-design/icons';
 const { TextArea } = Input;
 const UserEdit = ({
   user,
@@ -27,6 +29,7 @@ const UserEdit = ({
   const [newProfileImageFile, setNewProfileImageFile] = useState<File | null>(
     null,
   );
+  const [uuidValue, setUuidValue] = useState<string>();
 
   useEffect(() => {
     if (userData && userData.length > 0) {
@@ -53,20 +56,41 @@ const UserEdit = ({
     }); // 이 때 아래서 사용할 image 변수를 지정해주었다. 새롭게 지정한 파일도 storage에는 File 형식으로 올라가야함
   };
 
+  const newUuidValue = uuid();
   // // storage image update
   const updateStorageAndProfile = async () => {
-    const { data, error } = await supabaseService.storage
-      .from('user-profile')
-      .update(user?.id!, newProfileImageFile!, {
-        cacheControl: '3600',
-        upsert: true,
-      });
+    const { data:uuidData, error: uuidError} = await supabase.from('users').select('profileImageUUID').eq('email', user?.email);
+
+    if (!uuidError && Array.isArray(uuidData) && uuidData.length > 0) {
+      
+      try{
+        await supabaseService.storage.from('user-profile').remove([`user-profile/${user?.email}/*`]);
+        
+        setUuidValue(newUuidValue);
+
+        const newStoragePath = `user-profile/${user?.email}/${newUuidValue}`;
+        const { error } = await supabaseService.storage
+          .from(newStoragePath)
+          .upload(user?.email!, newProfileImageFile!, {
+            cacheControl: '1',
+            upsert: true,
+          });
+        
+          if(!error) {
+            const newImageURL = `https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/${user?.email}/${newUuidValue}/${user?.email}`;
+            setPrevProfileImageURL(newImageURL);
+          }
+      } catch(error) {
+        console.error("Error updating storage and profile:", error);
+      }
+    }
   };
 
-  const test = async (): Promise<void> => {
+  const userEdit = async (): Promise<void> => {
+    const fileURL = `https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/${user?.email}/${newUuidValue}/${user?.email}`;
     const { error } = await supabase
-      .from('users')
-      .update({ nickname: userEditNickname, about: userEditAbout })
+    .from('users')
+      .update({ nickname: userEditNickname, about: userEditAbout, profileImage: fileURL,  profileImageUUID: newUuidValue})
       .eq('email', user?.email);
 
     if (!error) {
@@ -86,14 +110,14 @@ const UserEdit = ({
     }
   };
 
-  const testMutation = useMutation(test, {
+  const userEditMutation = useMutation(userEdit, {
     onSuccess: () => {
       queryClient.invalidateQueries(['userData']);
     },
   });
   // 수정 완료 버튼
   const handleProfileEditSave = async () => {
-    testMutation.mutate();
+    userEditMutation.mutate();
   };
 
   // 뒤로가기 버튼

@@ -4,6 +4,7 @@ import supabase from '../../api/supabase';
 import supabaseService from '../../api/supabaseService';
 import { S } from './SignupForm.styles';
 import { Input, message } from 'antd';
+import { uuid } from 'short-uuid';
 
 const SignupForm = () => {
   const [email, setEmail] = useState('');
@@ -134,12 +135,27 @@ const SignupForm = () => {
       } = await supabase.auth.getUser();
       console.log(user?.id);
       // 회원가입 버튼 클릭 시 storage에 이미지 파일 저장 - 이때 defaultImageFile과 image이 모두 File 형식이라는 것이 중요!
+      const uuidValue = uuid(); // UUID 값을 생성
+      const storagePath = `user-profile/${user?.email}/${uuidValue}`;
+      const signupDate = user?.created_at.slice(0, 10);
+
       const uploadFile = async () => {
         if (!newProfileImageFile && defaultProfileImageFile) {
           // image가 없으면 = 새롭게 지정된 이미지가 없으면 fetchDefaultImage에서 지정해놓은 defaultImageFile을 올릴 것임
           const { data, error } = await supabaseService.storage
-            .from('user-profile')
-            .upload(user?.id!, defaultProfileImageFile);
+            .from(storagePath)
+            .upload(user?.email!, defaultProfileImageFile);
+
+            const fileURL = `https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/${user?.email}/${uuidValue}/${user?.email}`;
+            await supabase.from('users').insert({
+                id: user?.id,
+                nickname,
+                email,
+                password,
+                signupDate,
+                profileImage: fileURL,
+              });
+
           if (error) {
             console.log(error);
           } else {
@@ -148,8 +164,19 @@ const SignupForm = () => {
         } else if (newProfileImageFile) {
           // image가 있으면 = changhProfileImageFile에서 setImage로 지정해놓은 image File이 storage에 올라간다.
           const { data, error } = await supabaseService.storage
-            .from('user-profile')
-            .upload(user?.id!, newProfileImageFile);
+            .from(storagePath)
+            .upload(user?.email!, newProfileImageFile);
+
+            const fileURL = `https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/${user?.email}/${uuidValue}/${user?.email}`;
+            await supabase.from('users').insert({
+                id: user?.id,
+                nickname,
+                email,
+                password,
+                signupDate,
+                profileImage: fileURL,
+                profileImageUUID: uuidValue
+              });
           if (error) {
             console.log(error);
           } else {
@@ -160,24 +187,15 @@ const SignupForm = () => {
       uploadFile(); // 함수 호출시 이미지 미리보기에서 지정해줬던 File 형식의 image가 인자로 들어감
 
       // 회원가입 시 storage에 등록된 이미지 url 바로 가져오기 - db에 넣기 위해 사용
-      const { data: userImage } = supabaseService.storage
-        .from('user-profile')
-        .getPublicUrl(user?.id!);
-      console.log(userImage); // 이때 userImage는 이미 storage를 거쳐서 오기 때문에 기본 이미지이든, 새로 지정한 이미지이든 잘 적용된 채로 url을 가지고 올 수 있다.
 
-      const signupDate = user?.created_at.slice(0, 10);
-      console.log('현재 로그인한 유저는? ', user);
-      console.log('유저생성시간>>>>', signupDate);
+
+      // const { data: userImage } = supabaseService.storage
+      //   .from(`user-profile/${user?.email}/${uuid()}`)
+      //   .getPublicUrl(user?.id!);
+      // console.log(userImage); // 이때 userImage는 이미 storage를 거쳐서 오기 때문에 기본 이미지이든, 새로 지정한 이미지이든 잘 적용된 채로 url을 가지고 올 수 있다.
+      
 
       // users에 user 정보 insert
-      await supabase.from('users').insert({
-        id: user?.id,
-        nickname,
-        email,
-        password,
-        signupDate,
-        profileImage: userImage.publicUrl,
-      }); //userImage 객체의 publicUrl 값이 db에 들어가게 연결
 
       // 토큰 가져오기!
       const getToken = async () => {
