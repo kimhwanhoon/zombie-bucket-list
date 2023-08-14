@@ -64,6 +64,7 @@ const UserInfo = ({ user, userData, queryClient }: { user: User | null; userData
         const { error } = await supabaseService.auth.admin.deleteUser(UserUID);
         await supabase.from('users').delete().eq('email', user?.email);
         await supabase.from('ducketList').delete().eq('email', user?.email);
+        await supabaseService.storage.from('user-profile').remove([`${user?.email}/*`]);
         localStorage.removeItem('token');
         if(queryClient && queryClient.removeQueries){
           queryClient.removeQueries('userData')
