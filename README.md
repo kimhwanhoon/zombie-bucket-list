@@ -97,3 +97,15 @@
     - [Supabase Providers email 설정하기](https://www.notion.so/100-A-c853d59fd3da495e8cc2aa52efed5661?pvs=4)
 <br />
 
+## 라이브러리 사용
+- ant design을 이용한 다양한 디자인 컴포넌트 도입 (Button, Space, Modal, Message, Form, Input 등)
+- lottiefiles/react-lottie-player의 .json을 이용한 리디렉팅 페이지 초저용량 애니메이션 구현
+- TanStack query(구 react query)를 사용한 비동기 데이터 캐시 저장 및,invalidateQuery및 refetch, isStale, isError, is Loading 등 자유로운 메소드 구현
+- Lodash의 Deboucing과 useCallback을 함께 사용하여 유저가 작성버튼이나 수정버튼을 마구 눌렀을 때 서버의 부하를 최대 1로 구현
+- Styled-components를 사용하여 손쉬운 css 스타일링
+- Styled-media-query를 사용하여 스타일드 컴포넌트에서 더 나아가 반응형으로 미디어 쿼리를 사용하여 모바일과 데스크탑 디자인을 따로 구현
+- react-image-file-resizer를 사용하여 사용자가 사진을 등록할 때, 너무 용량이 큰 사진이면 사진 사이즈를 압축하여 DB에 전송하는 로직 추가 구현
+- typeit을 사용하여 더 아름다운 CSS구현
+- moment를 사용하여 더 간편한 시간구현
+- supabase auth, database, storage를 통해 손 쉬운 프론트앤드 앱 개발 구현
+- redux-tool-kit을 사용한 전역 상태 관리 저장
