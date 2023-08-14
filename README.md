@@ -26,8 +26,8 @@
 ## 💁‍♂️ 프로젝트 팀원
 |팀장|팀원|팀원|팀원|
 |:---:|:---:|:---:|:---:|
-| <img src="https://avatars.githubusercontent.com/u/130561433?v=4" width="120" height="120"> | <img src="https://avatars.githubusercontent.com/u/121846231?v=4" width="120" height="120">| <img src="https://avatars.githubusercontent.com/u/130542572?v=4" width="120" height="120"> |<img src="https://github.com/HiYongA/PokemonSearchList/assets/120562771/96d10b55-d21e-494c-8474-653aa7ded3ae" width="120" height="120">| 
-|[이한별](https://github.com/HiYongA)|[김환훈](https://github.com/kimhwanhoon)|[정송주](https://github.com/songjuu)|[지설희](https://github.com/HiYongA)|
+| [<img src="https://avatars.githubusercontent.com/u/130561433?v=4" width="120" height="120">](https://github.com/hanbyeol1219) | [<img src="https://avatars.githubusercontent.com/u/121846231?v=4" width="120" height="120">](https://github.com/kimhwanhoon)| [<img src="https://avatars.githubusercontent.com/u/130542572?v=4" width="120" height="120">](https://github.com/songjuu) |[<img src="https://github.com/HiYongA/PokemonSearchList/assets/120562771/96d10b55-d21e-494c-8474-653aa7ded3ae" width="120" height="120">](https://github.com/HiYongA)| 
+|[이한별](https://github.com/hanbyeol1219)|[김환훈](https://github.com/kimhwanhoon)|[정송주](https://github.com/songjuu)|[지설희](https://github.com/HiYongA)|
 
 <br />
 
