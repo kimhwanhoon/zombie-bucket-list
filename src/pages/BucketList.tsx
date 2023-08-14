@@ -5,7 +5,7 @@ import WriteAPostButton from '../components/Home/BucketList/WriteAPostButton';
 import useGetCurrentUser from '../hooks/getCurrentUser';
 import Categories from '../components/Home/Categories/Categories';
 import Layout from '../components/Layout/Layout';
-import bucketBackground from '../assets/zombie1.png';
+import bucketBackground from '../assets/zombie.png';
 import { useEffect } from 'react';
 
 const BucketList = () => {

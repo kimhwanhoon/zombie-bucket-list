@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { Button, Space, Tag, Form, Input, Modal, message } from 'antd';
 import postBucket from '../../../../api/postBucket';
-import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import Upload, { RcFile } from 'antd/es/upload';
 import uploadImage from '../../../../api/uploadImage';
 import shortUUID from 'short-uuid';
@@ -23,11 +23,6 @@ const tagsData: categories[] = [
   '음식',
   '기타',
 ];
-
-type FieldType = {
-  title?: string;
-  content?: string;
-};
 
 const WriteAPostModal = () => {
   const dispatch = useDispatch();
