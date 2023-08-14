@@ -34,7 +34,7 @@
 ## 화면 구성
 |인트로|
 |:---:|
-|<img src="https://user-images.githubusercontent.com/80824750/208456048-acbf44a8-cd71-4132-b35a-500047adbe1c.gif" width="450"/>|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/cbbe0ee2-e69e-47df-bcc2-b40c5d93331d" width="450"/>|
 |다단계의 텍스트와 애니메이션을 사용하여 사용자에게 앱을 소개하며,<br/> 필요한 곳으로 빠르게 이동할 수 있도록 도와주는 역할을 합니다.|
 
 
