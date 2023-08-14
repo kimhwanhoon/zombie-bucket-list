@@ -40,22 +40,22 @@
 
 |로그인 & 회원가입|
 |:---:|
-|<img src="https://user-images.githubusercontent.com/80824750/208456234-fb5fe434-aa65-4d7a-b955-89098d5bbe0b.gif" width="450"/>|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/86ff314c-50b4-4935-96d9-a866966fca2f" width="450"/>|
 |로그인과 회원가입을 통해, 사용자는 개인 버킷리스트를 작성하고<br/> 수정하며 목표를 설정하고 추적할 수 있습니다.|
 
 |메인 페이지|
 |:---:|
-|<img src="https://user-images.githubusercontent.com/80824750/208456234-fb5fe434-aa65-4d7a-b955-89098d5bbe0b.gif" width="450"/>|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/d5e586b8-5742-475a-bf4a-220c74e4fae1" width="450"/>|
 |버킷리스트 목록, 목표 작성 모달,<br/> 태그별 카테고리 및 진행 상태를 필터링 드롭다운을 제공하여 <br/> 사용자의 편리한 버킷리스트 관리를 지원합니다.|
 
 |상세 페이지|
 |:---:|
-|<img src="https://user-images.githubusercontent.com/80824750/208456234-fb5fe434-aa65-4d7a-b955-89098d5bbe0b.gif" width="450"/>|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/d5e586b8-5742-475a-bf4a-220c74e4fae1" width="450"/>|
 |사용자는 선택한 버킷리스트 내용 확인 및 수정, 삭제, 진행 상태<br/> 표시 등을 통해 목표 달성에 필요한 정보와 기능을 활용할 수 있습니다.|
 
 |마이 프로필|
 |:---:|
-|<img src="https://user-images.githubusercontent.com/80824750/208456234-fb5fe434-aa65-4d7a-b955-89098d5bbe0b.gif" width="450"/>|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/9d71e4d7-c8db-47cc-84e9-774318505d2d" width="450"/>|
 |사용자가 자신의 정보를 관리하고 작성한 버킷리스트의<br/> 상태를 보며 회원정보 수정과 홈으로 이동하는 기능을 제공합니다.|
 
 <br />
