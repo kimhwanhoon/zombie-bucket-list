@@ -68,21 +68,25 @@ const LoginForm = () => {
       navigate('/');
     }
 
-     // 토큰 가져오기!
-    const getToken = async () =>{
-      const { data:response } = await supabase.auth.getSession()
-      localStorage.setItem("token", response.session?.access_token as string)
-    }
+    // 토큰 가져오기!
+    const getToken = async () => {
+      const { data: response } = await supabase.auth.getSession();
+      localStorage.setItem('token', response.session?.access_token as string);
+    };
     getToken();
   };
 
   return (
     <S.LoginContainer>
-      <S.LoginTitle><img src='https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/logo/logo.png' alt='logo' width={'300px'}/></S.LoginTitle>
-      <S.LoginForm> 
-        <S.WelcomeTextWrapper>
-          <S.WelcomeText>welcome...☠</S.WelcomeText>
-        </S.WelcomeTextWrapper>
+      <S.LoginTitle>
+        <img
+          src="https://equsyyfbjtstiglyzukm.supabase.co/storage/v1/object/public/user-profile/logo/logo.png"
+          alt="logo"
+          width={'300px'}
+        />
+      </S.LoginTitle>
+      <S.LoginForm>
+        <S.WelcomeText>welcome...☠</S.WelcomeText>
         <S.LoginInputWrapper>
           <S.LoginInputInnerWrapper>
             <S.Input
@@ -105,9 +109,7 @@ const LoginForm = () => {
 
         <S.LoginButtonAndErrorMessageWrapper>
           <S.ErrorMessage>{errorMessage}</S.ErrorMessage>
-          <S.Button onClick={handleLoginButtonClick}>
-            로그인
-          </S.Button>
+          <S.Button onClick={handleLoginButtonClick}>로그인</S.Button>
         </S.LoginButtonAndErrorMessageWrapper>
       </S.LoginForm>
     </S.LoginContainer>

@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 export const S = {
   Tabs: styled(Tabs)`
     margin: auto;
-    /* margin-top: 1.5rem; */
     width: 100%;
     font-family: 'Pretendard-Regular';
 
