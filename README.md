@@ -17,7 +17,7 @@
 영화 '좀비100'에서 영감을 받아 시작된 이 프로젝트는 좀비로부터 해방된 시간을 활용하여 여러분만의 버킷리스트를 실현하는 기회를 제공합니다. <br/>
 지루한 일상을 벗어나 새로운 경험을 시작해보세요.
 
-🏡 ['좀비가 되기 전에 해야하는 100가지' 바로가기]() |
+🏡 ['좀비가 되기 전에 해야하는 100가지' 바로가기](https://zombie-bucket-list.vercel.app/) |
 🧟‍♀️ [심화 프로젝트 팀 노션](https://www.notion.so/100-bb8c464d300645cd872ccdee755d8ff1) |
 🍜 [짬짜면 팀 노션](https://www.notion.so/2-0006401e08c645cf8575e6bcc84c5db3)
 
@@ -45,12 +45,12 @@
 
 |메인 페이지|
 |:---:|
-|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/d5e586b8-5742-475a-bf4a-220c74e4fae1" width="450"/>|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/120562771/e792b83b-e9df-4d77-b138-777c39cbb024" width="450"/>|
 |버킷리스트 목록, 목표 작성 모달,<br/> 태그별 카테고리 및 진행 상태를 필터링 드롭다운을 제공하여 <br/> 사용자의 편리한 버킷리스트 관리를 지원합니다.|
 
 |상세 페이지|
 |:---:|
-|메인페이지 시연영상에 포함되어있습니다.|
+|<img src="https://github.com/kimhwanhoon/zombie-bucket-list/assets/121846231/d5e586b8-5742-475a-bf4a-220c74e4fae1" width="450"/>|
 |사용자는 선택한 버킷리스트 내용 확인 및 수정, 삭제, 진행 상태<br/> 표시 등을 통해 목표 달성에 필요한 정보와 기능을 활용할 수 있습니다.|
 
 |마이 프로필|
@@ -87,16 +87,18 @@
 <br />
 
 ## 🤔 트러블 슈팅
-- 새로운 버킷 작성 시 목록이 즉시 갱신되지 않고 새로고침이 필요한 이슈 
-    - [샘플](https://leeseong010.tistory.com/117)
 - supabase의 db를 사용할때의 메소드와 storage를 사용할 때 메소드에서 서로 다른 키를 사용한다는것을 모르고 계속해서 에러 발생했지만, 처음에 정확한 원인을 파악하지 못해서 꽤 많은 시간을 낭비했습니다. db를 사용할 때 public키를 사용하고 storage를 사용할 때 secret키를 사용한다는 것을 알았습니다.
 - 탈퇴 후 같은 아이디로 회원가입 시 이미 회원가입한 유저라는 이슈
     - [Authentication과 Table 다루기](https://www.notion.so/100-A-7ca88957d9c74ecd9229bb74f6ff9d96?pvs=4)
 - 회원가입 기능은 되지만 로그인 기능은 되지 않은 이슈
     - [Supabase Providers email 설정하기](https://www.notion.so/100-A-c853d59fd3da495e8cc2aa52efed5661?pvs=4)
+- 새로운 버킷 작성 시 목록이 즉시 갱신되지 않고 새로고침이 필요한 이슈 
+    - [invalidateQueries 함수를 사용하여 데이터 캐시를 무효화하기](https://hamut.tistory.com/66)
+- 진행상태 필터링 후 "카테고리 전체보기" 탭에 버킷리스트가 렌더링되지 않는 이슈
+    - [조건문을 사용하여 필터링하기](https://hamut.tistory.com/67)
 <br />
 
-## 라이브러리 사용
+## ⚒️ 라이브러리 사용
 - ant design을 이용한 다양한 디자인 컴포넌트 도입 (Button, Space, Modal, Message, Form, Input 등)
 - lottiefiles/react-lottie-player의 .json을 이용한 리디렉팅 페이지 초저용량 애니메이션 구현
 - TanStack query(구 react query)를 사용한 비동기 데이터 캐시 저장 및,invalidateQuery및 refetch, isStale, isError, is Loading 등 자유로운 메소드 구현
