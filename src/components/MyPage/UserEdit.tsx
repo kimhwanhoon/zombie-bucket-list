@@ -12,7 +12,7 @@ const { TextArea } = Input;
 const UserEdit = ({
   user,
   setIsEdit,
-  userData
+  userData,
 }: {
   user: User | null;
   setIsEdit: any;
@@ -38,19 +38,6 @@ const UserEdit = ({
       setPrevProfileImageURL(userData[0].profileImage);
     }
   }, []);
-
-  // const fetchUserDB = async () => {
-  //   const { data, error } = await supabase
-  //     .from('users')
-  //     .select('nickname, profileImage, email, about')
-  //     .eq('email', user?.email);
-  //   // console.log('현재 유저 정보 ', data);
-
-  //   if (error) {
-  //     alert('프로필 수정 오류가 발생했습니다. 고객센터에 문의해주세요.');
-  //   }
-  //   return data;
-  // };
 
   // 변경 전 이미지 URL(prevProfileImageURL)이 수정 완료 버튼 클릭 시 적용된 URL과 같으면 변경 로직 실행 X
   // 미리보기
@@ -132,16 +119,7 @@ const UserEdit = ({
   const handleProfileEditSave = async () => {
     userEditMutation.mutate();
   };
-  // try {
-  //   const testMutation = useMutation(test, {
-  //     onSuccess: () => {
-  //       queryClient.invalidateQueries(["userData"]);
-  //     },
-  //     }
-  //     );
-  // } catch (error) {
-  //   console.log(error);
-  // }
+
   // 뒤로가기 버튼
   const handleEditToggleButton = () => {
     setIsEdit(false);

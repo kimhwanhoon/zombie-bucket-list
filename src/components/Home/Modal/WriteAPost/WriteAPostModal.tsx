@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { Button, Space, Tag, Form, Input, Modal, message } from 'antd';
 import postBucket from '../../../../api/postBucket';
-import { CloseOutlined, UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import Upload, { RcFile } from 'antd/es/upload';
 import uploadImage from '../../../../api/uploadImage';
 import shortUUID from 'short-uuid';
@@ -23,11 +23,6 @@ const tagsData: categories[] = [
   '음식',
   '기타',
 ];
-
-type FieldType = {
-  title?: string;
-  content?: string;
-};
 
 const WriteAPostModal = () => {
   const dispatch = useDispatch();
@@ -85,12 +80,15 @@ const WriteAPostModal = () => {
         email: currentUser!.email as string,
         userId: currentUser!.id,
       });
-      message.success('성공적으로 등록되었습니다.');
-      dispatch(postModalToggler(false));
-      setPhoto(null);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['bucketList'] });
+      setPhoto(null);
+      setTitleValue('');
+      setContentValue('');
+      setSelectedTags(['기타']);
+      dispatch(postModalToggler(false));
+      message.success('성공적으로 등록되었습니다.');
     },
     onError: (err) => {
       console.log(err);
