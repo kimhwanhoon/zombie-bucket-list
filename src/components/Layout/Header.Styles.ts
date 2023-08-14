@@ -23,12 +23,10 @@ export const S = {
   `,
 
   UserImage: styled.div`
-    /* background: #ffffff; */
     height: 36px;
     width: 36px;
     border-radius: 50%;
     overflow: hidden;
-    /* background-color: white; */
     cursor: pointer;
 
     img {
@@ -48,7 +46,6 @@ export const S = {
     border-radius: 8px;
 
     &:hover {
-      /* background-color: var(--color-text); */
       background-color: var(--color-white);
       color: var(--color-accent);
       transition: 0.2s ease-out;

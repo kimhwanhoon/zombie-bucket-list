@@ -1,6 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
 import './reset.css';
-// import bucketBackground from '../assets/zombies1.jpg';
 
 const GlobalStyle = createGlobalStyle`
 
