@@ -89,8 +89,7 @@
 ## 🤔 트러블 슈팅
 - 새로운 버킷 작성 시 목록이 즉시 갱신되지 않고 새로고침이 필요한 이슈 
     - [샘플](https://leeseong010.tistory.com/117)
-- 진행상태 필터링 후 "카테고리 전체보기"탭에 버킷리스트가 렌더링되지 않는 이슈
-    - [샘플 Axios message: 'Network Error'(CORS 오류)](https://leeseong010.tistory.com/117)     
+- supabase의 db를 사용할때의 메소드와 storage를 사용할 때 메소드에서 서로 다른 키를 사용한다는것을 모르고 계속해서 에러 발생했지만, 처음에 정확한 원인을 파악하지 못해서 꽤 많은 시간을 낭비했습니다. db를 사용할 때 public키를 사용하고 storage를 사용할 때 secret키를 사용한다는 것을 알았습니다.
 - 탈퇴 후 같은 아이디로 회원가입 시 이미 회원가입한 유저라는 이슈
     - [Authentication과 Table 다루기](https://www.notion.so/100-A-7ca88957d9c74ecd9229bb74f6ff9d96?pvs=4)
 - 회원가입 기능은 되지만 로그인 기능은 되지 않은 이슈
